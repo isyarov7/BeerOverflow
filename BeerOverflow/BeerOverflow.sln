@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow", "BeerOverflo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow.Models", "BeerOverflow.Models\BeerOverflow.Models.csproj", "{05CCACCA-B467-4AE5-949B-622A449F6D79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow.Database", "BeerOverflowDatabase\BeerOverflow.Database.csproj", "{3397B39C-5754-44C6-A434-88AB26538A85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow.Database", "BeerOverflow.Database\BeerOverflow.Database.csproj", "{F725219C-CD55-45BC-8DC5-964C12CEFD45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3397B39C-5754-44C6-A434-88AB26538A85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3397B39C-5754-44C6-A434-88AB26538A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3397B39C-5754-44C6-A434-88AB26538A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3397B39C-5754-44C6-A434-88AB26538A85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F725219C-CD55-45BC-8DC5-964C12CEFD45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F725219C-CD55-45BC-8DC5-964C12CEFD45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F725219C-CD55-45BC-8DC5-964C12CEFD45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F725219C-CD55-45BC-8DC5-964C12CEFD45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
