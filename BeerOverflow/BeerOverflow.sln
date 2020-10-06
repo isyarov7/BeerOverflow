@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow", "BeerOverflow\BeerOverflow.csproj", "{8E117BFC-6585-49D4-9319-98BB695776F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow.Models", "BeerOverflow.Models\BeerOverflow.Models.csproj", "{05CCACCA-B467-4AE5-949B-622A449F6D79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow.Database", "BeerOverflowDatabase\BeerOverflow.Database.csproj", "{3397B39C-5754-44C6-A434-88AB26538A85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E117BFC-6585-49D4-9319-98BB695776F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E117BFC-6585-49D4-9319-98BB695776F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E117BFC-6585-49D4-9319-98BB695776F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E117BFC-6585-49D4-9319-98BB695776F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05CCACCA-B467-4AE5-949B-622A449F6D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3397B39C-5754-44C6-A434-88AB26538A85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3397B39C-5754-44C6-A434-88AB26538A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3397B39C-5754-44C6-A434-88AB26538A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3397B39C-5754-44C6-A434-88AB26538A85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {526A3604-9957-4843-83F1-665CD2D2505F}
+	EndGlobalSection
+EndGlobal
