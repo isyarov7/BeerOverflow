@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BeerOverflow.Database.Migrations
+namespace BeerOverflow.Migrations
 {
     public partial class Initial : Migration
     {
@@ -250,6 +250,32 @@ namespace BeerOverflow.Database.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WishLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BeerId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WishLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WishLists_Beers_BeerId",
+                        column: x => x.BeerId,
+                        principalTable: "Beers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WishLists_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -308,6 +334,16 @@ namespace BeerOverflow.Database.Migrations
                 name: "IX_Reviews_BeerId",
                 table: "Reviews",
                 column: "BeerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishLists_BeerId",
+                table: "WishLists",
+                column: "BeerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishLists_UserId",
+                table: "WishLists",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -331,13 +367,16 @@ namespace BeerOverflow.Database.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
+                name: "WishLists");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Beers");
 
             migrationBuilder.DropTable(
-                name: "Beers");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Breweries");

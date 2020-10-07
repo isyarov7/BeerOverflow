@@ -27,12 +27,11 @@ namespace BeerOverflow
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BeerOverflowDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<BeerOverflowDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("BeerOverflow")));
             services.AddControllersWithViews();
             services.AddIdentity<User, Role>(option => option.SignIn.RequireConfirmedAccount = false).
                 AddEntityFrameworkStores<BeerOverflowDbContext>().
-                AddDefaultTokenProviders();
-            
+                AddDefaultTokenProviders(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,5 +8,6 @@ namespace BeerOverflow.Models.Models
 {
     public class User : IdentityUser<int>
     {
+        public ICollection<WishList> WishLists { get; set; } = new List<WishList>();
     }
 }

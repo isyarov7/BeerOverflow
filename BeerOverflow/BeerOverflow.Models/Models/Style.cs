@@ -16,8 +16,5 @@ namespace BeerOverflow.Models.Models
         [MaxLength(500)]
         public string Description { get; set; }
         public ICollection<Beer> Beers { get; set; } = new List<Beer>();
-
-
-
     }
 }
