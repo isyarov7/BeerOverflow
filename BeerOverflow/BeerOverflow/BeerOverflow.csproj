@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BeerOverflow.Database\BeerOverflow.Database.csproj" />
+  </ItemGroup>
+
 </Project>
