@@ -2,30 +2,28 @@
 using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
-using BeerOverflow.Services.DTO;
-using Newtonsoft.Json.Schema;
+using BeerOverflow.Services.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BeerOverflow.Services.Services
 {
-    public class CountryService : ICountryService
+    public class StyleService : IStyleService
     {
         private readonly BeerOverflowDbContext _context;
         private readonly IMapper _mapper;
-        public CountryService(BeerOverflowDbContext context, IMapper mapper)
+        public StyleService(BeerOverflowDbContext context, IMapper mapper)
         {
             this._context = context;
             this._mapper = mapper;
         }
-        public CountryDTO CreateCountry(CountryDTO country)
+        public StyleDTO CreateStyle(StyleDTO style)
         {
-            var countryEntity = _mapper.Map<Country>(country);
-            this._context.Countries.Add(countryEntity);
+            var styleEntity = _mapper.Map<Style>(style);
+            this._context.Styles.Add(styleEntity);
             this._context.SaveChanges();
-            return country;
+            return style;
         }
-
     }
 }

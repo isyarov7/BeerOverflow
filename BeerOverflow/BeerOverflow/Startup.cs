@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
+using BeerOverflow.Services.Contracts;
+using BeerOverflow.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,7 +33,13 @@ namespace BeerOverflow
             services.AddControllersWithViews();
             services.AddIdentity<User, Role>(option => option.SignIn.RequireConfirmedAccount = false).
                 AddEntityFrameworkStores<BeerOverflowDbContext>().
-                AddDefaultTokenProviders(); 
+                AddDefaultTokenProviders();
+
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IBeerService, BeerService>();
+            services.AddScoped<IBreweryService, BreweryService>();
+            services.AddScoped<IStyleService, StyleService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

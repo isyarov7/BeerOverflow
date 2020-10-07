@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BeerOverflow.Database\BeerOverflow.Database.csproj" />
+    <ProjectReference Include="..\BeerOverflow.Services\BeerOverflow.Services.csproj" />
   </ItemGroup>
 
 </Project>
