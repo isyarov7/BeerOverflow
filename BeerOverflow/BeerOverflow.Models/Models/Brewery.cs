@@ -14,6 +14,6 @@ namespace BeerOverflow.Models.Models
         public string Name { get; set; }
         public int CountryId { get; set; }
         public Country Country { get; set; }
-
+        public ICollection<Beer> Beers { get; set; } = new List<Beer>();
     }
 }

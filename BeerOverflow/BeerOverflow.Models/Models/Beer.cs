@@ -15,9 +15,6 @@ namespace BeerOverflow.Models.Models
         [Required]
         [MaxLength(10)]
         public string ABV { get; set; }
-        [Required]
-        [MaxLength(10)]
-        public string Milliliters { get; set; }
         public int Rating { get; set; }
         public int BreweryId { get; set; }
         public Brewery Brewery { get; set; }
