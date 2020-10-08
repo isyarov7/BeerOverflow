@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
@@ -35,11 +36,15 @@ namespace BeerOverflow
                 AddEntityFrameworkStores<BeerOverflowDbContext>().
                 AddDefaultTokenProviders();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<ICountryService, CountryService>();
-            services.AddScoped<IBeerService, BeerService>();
-            services.AddScoped<IBreweryService, BreweryService>();
-            services.AddScoped<IStyleService, StyleService>();
-            services.AddScoped<IReviewService, ReviewService>();
+            //services.AddScoped<IBeerService, BeerService>();
+            //services.AddScoped<IBreweryService, BreweryService>();
+            //services.AddScoped<IStyleService, StyleService>();
+            //services.AddScoped<IReviewService, ReviewService>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

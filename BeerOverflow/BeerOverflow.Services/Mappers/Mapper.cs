@@ -12,11 +12,11 @@ namespace BeerOverflow.Services.Mappers
     {
         public Mapper()
         {
-            CreateMap<Country, CountryDTO>();
-            CreateMap<Beer, BeerDTO>();
-            CreateMap<Brewery, BreweryDTO>();
-            CreateMap<Style, StyleDTO>();
-            CreateMap<Review, ReviewDTO>();
+            CreateMap<Country, CountryDTO>().ReverseMap();
+            //CreateMap<Beer, BeerDTO>();
+            //CreateMap<Brewery, BreweryDTO>();
+            //CreateMap<Style, StyleDTO>();
+            //CreateMap<Review, ReviewDTO>();
         }
     }
 }
