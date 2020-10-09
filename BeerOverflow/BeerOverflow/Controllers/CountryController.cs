@@ -20,8 +20,7 @@ namespace BeerOverflow.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
-        public IActionResult CreateCoutry()
+        public IActionResult CreateCountry()
         {
             return View(); 
         }
@@ -33,7 +32,7 @@ namespace BeerOverflow.Controllers
 
             _service.CreateCountry(countryDTO);
 
-            return View("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Index()
         {

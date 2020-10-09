@@ -17,6 +17,8 @@ namespace BeerOverflow.Models.Models
         public string ABV { get; set; }
         public int Rating { get; set; }
         public int BreweryId { get; set; }
+        public string ImageUrl { get; set; }
+        public string Milliliters { get; set; }
         public Brewery Brewery { get; set; }
         public int StyleId { get; set; }
         public Style Style { get; set; }
