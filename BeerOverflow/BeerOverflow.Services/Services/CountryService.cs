@@ -1,13 +1,10 @@
-﻿using AutoMapper;
-using BeerOverflow.Database;
+﻿using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO;
-using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BeerOverflow.Services.Services
 {
@@ -21,9 +18,13 @@ namespace BeerOverflow.Services.Services
 
         public void CreateCountry(CountryDTO countryDTO)
         {
+            if (countryDTO == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             var country = new Country
             {
-                Id = countryDTO.Id,
                 Name = countryDTO.Name,
             };
 
@@ -39,9 +40,9 @@ namespace BeerOverflow.Services.Services
 
         public void DeleteCountry(int id)
         {
-                var country = _context.Countries
-                    .Where(x => x.IsDeleted == false)
-                    .FirstOrDefault(x => x.Id == id);
+            var country = _context.Countries
+                .Where(x => x.IsDeleted == false)
+                .FirstOrDefault(x => x.Id == id);
 
             if (country == null)
             {
@@ -59,7 +60,6 @@ namespace BeerOverflow.Services.Services
                 .Where(country => country.IsDeleted == false)
                 .Select(country => new CountryDTO
                 {
-                    Id = country.Id,
                     Name = country.Name,
                 })
                .ToList();
@@ -80,7 +80,6 @@ namespace BeerOverflow.Services.Services
 
             var countryDTO = new CountryDTO
             {
-                Id = country.Id,
                 Name = country.Name,
             };
 

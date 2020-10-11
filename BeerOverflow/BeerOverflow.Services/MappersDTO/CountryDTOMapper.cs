@@ -17,7 +17,6 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new CountryDTO
             {
-                Id = item.Id,
                 Name = item.Name,
                 Breweries = (ICollection<Brewery>)(item.Breweries?.GetDTO())
             };

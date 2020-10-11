@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using BeerOverflow.Database;
+﻿using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace BeerOverflow.Services.Services
 {
@@ -16,30 +15,90 @@ namespace BeerOverflow.Services.Services
         {
             this._context = context;
         }
-
-        public BreweryDTO CreateBrewery(BreweryDTO breweryDTO)
+        public void CreateBrewery(BreweryDTO breweryDTO)
         {
-            throw new NotImplementedException();
+            if (breweryDTO == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var brewery = new Brewery
+            {
+                Name = breweryDTO.Name,
+            };
+
+            if (_context.Breweries.Any(b => b.Name == brewery.Name))
+            {
+                throw new ArgumentException("Brewery with such name already exists!");
+            }
+
+            _context.Breweries.Add(brewery);
+
+            _context.SaveChanges();
         }
 
-        public bool DeleteBrewery(int id)
+        public void DeleteBrewery(int id)
         {
-            throw new NotImplementedException();
+
+            var brewery = _context.Breweries
+                .Where(x => x.IsDeleted == false)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            brewery.IsDeleted = true;
+
+            _context.SaveChanges();
         }
 
         public IEnumerable<BreweryDTO> GetAllBreweries()
         {
-            throw new NotImplementedException();
+            var breweries = _context.Breweries
+                .Where(brewery => brewery.IsDeleted == false)
+                .Select(brewery => new BreweryDTO
+                {
+                    Name = brewery.Name,
+                })
+               .ToList();
+
+            return breweries;
         }
 
         public BreweryDTO GetBrewery(int id)
         {
-            throw new NotImplementedException();
+            var brewery = _context.Breweries
+                .Where(brewery => brewery.IsDeleted == false)
+                .FirstOrDefault(brewery => brewery.Id == id);
+
+            if (brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var breweryDTO = new BreweryDTO
+            {
+                Name = brewery.Name,
+            };
+
+            return breweryDTO;
         }
 
-        public BreweryDTO UpdateBrewery(int id, BreweryDTO breweryDTO)
+        public void UpdateBrewery(int id, BreweryDTO breweryDTO)
         {
-            throw new NotImplementedException();
+            var brewery = _context.Breweries.Where(x => x.IsDeleted == false)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            brewery.Name = breweryDTO.Name;
+
+            _context.SaveChanges();
         }
     }
 }

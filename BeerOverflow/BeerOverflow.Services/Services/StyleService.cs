@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using BeerOverflow.Database;
+﻿using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace BeerOverflow.Services.Services
 {
@@ -17,29 +16,90 @@ namespace BeerOverflow.Services.Services
             this._context = context;
         }
 
-        public StyleDTO CreateStyle(StyleDTO styleDTO)
+        public void CreateStyle(StyleDTO styleDTO)
         {
-            throw new NotImplementedException();
+            if (styleDTO == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var style = new Style
+            {
+                Name = styleDTO.Name,
+                Description = styleDTO.Description
+            };
+
+            if (_context.Styles.Any(b => b.Name == style.Name))
+            {
+                throw new ArgumentException("Style with this name already exists!");
+            }
+
+            _context.Styles.Add(style);
+
+            _context.SaveChanges();
         }
 
-        public bool DeleteStyle(int id)
+        public void DeleteStyle(int id)
         {
-            throw new NotImplementedException();
+            var style = _context.Styles
+                .Where(x => x.IsDeleted == false)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (style == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            style.IsDeleted = true;
+
+            _context.SaveChanges();
         }
 
         public IEnumerable<StyleDTO> GetAllStyles()
         {
-            throw new NotImplementedException();
+            var styles = _context.Styles
+               .Where(st => st.IsDeleted == false)
+               .Select(st => new StyleDTO
+               {
+                   Name = st.Name,
+               })
+              .ToList();
+
+            return styles;
         }
 
-        public StyleDTO GetStyle(int id)
+        public StyleDTO GetReview(int id)
         {
-            throw new NotImplementedException();
+            var style = _context.Styles
+                .Where(st => st.IsDeleted == false)
+                .FirstOrDefault(st => st.Id == id);
+
+            if (style == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var styleDTO = new StyleDTO
+            {
+                Name = style.Name,
+            };
+
+            return styleDTO;
         }
 
-        public StyleDTO UpdateStyle(int id, StyleDTO styleDTO)
+        public void UpdateStyle(int id, StyleDTO styleDTO)
         {
-            throw new NotImplementedException();
+            var style = _context.Styles.Where(x => x.IsDeleted == false)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (style == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            style.Name = styleDTO.Name;
+
+            _context.SaveChanges();
         }
     }
 }
