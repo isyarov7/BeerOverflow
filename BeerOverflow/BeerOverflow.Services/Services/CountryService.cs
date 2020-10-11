@@ -19,7 +19,7 @@ namespace BeerOverflow.Services.Services
             this._context = context;
         }
 
-        public CountryDTO CreateCountry(CountryDTO countryDTO)
+        public void CreateCountry(CountryDTO countryDTO)
         {
             var country = new Country
             {
@@ -27,27 +27,30 @@ namespace BeerOverflow.Services.Services
                 Name = countryDTO.Name,
             };
 
+            if (_context.Countries.Any(b => b.Name == country.Name))
+            {
+                throw new ArgumentException("Country with such name already exists!");
+            }
+
             _context.Countries.Add(country);
 
-            return countryDTO;
+            _context.SaveChanges();
         }
 
-        public bool DeleteCountry(int id)
+        public void DeleteCountry(int id)
         {
-            try
-            {
-                var beer = _context.Countries
+                var country = _context.Countries
                     .Where(x => x.IsDeleted == false)
                     .FirstOrDefault(x => x.Id == id);
 
-                beer.IsDeleted = true;
-
-                return true;
-            }
-            catch (Exception)
+            if (country == null)
             {
-                return false;
+                throw new ArgumentNullException();
             }
+
+            country.IsDeleted = true;
+
+            _context.SaveChanges();
         }
 
         public IEnumerable<CountryDTO> GetAllCountries()
@@ -58,7 +61,8 @@ namespace BeerOverflow.Services.Services
                 {
                     Id = country.Id,
                     Name = country.Name,
-                });
+                })
+               .ToList();
 
             return countries;
         }
@@ -83,7 +87,7 @@ namespace BeerOverflow.Services.Services
             return countryDTO;
         }
 
-        public CountryDTO UpdateCountry(int id, CountryDTO countryDTO)
+        public void UpdateCountry(int id, CountryDTO countryDTO)
         {
             var country = _context.Countries.Where(x => x.IsDeleted == false)
                 .FirstOrDefault(x => x.Id == id);
@@ -95,7 +99,7 @@ namespace BeerOverflow.Services.Services
 
             country.Name = countryDTO.Name;
 
-            return countryDTO;
+            _context.SaveChanges();
         }
     }
 }

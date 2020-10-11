@@ -9,8 +9,8 @@ namespace BeerOverflow.Services.Contracts
     {
         ReviewDTO GetReview(int id);
         IEnumerable<ReviewDTO> GetAllReviews();
-        ReviewDTO CreateReview(ReviewDTO reviewDTO);
-        ReviewDTO UpdateReview(int id, ReviewDTO reviewDTO);
-        public bool DeleteReview(int id);
+        public void CreateReview(ReviewDTO reviewDTO);
+        public void UpdateReview(int id, ReviewDTO reviewDTO);
+        public void DeleteReview(int id);
     }
 }

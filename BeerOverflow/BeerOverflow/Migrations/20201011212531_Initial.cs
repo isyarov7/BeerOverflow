@@ -54,7 +54,8 @@ namespace BeerOverflow.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 20, nullable: false)
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,7 +69,8 @@ namespace BeerOverflow.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 20, nullable: false),
-                    Description = table.Column<string>(maxLength: 500, nullable: false)
+                    Description = table.Column<string>(maxLength: 500, nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,7 +190,8 @@ namespace BeerOverflow.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 20, nullable: false),
-                    CountryId = table.Column<int>(nullable: false)
+                    CountryId = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -209,10 +212,12 @@ namespace BeerOverflow.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 20, nullable: false),
                     ABV = table.Column<string>(maxLength: 10, nullable: false),
-                    Rating = table.Column<int>(nullable: false),
+                    Rating = table.Column<double>(nullable: false),
                     BreweryId = table.Column<int>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    Milliliters = table.Column<string>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: false),
+                    Milliliters = table.Column<string>(maxLength: 10, nullable: false),
+                    Description = table.Column<string>(maxLength: 500, nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
                     StyleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -239,7 +244,8 @@ namespace BeerOverflow.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(nullable: true),
-                    BeerId = table.Column<int>(nullable: false)
+                    BeerId = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,7 +265,8 @@ namespace BeerOverflow.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BeerId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

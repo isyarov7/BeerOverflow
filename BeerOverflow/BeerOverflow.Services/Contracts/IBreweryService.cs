@@ -10,8 +10,8 @@ namespace BeerOverflow.Services.Contracts
     {
         BreweryDTO GetBrewery(int id);
         IEnumerable<BreweryDTO> GetAllBreweries();
-        BreweryDTO CreateBrewery(BreweryDTO breweryDTO);
-        BreweryDTO UpdateBrewery(int id, BreweryDTO breweryDTO);
-        public bool DeleteBrewery(int id);
+        public void CreateBrewery(BreweryDTO breweryDTO);
+        public void UpdateBrewery(int id, BreweryDTO breweryDTO);
+        public void DeleteBrewery(int id);
     }
 }
