@@ -7,6 +7,10 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface IStyleService
     {
-        StyleDTO CreateStyle(StyleDTO style);
+        StyleDTO GetStyle(int id);
+        IEnumerable<StyleDTO> GetAllStyles();
+        StyleDTO CreateStyle(StyleDTO styleDTO);
+        StyleDTO UpdateStyle(int id, StyleDTO styleDTO);
+        public bool DeleteStyle(int id);
     }
 }

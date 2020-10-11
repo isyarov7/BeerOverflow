@@ -9,21 +9,37 @@ using System.Text;
 
 namespace BeerOverflow.Services.Services
 {
-    public class ReviewService :IReviewService
+    public class ReviewService : IReviewService
     {
         private readonly BeerOverflowDbContext _context;
-        private readonly IMapper _mapper;
-        public ReviewService(BeerOverflowDbContext context, IMapper mapper)
+        public ReviewService(BeerOverflowDbContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
-        public ReviewDTO CreateReview(ReviewDTO review)
+
+        public ReviewDTO CreateReview(ReviewDTO reviewDTO)
         {
-            var reviewEntity = _mapper.Map<Review>(review);
-            this._context.Reviews.Add(reviewEntity);
-            this._context.SaveChanges();
-            return review;
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteReview(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ReviewDTO> GetAllReviews()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReviewDTO GetReview(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReviewDTO UpdateReview(int id, ReviewDTO reviewDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

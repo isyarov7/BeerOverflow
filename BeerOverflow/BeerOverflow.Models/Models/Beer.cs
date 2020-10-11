@@ -15,11 +15,18 @@ namespace BeerOverflow.Models.Models
         [Required]
         [MaxLength(10)]
         public string ABV { get; set; }
-        public int Rating { get; set; }
+        public double Rating { get; set; }
         public int BreweryId { get; set; }
-        public string ImageUrl { get; set; }
-        public string Milliliters { get; set; }
         public Brewery Brewery { get; set; }
+        [Required]
+        public string ImageUrl { get; set; }
+        [Required]
+        [MaxLength(10)]
+        public string Milliliters { get; set; }
+        [Required]
+        [MaxLength(500)]
+        public string Description { get; set; }
+        public bool IsDeleted { get; set; }
         public int StyleId { get; set; }
         public Style Style { get; set; }
         public ICollection<Review> Reviews { get; set; } = new List<Review>();

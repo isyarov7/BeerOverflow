@@ -15,6 +15,7 @@ namespace BeerOverflow.Models.Models
         [Required]
         [MaxLength(500)]
         public string Description { get; set; }
+        public bool IsDeleted { get; set; }
         public ICollection<Beer> Beers { get; set; } = new List<Beer>();
     }
 }

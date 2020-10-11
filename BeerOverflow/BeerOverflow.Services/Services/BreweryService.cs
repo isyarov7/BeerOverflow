@@ -12,18 +12,34 @@ namespace BeerOverflow.Services.Services
     public class BreweryService : IBreweryService
     {
         private readonly BeerOverflowDbContext _context;
-        private readonly IMapper _mapper;
-        public BreweryService(BeerOverflowDbContext context, IMapper mapper)
+        public BreweryService(BeerOverflowDbContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
-        public BreweryDTO CreateBrewery(BreweryDTO brewery)
+
+        public BreweryDTO CreateBrewery(BreweryDTO breweryDTO)
         {
-            var breweryEntity = _mapper.Map<Brewery>(brewery);
-            this._context.Breweries.Add(breweryEntity);
-            this._context.SaveChanges();
-            return brewery;
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteBrewery(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<BreweryDTO> GetAllBreweries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public BreweryDTO GetBrewery(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BreweryDTO UpdateBrewery(int id, BreweryDTO breweryDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

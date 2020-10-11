@@ -7,6 +7,10 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface ICountryService
     {
-        CountryDTO CreateCountry(CountryDTO country);
+        CountryDTO GetCountry(int id);
+        IEnumerable<CountryDTO> GetAllCountries();
+        CountryDTO CreateCountry(CountryDTO countryDTO);
+        CountryDTO UpdateCountry(int id, CountryDTO countryDTO);
+        public bool DeleteCountry(int id);
     }
 }

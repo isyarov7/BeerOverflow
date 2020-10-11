@@ -13,5 +13,6 @@ namespace BeerOverflow.Models.Models
         public Beer Beer { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

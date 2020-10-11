@@ -12,18 +12,34 @@ namespace BeerOverflow.Services.Services
     public class StyleService : IStyleService
     {
         private readonly BeerOverflowDbContext _context;
-        private readonly IMapper _mapper;
-        public StyleService(BeerOverflowDbContext context, IMapper mapper)
+        public StyleService(BeerOverflowDbContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
-        public StyleDTO CreateStyle(StyleDTO style)
+
+        public StyleDTO CreateStyle(StyleDTO styleDTO)
         {
-            var styleEntity = _mapper.Map<Style>(style);
-            this._context.Styles.Add(styleEntity);
-            this._context.SaveChanges();
-            return style;
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteStyle(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<StyleDTO> GetAllStyles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public StyleDTO GetStyle(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public StyleDTO UpdateStyle(int id, StyleDTO styleDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }
