@@ -211,6 +211,8 @@ namespace BeerOverflow.Migrations
                     ABV = table.Column<string>(maxLength: 10, nullable: false),
                     Rating = table.Column<int>(nullable: false),
                     BreweryId = table.Column<int>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    Milliliters = table.Column<string>(nullable: true),
                     StyleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
