@@ -59,6 +59,16 @@ namespace BeerOverflow.Services.Services
 
             _context.SaveChanges();
         }
+        //TODO
+        public IEnumerable<BeerDTO> FilterBeersByCountry()
+        {
+            throw new NotImplementedException();
+        }
+        //TODO
+        public IEnumerable<BeerDTO> FilterBeersByStyle()
+        {
+            throw new NotImplementedException();
+        }
 
         public IEnumerable<BeerDTO> GetAllBeers()
         {
@@ -100,6 +110,21 @@ namespace BeerOverflow.Services.Services
             };
 
             return beerDTO;
+        }
+        //TODO
+        public IEnumerable<BeerDTO> SortBeerByABV()
+        {
+            throw new NotImplementedException();
+        }
+        //TODO
+        public IEnumerable<BeerDTO> SortBeerByName()
+        {
+            throw new NotImplementedException();
+        }
+        //TODO
+        public IEnumerable<BeerDTO> SortBeerByRating()
+        {
+            throw new NotImplementedException();
         }
 
         public void UpdateBeer(int id, BeerDTO beerDTO)
