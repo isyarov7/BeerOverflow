@@ -2,6 +2,8 @@
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTOs;
+using BeerOverflow.Services.MappersDTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,11 +61,12 @@ namespace BeerOverflow.Services.Services
         {
             var reviews = _context.Reviews
                 .Where(rev => rev.IsDeleted == false)
-                .Select(rev => new ReviewDTO
+                .Include(rev => new ReviewDTO
                 {
                     Content = rev.Content,
                 })
-               .ToList();
+               .ToList()
+               .GetDTO();
 
             return reviews;
         }
@@ -72,7 +75,7 @@ namespace BeerOverflow.Services.Services
         {
             var review = _context.Reviews
                 .Where(rev => rev.IsDeleted == false)
-                .FirstOrDefault(rev => rev.Id == id);
+                .FirstOrDefault(rev => rev.Id == id).GetDTO();
 
             if (review == null)
             {

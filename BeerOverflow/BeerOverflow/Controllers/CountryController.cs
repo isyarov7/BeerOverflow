@@ -14,6 +14,7 @@ namespace BeerOverflow.Controllers
     {
         private readonly ICountryService _service;
         private readonly IMapper _mapper;
+
         public CountryController(ICountryService service, IMapper mapper)
         {
             this._service = service;

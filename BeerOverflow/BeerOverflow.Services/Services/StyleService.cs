@@ -1,7 +1,9 @@
 ﻿using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
+using BeerOverflow.Services.DTOMappers;
 using BeerOverflow.Services.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,11 +61,12 @@ namespace BeerOverflow.Services.Services
         {
             var styles = _context.Styles
                .Where(st => st.IsDeleted == false)
-               .Select(st => new StyleDTO
+               .Include(st => new StyleDTO
                {
                    Name = st.Name,
                })
-              .ToList();
+              .ToList()
+              .GetDTO();
 
             return styles;
         }
@@ -72,7 +75,7 @@ namespace BeerOverflow.Services.Services
         {
             var style = _context.Styles
                 .Where(st => st.IsDeleted == false)
-                .FirstOrDefault(st => st.Id == id);
+                .FirstOrDefault(st => st.Id == id).GetDTO();
 
             if (style == null)
             {

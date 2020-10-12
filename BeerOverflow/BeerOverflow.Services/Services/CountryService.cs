@@ -2,6 +2,8 @@
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO;
+using BeerOverflow.Services.DTOMappers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,11 +60,7 @@ namespace BeerOverflow.Services.Services
         {
             var countries = _context.Countries
                 .Where(country => country.IsDeleted == false)
-                .Select(country => new CountryDTO
-                {
-                    Name = country.Name,
-                })
-               .ToList();
+                .Select(country => country.GetDTO()).ToList();
 
             return countries;
         }
@@ -71,7 +69,7 @@ namespace BeerOverflow.Services.Services
         {
             var country = _context.Countries
                 .Where(country => country.IsDeleted == false)
-                .FirstOrDefault(country => country.Id == id);
+                .FirstOrDefault(country => country.Id == id).GetDTO();
 
             if (country == null)
             {
