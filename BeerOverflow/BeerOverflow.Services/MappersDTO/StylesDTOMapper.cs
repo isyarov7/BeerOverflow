@@ -2,6 +2,7 @@
 using BeerOverflow.Services.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BeerOverflow.Services.DTOMappers
 {
@@ -19,6 +20,10 @@ namespace BeerOverflow.Services.DTOMappers
                 Description = item.Description,
                 Beers = (ICollection<Beer>)(item.Beers?.GetDTO())
             };
+        }
+        public static ICollection<StyleDTO> GetDTO(this ICollection<Style> items)
+        {
+            return items.Select(GetDTO).ToList();
         }
     }
 }
