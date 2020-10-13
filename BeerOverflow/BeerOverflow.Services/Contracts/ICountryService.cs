@@ -10,7 +10,7 @@ namespace BeerOverflow.Services.Contracts
         CountryDTO GetCountry(int id);
         IEnumerable<CountryDTO> GetAllCountries();
         public void CreateCountry(CountryDTO countryDTO);
-        public void UpdateCountry(int id, CountryDTO countryDTO);
+        public void UpdateCountry(CountryDTO countryDTO, string name);
         public void DeleteCountry(CountryDTO countryDTO);
     }
 }

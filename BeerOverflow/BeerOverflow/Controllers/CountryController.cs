@@ -45,6 +45,25 @@ namespace BeerOverflow.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult UpdateCountry()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCountry(NewCountryViewModel countryViewModel, string name)
+        {
+            var countryDTO = _mapper.Map<CountryDTO>(countryViewModel);
+
+            countryDTO.Name = countryViewModel.OldName;
+           
+            name = countryViewModel.NewName;
+
+            _service.UpdateCountry(countryDTO, name);
+
+
+            return RedirectToAction("Index", "Home");
+        }
         public IActionResult Index()
         {
             return View();

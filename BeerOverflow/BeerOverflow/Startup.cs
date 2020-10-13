@@ -32,7 +32,9 @@ namespace BeerOverflow
         {
             services.AddDbContext<BeerOverflowDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("BeerOverflow")));
+
             services.AddControllersWithViews();
+
             services.AddIdentity<User, Role>(option => option.SignIn.RequireConfirmedAccount = false).
                 AddEntityFrameworkStores<BeerOverflowDbContext>().
                 AddDefaultTokenProviders();

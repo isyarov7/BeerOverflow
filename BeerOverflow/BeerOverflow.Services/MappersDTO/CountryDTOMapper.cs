@@ -1,5 +1,4 @@
-﻿using BeerOverflow.Models;
-using BeerOverflow.Models.Models;
+﻿using BeerOverflow.Models.Models;
 using BeerOverflow.Services.DTO;
 using System;
 using System.Collections.Generic;

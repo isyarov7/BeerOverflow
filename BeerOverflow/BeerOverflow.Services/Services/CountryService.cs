@@ -55,7 +55,7 @@ namespace BeerOverflow.Services.Services
 
             _context.SaveChanges();
         }
-
+        //TODO
         public IEnumerable<CountryDTO> GetAllCountries()
         {
             var countries = _context.Countries
@@ -64,7 +64,7 @@ namespace BeerOverflow.Services.Services
 
             return countries;
         }
-
+        //TODO
         public CountryDTO GetCountry(int id)
         {
             var country = _context.Countries
@@ -84,17 +84,18 @@ namespace BeerOverflow.Services.Services
             return countryDTO;
         }
 
-        public void UpdateCountry(int id, CountryDTO countryDTO)
+        public void UpdateCountry(CountryDTO countryDTO, string newName)
         {
-            var country = _context.Countries.Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
+            var country = _context.Countries
+               .Where(x => x.IsDeleted == false)
+               .FirstOrDefault(x => x.Name == countryDTO.Name);
 
             if (country == null)
             {
                 throw new ArgumentNullException();
             }
 
-            country.Name = countryDTO.Name;
+            country.Name = newName;
 
             _context.SaveChanges();
         }

@@ -16,6 +16,8 @@ namespace BeerOverflow.Mapper
         {
             CreateMap<CountryDTO, CountryViewModel>();
             CreateMap<CountryViewModel, CountryDTO>();
+            CreateMap<CountryDTO, NewCountryViewModel>();
+            CreateMap<NewCountryViewModel, CountryDTO>();
            // CreateMap<Beer, BeerDTO>();
            // CreateMap<Brewery, BreweryDTO>();
            // CreateMap<Style, StyleDTO>();
