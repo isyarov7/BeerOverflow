@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BeerOverflow.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO;
@@ -32,6 +28,20 @@ namespace BeerOverflow.Controllers
             var countryDTO = _mapper.Map<CountryDTO>(countryViewModel);
 
             _service.CreateCountry(countryDTO);
+
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult DeleteCountry()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCountry(CountryViewModel countryViewModel)
+        {
+            var countryDTO = _mapper.Map<CountryDTO>(countryViewModel);
+
+            _service.DeleteCountry(countryDTO);
 
             return RedirectToAction("Index", "Home");
         }

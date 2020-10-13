@@ -40,11 +40,11 @@ namespace BeerOverflow.Services.Services
             _context.SaveChanges();
         }
 
-        public void DeleteCountry(int id)
+        public void DeleteCountry(CountryDTO countryDTO)
         {
             var country = _context.Countries
                 .Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault(x => x.Name == countryDTO.Name);
 
             if (country == null)
             {
