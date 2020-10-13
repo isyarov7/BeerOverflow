@@ -64,6 +64,11 @@ namespace BeerOverflow.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult GetAllCountries()
+        {
+            return View(_service.GetAllCountries());
+        }
         public IActionResult Index()
         {
             return View();

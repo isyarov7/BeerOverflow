@@ -30,12 +30,20 @@ namespace BeerOverflow.Services.Services
                 Name = countryDTO.Name,
             };
 
-            if (_context.Countries.Any(b => b.Name == country.Name))
-            {
-                throw new ArgumentException("Country with such name already exists!");
-            }
+            var toRevive = _context.Countries.Where(c => c.Name == country.Name && c.IsDeleted == true).FirstOrDefault();
 
-            _context.Countries.Add(country);
+            if (_context.Countries.Any(c => c.Name == country.Name && c.IsDeleted == true))
+            {
+                toRevive.IsDeleted = false;
+            }
+            else if (_context.Countries.Any(c => c.Name == country.Name))
+            {
+                throw new ArgumentException("Country Already Exists!");
+            }
+            else
+            {
+                _context.Countries.Add(country);
+            }
 
             _context.SaveChanges();
         }
