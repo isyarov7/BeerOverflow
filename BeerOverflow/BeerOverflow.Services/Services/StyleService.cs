@@ -41,11 +41,11 @@ namespace BeerOverflow.Services.Services
             _context.SaveChanges();
         }
 
-        public void DeleteStyle(int id)
+        public void DeleteStyle(StyleDTO styleDTO)
         {
             var style = _context.Styles
                 .Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault(x => x.Name == styleDTO.Name);
 
             if (style == null)
             {

@@ -10,7 +10,7 @@ namespace BeerOverflow.Services.Contracts
         BeerDTO GetBeer(int id);
         public void CreateBeer(BeerDTO beerDTO);
         public void UpdateBeer(int id, BeerDTO beerDTO);
-        public void DeleteBeer(int id);
+        public void DeleteBeer(BeerDTO beerDTO);
         IEnumerable<BeerDTO> GetAllBeers();
         IEnumerable<BeerDTO> FilterBeersByCountry();
         IEnumerable<BeerDTO> FilterBeersByStyle();

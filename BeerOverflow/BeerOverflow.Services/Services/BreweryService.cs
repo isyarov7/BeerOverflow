@@ -39,12 +39,11 @@ namespace BeerOverflow.Services.Services
             _context.SaveChanges();
         }
 
-        public void DeleteBrewery(int id)
+        public void DeleteBrewery(BreweryDTO breweryDTO)
         {
-
             var brewery = _context.Breweries
                 .Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault(x => x.Name == breweryDTO.Name);
 
             if (brewery == null)
             {

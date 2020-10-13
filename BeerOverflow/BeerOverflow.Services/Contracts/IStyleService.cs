@@ -11,6 +11,6 @@ namespace BeerOverflow.Services.Contracts
         IEnumerable<StyleDTO> GetAllStyles();
         public void CreateStyle(StyleDTO styleDTO);
         public void UpdateStyle(int id, StyleDTO styleDTO);
-        public void DeleteStyle(int id);
+        public void DeleteStyle(StyleDTO styleDTO);
     }
 }

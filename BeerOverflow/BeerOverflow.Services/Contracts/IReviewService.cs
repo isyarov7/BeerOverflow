@@ -11,6 +11,6 @@ namespace BeerOverflow.Services.Contracts
         IEnumerable<ReviewDTO> GetAllReviews();
         public void CreateReview(ReviewDTO reviewDTO);
         public void UpdateReview(int id, ReviewDTO reviewDTO);
-        public void DeleteReview(int id);
+        public void DeleteReview(ReviewDTO reviewDTO);
     }
 }
