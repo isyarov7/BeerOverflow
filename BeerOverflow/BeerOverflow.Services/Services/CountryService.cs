@@ -36,9 +36,9 @@ namespace BeerOverflow.Services.Services
             {
                 toRevive.IsDeleted = false;
             }
-            else if (_context.Countries.Any(c => c.Name == country.Name))
+            else if (_context.Countries.Any(c => c.Name == country.Name && c.IsDeleted == false))
             {
-                throw new ArgumentException("Country Already Exists!");
+                toRevive.IsDeleted = false;
             }
             else
             {
