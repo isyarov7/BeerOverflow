@@ -27,7 +27,7 @@ namespace BeerOverflow.Services.Services
 
             var country = new Country
             {
-                Name = countryDTO.Name,
+                Name = countryDTO.Name
             };
 
             var toRevive = _context.Countries.Where(c => c.Name == country.Name && c.IsDeleted == true).FirstOrDefault();
@@ -63,7 +63,6 @@ namespace BeerOverflow.Services.Services
 
             _context.SaveChanges();
         }
-        //TODO
         public IEnumerable<CountryDTO> GetAllCountries()
         {
             var countries = _context.Countries
@@ -72,7 +71,6 @@ namespace BeerOverflow.Services.Services
 
             return countries;
         }
-        //TODO
         public CountryDTO GetCountry(int id)
         {
             var country = _context.Countries

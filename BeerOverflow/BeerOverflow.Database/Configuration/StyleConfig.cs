@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BeerOverflow.Database.Configuration
 {
-    class StyleConfig
+    public class StyleConfig
     {
     }
 }

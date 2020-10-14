@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeerOverflow.Migrations
 {
     [DbContext(typeof(BeerOverflowDbContext))]
-    [Migration("20201011212531_Initial")]
+    [Migration("20201014003044_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
