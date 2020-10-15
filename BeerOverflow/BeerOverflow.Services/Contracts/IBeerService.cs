@@ -18,8 +18,8 @@ namespace BeerOverflow.Services.Contracts
         IEnumerable<BeerDTO> SortBeerByName();
         IEnumerable<BeerDTO> SortBeerByABV();
         IEnumerable<BeerDTO> SortBeerByRating();
+        Task<ICollection<BeerDTO>> GetAllBeersAsync();
         Task<BeerDTO> GetBeerAsync(int id);
-        Task<BeerDTO> GetAllBeersAsync();
         Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO);
         Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO, string name);
         Task<BeerDTO> DeleteBeerAsync(BeerDTO beerDTO);

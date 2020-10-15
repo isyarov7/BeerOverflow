@@ -112,86 +112,60 @@ namespace BeerOverflow.Services.Services
         }
         public async Task<ReviewDTO> CreateReviewAsync(ReviewDTO reviewDTO)
         {
-            if (reviewDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var review = await Task.Run(() => this._context.Reviews
+           .Include(r => r.Content)
+           .Include(b => b.BeerId)
+           .Where(b => b.IsDeleted == false)
+           .Select(b => b.GetDTO()));
 
-            var review = (await this._context.Reviews
-                .FirstOrDefaultAsync(c => c.Content == reviewDTO.Content));
+            _context.Reviews.Add((Review)review);
 
-            var toRevive = _context.Reviews.Where(c => c.Content == review.Content && c.IsDeleted == true)
-                .FirstOrDefault();
+            await _context.SaveChangesAsync();
 
-            if (_context.Reviews.Any(c => c.Content == review.Content && c.IsDeleted == true))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else if (_context.Reviews.Any(c => c.Content == review.Content && c.IsDeleted == false))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else
-            {
-                _context.Reviews.Add(review);
-            }
-
-            _context.SaveChanges();
-
-            return review.GetDTO();
+            return (ReviewDTO)review;
         }
 
         public async Task<ReviewDTO> DeleteReviewAsync(ReviewDTO reviewDTO)
         {
-            var review = (await this._context.Reviews
-                .FirstOrDefaultAsync(x => x.Content == reviewDTO.Content && x.IsDeleted == false));
 
-            if (review == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var review = await Task.Run(() => this._context.Reviews
+                .FirstOrDefaultAsync(x => x.Content == reviewDTO.Content && x.IsDeleted == false));
 
             review.IsDeleted = true;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return review.GetDTO();
         }
-        public async Task<ReviewDTO> GetAllReviewsAsync()
+        public async Task<ICollection<ReviewDTO>> GetAllReviewsAsync()
         {
-            var reviews = (await this._context.Reviews
-                .FirstOrDefaultAsync(review => review.IsDeleted == false)).GetDTO();
+            var reviews = await Task.Run(() => this._context.Reviews
+           .Include(b => b.Content)
+           .Include(b => b.BeerId)
+           .Where(b => b.IsDeleted == false)
+           .Select(b => b.GetDTO()) 
+           .ToListAsync());
 
             return reviews;
         }
         public async Task<ReviewDTO> GetReviewAsync(int id)
         {
-            var review = (await this._context.Reviews
-                .FirstOrDefaultAsync(review => review.IsDeleted == false)).GetDTO();
+            var review = await Task.Run(() => this._context.Reviews
+                 .FirstOrDefaultAsync(r => r.Id == id));
 
-            if (review == null)
-            {
-                throw new ArgumentException();
-            }
-
-            return review;
+            return review.GetDTO();
         }
 
         public async Task<ReviewDTO> UpdateReviewAsync(ReviewDTO reviewDTO, string newContent)
         {
-            var review = (await this._context.Reviews
-               .FirstOrDefaultAsync(x => x.Content == reviewDTO.Content)).GetDTO();
-
-            if (review == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var review = await Task.Run(() => this._context.Reviews
+                .FirstOrDefaultAsync(x => x.Content == reviewDTO.Content));
 
             review.Content = newContent;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return review;
+            return review.GetDTO();
         }
     }
 }

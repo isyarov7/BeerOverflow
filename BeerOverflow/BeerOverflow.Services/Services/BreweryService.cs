@@ -75,11 +75,11 @@ namespace BeerOverflow.Services.Services
             return breweries;
         }
 
-        public BreweryDTO GetBrewery(string name)
+        public BreweryDTO GetBrewery(int id)
         {
             var brewery = _context.Breweries
                 .Where(brewery => brewery.IsDeleted == false)
-                .FirstOrDefault(brewery => brewery.Name == name).GetDTO();
+                .FirstOrDefault(brewery => brewery.Id == id).GetDTO();
 
             if (brewery == null)
             {
@@ -111,86 +111,60 @@ namespace BeerOverflow.Services.Services
         }
         public async Task<BreweryDTO> CreateBreweryAsync(BreweryDTO breweryDTO)
         {
-            if (breweryDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var brewery = await Task.Run(() => this._context.Breweries
+            .Include(b => b.Name)
+            .Where(b => b.IsDeleted == false)
+            .Select(b => b.GetDTO()));
 
-            var brewery = (await this._context.Breweries
-                .FirstOrDefaultAsync(c => c.Name == breweryDTO.Name));
+            _context.Breweries.Add((Brewery)brewery);
 
-            var toRevive = _context.Breweries.Where(c => c.Name == brewery.Name && c.IsDeleted == true)
-                .FirstOrDefault();
+            await _context.SaveChangesAsync();
 
-            if (_context.Breweries.Any(c => c.Name == brewery.Name && c.IsDeleted == true))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else if (_context.Breweries.Any(c => c.Name == brewery.Name && c.IsDeleted == false))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else
-            {
-                _context.Breweries.Add(brewery);
-            }
-
-            _context.SaveChanges();
-
-            return brewery.GetDTO();
+            return (BreweryDTO)brewery;
         }
 
         public async Task<BreweryDTO> DeleteBreweryAsync(BreweryDTO breweryDTO)
         {
-            var brewery = (await this._context.Breweries
-                .FirstOrDefaultAsync(x => x.Name == breweryDTO.Name && x.IsDeleted == false));
-
-            if (brewery == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var brewery = await Task.Run(() => this._context.Breweries
+                         .FirstOrDefaultAsync(x => x.Name == breweryDTO.Name && x.IsDeleted == false));
 
             brewery.IsDeleted = true;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return brewery.GetDTO();
         }
-        public async Task<BreweryDTO> GetAllBreweriesAsync()
+
+        public async Task<ICollection<BreweryDTO>> GetAllBreweriesAsync()
         {
-            var breweries = (await this._context.Breweries
-                .FirstOrDefaultAsync(brewery => brewery.IsDeleted == false)).GetDTO();
+            var breweries = await Task.Run(() => this._context.Breweries
+                    .Include(b => b.Name)
+                    .Include(b => b.CountryId)
+                    .Where(b => b.IsDeleted == false)
+                    .Select(b => b.GetDTO())
+                    .ToListAsync());
 
             return breweries;
         }
+
         public async Task<BreweryDTO> GetBreweryAsync(int id)
         {
-            var brewery = (await this._context.Breweries
-                .FirstOrDefaultAsync(brewery => brewery.IsDeleted == false)).GetDTO();
+            var brewery = await Task.Run(() => this._context.Breweries
+                .FirstOrDefaultAsync(brewery => brewery.Id == id));
 
-            if (brewery == null)
-            {
-                throw new ArgumentException();
-            }
-
-            return brewery;
+            return brewery.GetDTO();
         }
 
         public async Task<BreweryDTO> UpdateBreweryAsync(BreweryDTO breweryDTO, string newName)
         {
-            var brewery = (await this._context.Breweries
-               .FirstOrDefaultAsync(x => x.Name == breweryDTO.Name)).GetDTO();
-
-            if (brewery == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var brewery = await Task.Run(() => this._context.Breweries
+               .FirstOrDefaultAsync(x => x.Name == breweryDTO.Name));
 
             brewery.Name = newName;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return brewery;
+            return brewery.GetDTO();
         }
     }
 }

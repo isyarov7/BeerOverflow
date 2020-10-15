@@ -14,7 +14,7 @@ namespace BeerOverflow.Services.Contracts
         public void UpdateCountry(CountryDTO countryDTO, string name);
         public void DeleteCountry(CountryDTO countryDTO);
         Task<CountryDTO> GetCountryAsync(int id);
-        Task<CountryDTO> GetAllCountriesAsync();
+        Task<ICollection<CountryDTO>> GetAllCountriesAsync();
         Task<CountryDTO> CreateCountryAsync(CountryDTO countryDTO);
         Task<CountryDTO> UpdateCountryAsync(CountryDTO countryDTO, string name);
         Task<CountryDTO> DeleteCountryAsync(CountryDTO countryDTO);

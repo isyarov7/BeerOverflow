@@ -21,86 +21,55 @@ namespace BeerOverflow.Services.Services
 
         public async Task<CountryDTO> CreateCountryAsync(CountryDTO countryDTO)
         {
-            if (countryDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var country = await Task.Run(() => this._context.Countries
+                 .Include(b => b.Name).Select(b => b.GetDTO()));
 
-            var country = (await this._context.Countries
-                .FirstOrDefaultAsync(c => c.Name == countryDTO.Name));
 
-            var toRevive = _context.Countries.Where(c => c.Name == country.Name && c.IsDeleted == true)
-                .FirstOrDefault();
+            _context.Countries.Add((Country)country);
 
-            if (_context.Countries.Any(c => c.Name == country.Name && c.IsDeleted == true))
-            {
-                toRevive.IsDeleted = false;       
-            }
-            else if (_context.Countries.Any(c => c.Name == country.Name && c.IsDeleted == false))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else
-            {
-                _context.Countries.Add(country);
-            }
+            await _context.SaveChangesAsync();
 
-            _context.SaveChanges();
-
-            return country.GetDTO();
+            return (CountryDTO)country;
         }
 
         public async Task<CountryDTO> DeleteCountryAsync(CountryDTO countryDTO)
         {
-            var country = (await this._context.Countries
-                .FirstOrDefaultAsync(x => x.Name == countryDTO.Name && x.IsDeleted == false));
-
-            if (country == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var country = await Task.Run(() => this._context.Countries
+                    .FirstOrDefaultAsync(x => x.Name == countryDTO.Name && x.IsDeleted == false));
 
             country.IsDeleted = true;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return country.GetDTO();
         }
-        public async Task<CountryDTO> GetAllCountriesAsync()
+        public async Task<ICollection<CountryDTO>> GetAllCountriesAsync()
         {
-            var countries = (await this._context.Countries
-                .FirstOrDefaultAsync(country => country.IsDeleted == false)).GetDTO();
+            var countries = await Task.Run(() => this._context.Countries
+            .Where(c => c.IsDeleted == false)
+             .Select(b => b.GetDTO())
+               .ToListAsync());
 
             return countries;
         }
         public async Task<CountryDTO> GetCountryAsync(int id)
         {
-            var country = (await this._context.Countries
-                .FirstOrDefaultAsync(country => country.IsDeleted == false)).GetDTO();
+            var country = await Task.Run(() => this._context.Countries
+                  .FirstOrDefaultAsync(country => country.Id == id));
 
-            if (country == null)
-            {
-                throw new ArgumentException();
-            }
-
-            return country;
+            return country.GetDTO();
         }
 
         public async Task<CountryDTO> UpdateCountryAsync(CountryDTO countryDTO, string newName)
         {
-            var country = (await this._context.Countries
-               .FirstOrDefaultAsync(x => x.Name == countryDTO.Name)).GetDTO();
-
-            if (country == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var country = await Task.Run(() => this._context.Countries
+                     .FirstOrDefaultAsync(x => x.Name == countryDTO.Name));
 
             country.Name = newName;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return country;
+            return country.GetDTO();
         }
         public void CreateCountry(CountryDTO countryDTO)
         {

@@ -113,86 +113,60 @@ namespace BeerOverflow.Services.Services
         }
         public async Task<StyleDTO> CreateStyleAsync(StyleDTO styleDTO)
         {
-            if (styleDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var style = await Task.Run(() => this._context.Styles
+         .Include(r => r.Name)
+         .Include(b => b.Description)
+         .Where(b => b.IsDeleted == false)
+         .Select(b => b.GetDTO()));
 
-            var style = (await this._context.Styles
-                .FirstOrDefaultAsync(c => c.Name == styleDTO.Name));
+            _context.Styles.Add((Style)style);
 
-            var toRevive = _context.Styles.Where(c => c.Name == style.Name && c.IsDeleted == true)
-                .FirstOrDefault();
+            await _context.SaveChangesAsync();
 
-            if (_context.Styles.Any(c => c.Name == style.Name && c.IsDeleted == true))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else if (_context.Styles.Any(c => c.Name == style.Name && c.IsDeleted == false))
-            {
-                toRevive.IsDeleted = false;
-            }
-            else
-            {
-                _context.Styles.Add(style);
-            }
-
-            _context.SaveChanges();
-
-            return style.GetDTO();
+            return (StyleDTO)style;
         }
 
         public async Task<StyleDTO> DeleteStyleAsync(StyleDTO styleDTO)
         {
-            var style = (await this._context.Styles
-                .FirstOrDefaultAsync(x => x.Name == styleDTO.Name && x.IsDeleted == false));
-
-            if (style == null)
-            {
-                throw new ArgumentNullException();
-            }
+            var style = await Task.Run(() => this._context.Styles
+               .FirstOrDefaultAsync(x => x.Name == styleDTO.Name && x.IsDeleted == false));
 
             style.IsDeleted = true;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return style.GetDTO();
         }
-        public async Task<StyleDTO> GetAllStylesAsync()
+        public async Task<ICollection<StyleDTO>> GetAllStylesAsync()
         {
-            var styles = (await this._context.Styles
-                .FirstOrDefaultAsync(style => style.IsDeleted == false)).GetDTO();
+            var styles = await Task.Run(() => this._context.Styles
+            .Include(b => b.Name)
+            .Include(b => b.Description)
+            .Where(b => b.IsDeleted == false)
+            .Select(b => b.GetDTO())
+            .ToListAsync());
 
             return styles;
         }
         public async Task<StyleDTO> GetStyleAsync(int id)
         {
-            var style = (await this._context.Styles
-                .FirstOrDefaultAsync(style => style.IsDeleted == false)).GetDTO();
 
-            if (style == null)
-            {
-                throw new ArgumentException();
-            }
+            var styles = await Task.Run(() => this._context.Styles
+                 .FirstOrDefaultAsync(r => r.Id == id));
 
-            return style;
+            return styles.GetDTO();
         }
 
         public async Task<StyleDTO> UpdateStyleAsync(StyleDTO styleDTO, string newName)
         {
-            var style = (await this._context.Styles
-               .FirstOrDefaultAsync(x => x.Name == styleDTO.Name)).GetDTO();
+            var styles = await Task.Run(() => this._context.Styles
+                   .FirstOrDefaultAsync(x => x.Name == styleDTO.Name));
 
-            if (style == null)
-            {
-                throw new ArgumentNullException();
-            }
+            styles.Name = newName;
 
-            style.Name = newName;
+            await _context.SaveChangesAsync();
 
-            _context.SaveChanges();
-
-            return style;
+            return styles.GetDTO();
         }
     }
 }
