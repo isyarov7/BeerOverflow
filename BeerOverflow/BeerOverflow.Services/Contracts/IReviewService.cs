@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services.Contracts
 {
@@ -12,5 +13,10 @@ namespace BeerOverflow.Services.Contracts
         public void CreateReview(ReviewDTO reviewDTO);
         public void UpdateReview(int id, ReviewDTO reviewDTO);
         public void DeleteReview(ReviewDTO reviewDTO);
+        Task<ReviewDTO> GetReviewAsync(int id);
+        Task<ReviewDTO> GetAllReviewsAsync();
+        Task<ReviewDTO> CreateReviewAsync(ReviewDTO reviewDTO);
+        Task<ReviewDTO> UpdateReviewAsync(ReviewDTO reviewDTO, string name);
+        Task<ReviewDTO> DeleteReviewAsync(ReviewDTO reviewDTO);
     }
 }

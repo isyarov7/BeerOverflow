@@ -9,10 +9,10 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface IBreweryService
     {
-        BreweryDTO GetBrewery(int id);
+        BreweryDTO GetBrewery(string name);
         IEnumerable<BreweryDTO> GetAllBreweries();
         public void CreateBrewery(BreweryDTO breweryDTO);
-        public void UpdateBrewery(int id, BreweryDTO breweryDTO);
+        public void UpdateBrewery(BreweryDTO breweryDTO, string name);
         public void DeleteBrewery(BreweryDTO breweryDTO);
         Task<BreweryDTO> GetBreweryAsync(int id);
         Task<BreweryDTO> GetAllBreweriesAsync();

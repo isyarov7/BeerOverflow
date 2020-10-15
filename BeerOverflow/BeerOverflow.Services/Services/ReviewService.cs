@@ -21,20 +21,25 @@ namespace BeerOverflow.Services.Services
 
         public void CreateReview(ReviewDTO reviewDTO)
         {
-            if (reviewDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             var review = new Review
             {
                 Content = reviewDTO.Content,
                 BeerId = reviewDTO.BeerId
             };
 
-            if (_context.Reviews.Any(b => b.Content == review.Content))
+            var alreadyCreated = _context.Reviews.Where(b => b.Content == review.Content).FirstOrDefault();
+
+            if (alreadyCreated.IsDeleted == true)
             {
-                throw new ArgumentException("This content already exists!");
+                alreadyCreated.IsDeleted = false;
+            }
+            else if (alreadyCreated.IsDeleted == false)
+            {
+                alreadyCreated.IsDeleted = false;
+            }
+            else
+            {
+                _context.Reviews.Add(review);
             }
 
             _context.Reviews.Add(review);

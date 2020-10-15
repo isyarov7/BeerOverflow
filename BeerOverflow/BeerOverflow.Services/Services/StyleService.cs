@@ -21,10 +21,6 @@ namespace BeerOverflow.Services.Services
 
         public void CreateStyle(StyleDTO styleDTO)
         {
-            if (styleDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
 
             var style = new Style
             {
@@ -32,9 +28,19 @@ namespace BeerOverflow.Services.Services
                 Description = styleDTO.Description
             };
 
-            if (_context.Styles.Any(b => b.Name == style.Name))
+            var alreadyCreated = _context.Styles.Where(b => b.Name == style.Name).FirstOrDefault();
+           
+            if (alreadyCreated.IsDeleted == true)
             {
-                throw new ArgumentException("Style with this name already exists!");
+                alreadyCreated.IsDeleted = false;
+            }
+            else if (alreadyCreated.IsDeleted == false)
+            {
+                alreadyCreated.IsDeleted = false;
+            }
+            else
+            {
+                _context.Styles.Add(style);
             }
 
             _context.Styles.Add(style);
@@ -72,11 +78,11 @@ namespace BeerOverflow.Services.Services
             return styles;
         }
 
-        public StyleDTO GetReview(int id)
+        public StyleDTO GetStyle(string name)
         {
             var style = _context.Styles
                 .Where(st => st.IsDeleted == false)
-                .FirstOrDefault(st => st.Id == id).GetDTO();
+                .FirstOrDefault(st => st.Name == name).GetDTO();
 
             if (style == null)
             {
@@ -91,10 +97,10 @@ namespace BeerOverflow.Services.Services
             return styleDTO;
         }
 
-        public void UpdateStyle(int id, StyleDTO styleDTO)
+        public void UpdateStyle(StyleDTO styleDTO, string name)
         {
             var style = _context.Styles.Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault(x => x.Name == name);
 
             if (style == null)
             {

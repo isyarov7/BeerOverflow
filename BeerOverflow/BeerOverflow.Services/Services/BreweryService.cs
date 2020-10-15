@@ -20,19 +20,24 @@ namespace BeerOverflow.Services.Services
         }
         public void CreateBrewery(BreweryDTO breweryDTO)
         {
-            if (breweryDTO == null)
-            {
-                throw new ArgumentException();
-            }
-
             var brewery = new Brewery
             {
                 Name = breweryDTO.Name,
             };
 
-            if (_context.Breweries.Any(b => b.Name == brewery.Name))
+            var alreadyCreated = _context.Breweries.Where(b => b.Name == brewery.Name).FirstOrDefault();
+            
+            if (alreadyCreated.IsDeleted == true)
             {
-                throw new ArgumentException("Brewery with such name already exists!");
+                alreadyCreated.IsDeleted = false;
+            }
+            else if (alreadyCreated.IsDeleted == false)
+            {
+                alreadyCreated.IsDeleted = false;
+            }
+            else
+            {
+                _context.Breweries.Add(brewery);
             }
 
             _context.Breweries.Add(brewery);
@@ -70,11 +75,11 @@ namespace BeerOverflow.Services.Services
             return breweries;
         }
 
-        public BreweryDTO GetBrewery(int id)
+        public BreweryDTO GetBrewery(string name)
         {
             var brewery = _context.Breweries
                 .Where(brewery => brewery.IsDeleted == false)
-                .FirstOrDefault(brewery => brewery.Id == id).GetDTO();
+                .FirstOrDefault(brewery => brewery.Name == name).GetDTO();
 
             if (brewery == null)
             {
@@ -89,17 +94,18 @@ namespace BeerOverflow.Services.Services
             return breweryDTO;
         }
 
-        public void UpdateBrewery(int id, BreweryDTO breweryDTO)
+        public void UpdateBrewery(BreweryDTO breweryDTO, string name)
         {
-            var brewery = _context.Breweries.Where(x => x.IsDeleted == false)
-                .FirstOrDefault(x => x.Id == id);
+            var brewery = _context.Breweries
+               .Where(x => x.IsDeleted == false)
+               .FirstOrDefault(x => x.Name == breweryDTO.Name);
 
             if (brewery == null)
             {
                 throw new ArgumentNullException();
             }
 
-            brewery.Name = breweryDTO.Name;
+            brewery.Name = name;
 
             _context.SaveChanges();
         }

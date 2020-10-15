@@ -8,10 +8,10 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface IStyleService
     {
-        StyleDTO GetReview(int id);
+        StyleDTO GetStyle(string name);
         IEnumerable<StyleDTO> GetAllStyles();
         public void CreateStyle(StyleDTO styleDTO);
-        public void UpdateStyle(int id, StyleDTO styleDTO);
+        public void UpdateStyle(StyleDTO styleDTO, string name);
         public void DeleteStyle(StyleDTO styleDTO);
         Task<StyleDTO> GetStyleAsync(int id);
         Task<StyleDTO> GetAllStylesAsync();

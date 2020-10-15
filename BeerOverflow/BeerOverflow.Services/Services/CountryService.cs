@@ -19,7 +19,6 @@ namespace BeerOverflow.Services.Services
             this._context = context;
         }
 
-        //Така разписваш и другите сървизи, но оставяш и предишните
         public async Task<CountryDTO> CreateCountryAsync(CountryDTO countryDTO)
         {
             if (countryDTO == null)
@@ -156,11 +155,11 @@ namespace BeerOverflow.Services.Services
 
             return countries;
         }
-        public CountryDTO GetCountry(int id)
+        public CountryDTO GetCountry(string name)
         {
             var country = _context.Countries
                 .Where(country => country.IsDeleted == false)
-                .FirstOrDefault(country => country.Id == id).GetDTO();
+                .FirstOrDefault(country => country.Name == name).GetDTO();
 
             if (country == null)
             {

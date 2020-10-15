@@ -20,27 +20,30 @@ namespace BeerOverflow.Services.Services
         }
         public void CreateBeer(BeerDTO beerDTO)
         {
-            if (beerDTO == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            else if (_context.Beers.Any(b => b.Name == beerDTO.Name))
-            {
-                throw new ArgumentException("Beer with such name already exists!");
-            }
-
             var beer = new Beer
             {
                 Name = beerDTO.Name,
-                ABV = beerDTO.ABV,
-                Milliliters = beerDTO.Milliliters,
                 Description = beerDTO.Description,
+                ABV = beerDTO.ABV,
                 BreweryId = beerDTO.BreweryId,
-                StyleId = beerDTO.StyleId
+                StyleId = beerDTO.StyleId,
+
             };
 
-            _context.Beers.Add(beer);
+            var alreadyCreatedBeer = _context.Beers.Where(b => b.Name == beer.Name).FirstOrDefault();
+
+            if (alreadyCreatedBeer.IsDeleted == true)
+            {
+                alreadyCreatedBeer.IsDeleted = false;
+            }
+            else if (alreadyCreatedBeer.IsDeleted == false)
+            {
+                alreadyCreatedBeer.IsDeleted = false;
+            }
+            else
+            {
+                _context.Beers.Add(beer);
+            }
 
             _context.SaveChanges();
         }
@@ -60,15 +63,27 @@ namespace BeerOverflow.Services.Services
 
             _context.SaveChanges();
         }
-        //TODO
-        public IEnumerable<BeerDTO> FilterBeersByCountry()
+
+        public IEnumerable<BeerDTO> FilterBeersByCountry(string name)
         {
-            throw new NotImplementedException();
+            var breweries = _context.Breweries
+                .Where(b => b.Country.Name == name)
+                .ToList();
+
+            var filtered = breweries
+                .Select(b => b.Beers.GetDTO())
+                .ToList();
+
+            return (IEnumerable<BeerDTO>)filtered;
         }
-        //TODO
-        public IEnumerable<BeerDTO> FilterBeersByStyle()
+
+        public IEnumerable<BeerDTO> FilterBeersByStyle(string name)
         {
-            throw new NotImplementedException();
+            var beers = _context.Beers
+              .Where(b => b.Style.Name == name)
+              .ToList();
+
+            return (IEnumerable<BeerDTO>)beers;
         }
 
         public IEnumerable<BeerDTO> GetAllBeers()
@@ -90,11 +105,11 @@ namespace BeerOverflow.Services.Services
             return beers;
         }
 
-        public BeerDTO GetBeer(int id)
+        public BeerDTO GetBeer(string name)
         {
             var beer = _context.Beers
                  .Where(beer => beer.IsDeleted == false)
-                 .FirstOrDefault(beer => beer.Id == id).GetDTO();
+                 .FirstOrDefault(beer => beer.Name == name).GetDTO();
 
             if (beer == null)
             {
@@ -113,20 +128,31 @@ namespace BeerOverflow.Services.Services
 
             return beerDTO;
         }
-        //TODO
+
         public IEnumerable<BeerDTO> SortBeerByABV()
         {
-            throw new NotImplementedException();
+            var beers = _context.Beers
+                      .Where(b => b.IsDeleted == false)
+                      .OrderBy(b => b.ABV).ToList();
+
+            return (IEnumerable<BeerDTO>)beers;
         }
-        //TODO
+
         public IEnumerable<BeerDTO> SortBeerByName()
         {
-            throw new NotImplementedException();
+            var beers = _context.Beers
+                     .Where(b => b.IsDeleted == false)
+                     .OrderBy(b => b.Name).ToList();
+
+            return (IEnumerable<BeerDTO>)beers;
         }
-        //TODO
         public IEnumerable<BeerDTO> SortBeerByRating()
         {
-            throw new NotImplementedException();
+            var beers = _context.Beers
+                    .Where(b => b.IsDeleted == false)
+                    .OrderBy(b => b.Rating).ToList();
+
+            return (IEnumerable<BeerDTO>)beers;
         }
 
         public void UpdateBeer(int id, BeerDTO beerDTO)
