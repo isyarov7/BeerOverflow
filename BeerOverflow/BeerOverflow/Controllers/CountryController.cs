@@ -3,6 +3,7 @@ using BeerOverflow.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Controllers
 {
@@ -64,7 +65,7 @@ namespace BeerOverflow.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
+        [HttpGet]
         public IActionResult GetAllCountries()
         {
             return View(_service.GetAllCountries());

@@ -8,7 +8,6 @@ namespace BeerOverflow.Models.Models
     public class WishList
     {
         [Key]
-        //TODO LearnEntityFramework
         public int Id { get; set; }
         public int BeerId { get; set; }
         public Beer Beer { get; set; }
