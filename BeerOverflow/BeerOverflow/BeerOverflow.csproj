@@ -28,8 +28,4 @@
     <ProjectReference Include="..\BeerOverflow.Services\BeerOverflow.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ApiController\" />
-  </ItemGroup>
-
 </Project>

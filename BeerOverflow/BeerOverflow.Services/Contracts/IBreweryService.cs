@@ -3,6 +3,7 @@ using BeerOverflow.Services.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services.Contracts
 {
@@ -13,5 +14,10 @@ namespace BeerOverflow.Services.Contracts
         public void CreateBrewery(BreweryDTO breweryDTO);
         public void UpdateBrewery(int id, BreweryDTO breweryDTO);
         public void DeleteBrewery(BreweryDTO breweryDTO);
+        Task<BreweryDTO> GetBreweryAsync(int id);
+        Task<BreweryDTO> GetAllBreweriesAsync();
+        Task<BreweryDTO> CreateBreweryAsync(BreweryDTO breweryDTO);
+        Task<BreweryDTO> UpdateBreweryAsync(BreweryDTO breweryDTO, string name);
+        Task<BreweryDTO> DeleteBreweryAsync(BreweryDTO breweryDTO);
     }
 }

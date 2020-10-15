@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services.Contracts
 {
@@ -17,6 +18,11 @@ namespace BeerOverflow.Services.Contracts
         IEnumerable<BeerDTO> SortBeerByName();
         IEnumerable<BeerDTO> SortBeerByABV();
         IEnumerable<BeerDTO> SortBeerByRating();
+        Task<BeerDTO> GetBeerAsync(int id);
+        Task<BeerDTO> GetAllBeersAsync();
+        Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO);
+        Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO, string name);
+        Task<BeerDTO> DeleteBeerAsync(BeerDTO beerDTO);
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services.Services
 {
@@ -146,6 +147,89 @@ namespace BeerOverflow.Services.Services
             beer.StyleId = beerDTO.StyleId;
 
             _context.SaveChanges();
+        }
+        public async Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO)
+        {
+            if (beerDTO == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var beer = (await this._context.Beers
+                .FirstOrDefaultAsync(c => c.Name == beerDTO.Name));
+
+            var toRevive = _context.Beers.Where(c => c.Name == beer.Name && c.IsDeleted == true)
+                .FirstOrDefault();
+
+            if (_context.Beers.Any(c => c.Name == beer.Name && c.IsDeleted == true))
+            {
+                toRevive.IsDeleted = false;
+            }
+            else if (_context.Beers.Any(c => c.Name == beer.Name && c.IsDeleted == false))
+            {
+                toRevive.IsDeleted = false;
+            }
+            else
+            {
+                _context.Beers.Add(beer);
+            }
+
+            _context.SaveChanges();
+
+            return beer.GetDTO();
+        }
+
+        public async Task<BeerDTO> DeleteBeerAsync(BeerDTO beerDTO)
+        {
+            var beer = (await this._context.Beers
+                .FirstOrDefaultAsync(x => x.Name == beerDTO.Name && x.IsDeleted == false));
+
+            if (beer == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            beer.IsDeleted = true;
+
+            _context.SaveChanges();
+
+            return beer.GetDTO();
+        }
+        public async Task<BeerDTO> GetAllBeersAsync()
+        {
+            var beers = (await this._context.Beers
+                .FirstOrDefaultAsync(beer => beer.IsDeleted == false)).GetDTO();
+
+            return beers;
+        }
+        public async Task<BeerDTO> GetBeerAsync(int id)
+        {
+            var beer = (await this._context.Beers
+                .FirstOrDefaultAsync(beer => beer.IsDeleted == false)).GetDTO();
+
+            if (beer == null)
+            {
+                throw new ArgumentException();
+            }
+
+            return beer;
+        }
+
+        public async Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO, string newName)
+        {
+            var beer = (await this._context.Beers
+               .FirstOrDefaultAsync(x => x.Name == beerDTO.Name)).GetDTO();
+
+            if (beer == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            beer.Name = newName;
+
+            _context.SaveChanges();
+
+            return beer;
         }
     }
 }
