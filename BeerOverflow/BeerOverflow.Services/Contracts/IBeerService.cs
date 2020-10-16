@@ -10,18 +10,23 @@ namespace BeerOverflow.Services.Contracts
     {
         BeerDTO GetBeer(string name);
         public void CreateBeer(BeerDTO beerDTO);
-        public void UpdateBeer(int id, BeerDTO beerDTO);
+        public void UpdateBeer(string oldName,string newName);
         public void DeleteBeer(BeerDTO beerDTO);
-        IEnumerable<BeerDTO> GetAllBeers();
-        IEnumerable<BeerDTO> FilterBeersByCountry(string name);
-        IEnumerable<BeerDTO> FilterBeersByStyle(string name);
-        IEnumerable<BeerDTO> SortBeerByName();
-        IEnumerable<BeerDTO> SortBeerByABV();
-        IEnumerable<BeerDTO> SortBeerByRating();
+        ICollection<BeerDTO> GetAllBeers();
+        ICollection<BeerDTO> FilterBeersByCountry(string name);
+        ICollection<BeerDTO> FilterBeersByStyle(string name);
+        ICollection<BeerDTO> SortBeersByName();
+        ICollection<BeerDTO> SortBeersByABV();
+        ICollection<BeerDTO> SortBeersByRating();
         Task<ICollection<BeerDTO>> GetAllBeersAsync();
         Task<BeerDTO> GetBeerAsync(int id);
         Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO);
-        Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO, string name);
-        Task<BeerDTO> DeleteBeerAsync(BeerDTO beerDTO);
+        Task<BeerDTO> UpdateBeerAsync(string beerDTO, string name);
+        Task<BeerDTO> DeleteBeerAsync(string name);
+        Task<ICollection<BeerDTO>> FilterBeersByCountryAsync(string name);
+        Task<ICollection<BeerDTO>> FilterBeersByStyleAsync(string name);
+        Task<ICollection<BeerDTO>> SortBeerByNameAsync();
+        Task<ICollection<BeerDTO>> SortBeerByABVAsync();
+        Task<ICollection<BeerDTO>> SortBeerByRatingAsync();
     }
 }

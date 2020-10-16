@@ -1,13 +1,13 @@
-﻿using BeerOverflow.Database;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BeerOverflow.Database;
+using System.Threading.Tasks;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTOMappers;
 using BeerOverflow.Services.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BeerOverflow.Services.Services
 {

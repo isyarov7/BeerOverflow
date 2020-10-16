@@ -19,11 +19,10 @@ namespace BeerOverflow.Services.DTOMappers
                 Name = item.Name,
                 Description = item.Description,
                 ABV = item.ABV,
+                Rating = item.Rating,
                 StyleId = item.StyleId,
                 BreweryId = item.BreweryId,
-                Milliliters = item.Milliliters,
-                Reviews = (ICollection<Review>)(item.Reviews)
-
+                Milliliters = item.Milliliters
             };
         }
         public static ICollection<BeerDTO> GetDTO(this ICollection<Beer> items)

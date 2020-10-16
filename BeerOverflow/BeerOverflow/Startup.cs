@@ -42,7 +42,7 @@ namespace BeerOverflow
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<ICountryService, CountryService>();
-            //services.AddScoped<IBeerService, BeerService>();
+            services.AddScoped<IBeerService, BeerService>();
             //services.AddScoped<IBreweryService, BreweryService>();
             //services.AddScoped<IStyleService, StyleService>();
             //services.AddScoped<IReviewService, ReviewService>();
