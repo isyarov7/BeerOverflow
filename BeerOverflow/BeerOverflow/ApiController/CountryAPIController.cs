@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeerOverflow.ApiController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class APICountryController : ControllerBase
+    public class CountryAPIController : ControllerBase
     {
         private readonly ICountryService _service;
-        public APICountryController(ICountryService service)
+        public CountryAPIController(ICountryService service)
         {
             this._service = service;
         }
