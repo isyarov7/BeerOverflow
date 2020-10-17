@@ -25,12 +25,12 @@ namespace BeerOverflow.ApiController
             return new JsonResult(style);
         }
         //DO NOT WORK
-        [HttpPost("name={name}")]
-        public async Task<IActionResult> DeleteStyleAsync([FromQuery] string name)
-        {
-            var style = await _service.DeleteStyleAsync(name);
-            return new JsonResult(style);
-        }
+        //[HttpPost("name={name}")]
+        //public async Task<IActionResult> DeleteStyleAsync([FromQuery] string name)
+        //{
+        //    var style = await _service.DeleteStyleAsync(name);
+        //    return new JsonResult(style);
+        //}
         //Ok
         [HttpGet("")]
         public async Task<IActionResult> GetAllStyles()
@@ -53,11 +53,11 @@ namespace BeerOverflow.ApiController
             }
         }
         //Ok
-        [HttpPut("")]
-        public async Task<IActionResult> UpdateStyle([FromQuery] string oldName, [FromQuery] string newName)
-        {
-            var style = await _service.UpdateStyleAsync(oldName, newName);
-            return new JsonResult(style);
-        }
+        //[HttpPut("")]
+        //public async Task<IActionResult> UpdateStyle([FromQuery] string oldName, [FromQuery] string newName)
+        //{
+        //    var style = await _service.UpdateStyleAsync(oldName, newName);
+        //    return new JsonResult(style);
+        //}
     }
 }

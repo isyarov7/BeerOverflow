@@ -25,12 +25,12 @@ namespace BeerOverflow.ApiController
             return new JsonResult(country);
         }
         //DO NOT WORK
-        [HttpPost("name={name}")]
-        public async Task<IActionResult> DeleteCountryAsync([FromQuery] string name)
-        {
-            var country = await _service.DeleteCountryAsync(name);
-            return new JsonResult(country);
-        }
+        //[HttpPost("name={name}")]
+        //public async Task<IActionResult> DeleteCountryAsync([FromQuery] string name)
+        //{
+        //    var country = await _service.DeleteCountryAsync(name);
+        //    return new JsonResult(country);
+        //}
         //Ok
         [HttpGet("")]
         public async Task<IActionResult> GetAllCountries()
@@ -53,11 +53,11 @@ namespace BeerOverflow.ApiController
             }
         }
         //Ok
-        [HttpPut("")]
-        public async Task<IActionResult> UpdateCountry([FromQuery] string oldName, [FromQuery] string newName)
-        {
-            var country = await _service.UpdateCountryAsync(oldName, newName);
-            return new JsonResult(country);
-        }
+        //[HttpPut("")]
+       // public async Task<IActionResult> UpdateCountry([FromQuery] string oldName, [FromQuery] string newName)
+       // {
+       //     var country = await _service.UpdateCountryAsync(oldName, newName);
+       //     return new JsonResult(country);
+       // }
     }
 }

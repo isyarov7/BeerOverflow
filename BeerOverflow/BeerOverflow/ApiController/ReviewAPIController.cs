@@ -25,12 +25,12 @@ namespace BeerOverflow.ApiController
             return new JsonResult(review);
         }
         //DO NOT WORK
-        [HttpPost("name={name}")]
-        public async Task<IActionResult> DeleteReviewAsync([FromQuery] string content)
-        {
-            var contents = await _service.DeleteReviewAsync(content);
-            return new JsonResult(contents);
-        }
+        //[HttpPost("name={name}")]
+        //public async Task<IActionResult> DeleteReviewAsync([FromQuery] string content)
+        //{
+        //    var contents = await _service.DeleteReviewAsync(content);
+        //    return new JsonResult(contents);
+        //}
         //Ok
         [HttpGet("")]
         public async Task<IActionResult> GetAllReviews()
@@ -53,11 +53,11 @@ namespace BeerOverflow.ApiController
             }
         }
         //Ok
-        [HttpPut("")]
-        public async Task<IActionResult> UpdateReview([FromQuery] string oldContent, [FromQuery] string newContent)
-        {
-            var review = await _service.UpdateReviewAsync(oldContent, newContent);
-            return new JsonResult(review);
-        }
+        //[HttpPut("")]
+        //public async Task<IActionResult> UpdateReview([FromQuery] string oldContent, [FromQuery] string newContent)
+        //{
+        //    var review = await _service.UpdateReviewAsync(oldContent, newContent);
+        //    return new JsonResult(review);
+        //}
     }
 }

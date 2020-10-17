@@ -25,12 +25,12 @@ namespace BeerOverflow.ApiController
             return new JsonResult(brewery);
         }
         //DO NOT WORK
-        [HttpPost("name={name}")]
-        public async Task<IActionResult> DeleteBreweryAsync([FromQuery] string name)
-        {
-            var brewery = await _service.DeleteBreweryAsync(name);
-            return new JsonResult(brewery);
-        }
+       // [HttpPost("name={name}")]
+       // public async Task<IActionResult> DeleteBreweryAsync([FromQuery] string name)
+       // {
+       //     var brewery = await _service.DeleteBreweryAsync(name);
+       //     return new JsonResult(brewery);
+       // }
         //Ok
         [HttpGet("")]
         public async Task<IActionResult> GetAllBreweries()
@@ -52,12 +52,12 @@ namespace BeerOverflow.ApiController
                 return this.NotFound();
             }
         }
-        //Ok
-        [HttpPut("")]
-        public async Task<IActionResult> UpdateBrewery([FromQuery] string oldName, [FromQuery] string newName)
-        {
-            var brewery = await _service.UpdateBreweryAsync(oldName, newName);
-            return new JsonResult(brewery);
-        }
+        
+        //[HttpPut("")]
+        //public async Task<IActionResult> UpdateBrewery([FromQuery] string oldName, [FromQuery] string newName)
+        //{
+        //    var brewery = await _service.UpdateBreweryAsync(oldName, newName);
+        //    return new JsonResult(brewery);
+        //}
     }
 }
