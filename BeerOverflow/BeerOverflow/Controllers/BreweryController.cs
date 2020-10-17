@@ -28,15 +28,15 @@ namespace BeerOverflow.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CreateBrewery(CreateBreweryViewModel createBreweryViewModel)
-        {
-            var breweryDTO = _mapper.Map<BreweryDTO>(createBreweryViewModel);
-
-            _service.CreateBrewery(breweryDTO);
-
-            return RedirectToAction("Index", "Home");
-        }
+       // [HttpPost]
+       // public IActionResult CreateBrewery(CreateBreweryViewModel createBreweryViewModel)
+       // {
+       //     var breweryDTO = _mapper.Map<BreweryDTO>(createBreweryViewModel);
+       //
+       //     _service.CreateBrewery(breweryDTO);
+       //
+       //     return RedirectToAction("Index", "Home");
+       // }
 
         public IActionResult Index()
         {

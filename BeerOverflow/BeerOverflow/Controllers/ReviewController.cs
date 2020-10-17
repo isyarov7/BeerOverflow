@@ -28,15 +28,15 @@ namespace BeerOverflow.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CreateReview(CreateReviewViewModel createBeerViewModel)
-        {
-            var reviewDTO = _mapper.Map<ReviewDTO>(createReviewViewModel);
-
-            _service.CreateReview(reviewDTO);
-
-            return RedirectToAction("Index", "Home");
-        }
+        //[HttpPost]
+        //public IActionResult CreateReview(CreateReviewViewModel createBeerViewModel)
+        //{
+        //    var reviewDTO = _mapper.Map<ReviewDTO>(createReviewViewModel);
+        //
+        //    _service.CreateReview(reviewDTO);
+        //
+        //    return RedirectToAction("Index", "Home");
+        //}
 
         public IActionResult Index()
         {

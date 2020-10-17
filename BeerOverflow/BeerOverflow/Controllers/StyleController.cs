@@ -28,15 +28,15 @@ namespace BeerOverflow.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult CreateStyle(CreateStyleViewModel createstyleViewModel)
-        {
-            var styleDTO = _mapper.Map<StyleDTO>(createStyleViewModel);
-
-            _service.CreateStyle(styleDTO);
-
-            return RedirectToAction("Index", "Home");
-        }
+       // [HttpPost]
+       // public IActionResult CreateStyle(CreateStyleViewModel createstyleViewModel)
+       // {
+       //     var styleDTO = _mapper.Map<StyleDTO>(createStyleViewModel);
+       //
+       //     _service.CreateStyle(styleDTO);
+       //
+       //     return RedirectToAction("Index", "Home");
+       // }
 
         public IActionResult Index()
         {
