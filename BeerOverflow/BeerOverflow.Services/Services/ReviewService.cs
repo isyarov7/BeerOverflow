@@ -134,7 +134,7 @@ namespace BeerOverflow.Services.Services
 
             var review = await Task.Run(() => this._context.Reviews
                  .Include(r => r.Beer)
-                 .Where(x => x.BeerId == id).FirstOrDefault());
+                 .Where(x => x.Id == id).FirstOrDefault());
 
             review.IsDeleted = true;
 

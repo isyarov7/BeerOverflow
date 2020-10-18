@@ -25,16 +25,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="CreateCountry">Create Country</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="DeleteCountry">Delete Country</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="UpdateCountry">Update Country</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="GetAllCountries">All Countries</a>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Country
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="CreateCountry">Create Country</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="DeleteCountry">Delete Country</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="UpdateCountry">Update Country</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Country" asp-action="GetAllCountries">All Countries</a>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Beer" asp-action="CreateBeer">Create Beer</a>

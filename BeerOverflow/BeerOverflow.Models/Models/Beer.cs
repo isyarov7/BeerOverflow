@@ -20,7 +20,6 @@ namespace BeerOverflow.Models.Models
         public Brewery Brewery { get; set; }
         public string ImageUrl { get; set; }
         [Required]
-        [MaxLength(10)]
         public string Milliliters { get; set; }
         [Required]
         [MaxLength(500)]

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BeerOverflow.ApiController
 {
-    [Route("api/beer")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BeerAPIController : ControllerBase
     {
