@@ -20,9 +20,27 @@ namespace BeerOverflow.Services.DTOMappers
             {
                 Name = item.Name,
                 CountryId = item.CountryId,
-                Beers= (ICollection<Beer>)(item.Beers?.GetDTO()),
+                IsDeleted = item.IsDeleted,
+                Beers = item.Beers
             };
         }
+
+        public static Brewery GetBrewery(this BreweryDTO item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return new Brewery
+            {
+                Name = item.Name,
+                CountryId = item.CountryId,
+                IsDeleted = item.IsDeleted,
+                Beers = item.Beers
+            };
+
+        }
+
         public static ICollection<BreweryDTO> GetDTO(this ICollection<Brewery> items)
         {
             return items.Select(GetDTO).ToList();

@@ -18,30 +18,29 @@ namespace BeerOverflow.ApiController
         {
             this._service = service;
         }
-        //DO NOT WORK
         [HttpPost("")]
         public async Task<IActionResult> CreateBeer([FromBody] BeerDTO beerDTO)
         {
             var beer = await _service.CreateBeerAsync(beerDTO);
             return new JsonResult(beer);
         }
-        //DO NOT WORK
-        [HttpPost("name={name}")]
-        public async Task<IActionResult> DeleteBeerAsync([FromQuery] string name)
+
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> DeleteBeer(string name)
         {
             var beer = await _service.DeleteBeerAsync(name);
             return new JsonResult(beer);
         }
-        //Ok
+
         [HttpGet("")]
         public async Task<IActionResult> GetAllBeers()
         {
             var beers = await _service.GetAllBeersAsync();
             return Ok(beers);
         }
-        //Ok
-        [HttpGet("id={id}")]
-        public async Task<IActionResult> GetBeerAsync(int id)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBeer(int id)
         {
             try
             {
@@ -53,33 +52,48 @@ namespace BeerOverflow.ApiController
                 return this.NotFound();
             }
         }
-        //Ok
+
         [HttpPut("")]
         public async Task<IActionResult> UpdateBeer([FromQuery] string oldName, [FromQuery] string newName)
         {
             var beer = await _service.UpdateBeerAsync(oldName, newName);
             return new JsonResult(beer);
         }
-        //ok
+
         [HttpGet("sortbyname")]
         public async Task<IActionResult> SortByName()
         {
             var sortBeersByName = await _service.SortBeerByNameAsync();
             return new JsonResult(sortBeersByName);
         }
-        //ok
+
         [HttpGet("sortbyabv")]
         public async Task<IActionResult> SortByAbv()
         {
             var sortBeersByAbv = await _service.SortBeerByABVAsync();
             return new JsonResult(sortBeersByAbv);
         }
-        //ok
+
         [HttpGet("sortbyrating")]
         public async Task<IActionResult> SortByRating()
         {
             var sortBeersByRating = await _service.SortBeerByRatingAsync();
             return new JsonResult(sortBeersByRating);
+        }
+
+        [HttpGet("filterbycountry")]
+        public async Task<IActionResult> FilterBeersByCountry([FromQuery] string name)
+        {
+            var filterBeersByCountry = await _service.FilterBeersByCountryAsync(name);
+            return new JsonResult(filterBeersByCountry);
+        }
+
+        [HttpGet("filterbystyle")]
+
+        public async Task<IActionResult> FilterBeersByStyle([FromQuery] string name)
+        {
+            var filterBeersByStyle = await _service.FilterBeersByStyleAsync(name);
+            return new JsonResult(filterBeersByStyle);
         }
     }
 }

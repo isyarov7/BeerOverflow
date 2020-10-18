@@ -8,6 +8,7 @@ namespace BeerOverflow.Services.DTOs
     public class ReviewDTO
     {
         public string Content { get; set; }
+        public bool IsDeleted { get; set; }
         public int BeerId { get; set; }
     }
 }

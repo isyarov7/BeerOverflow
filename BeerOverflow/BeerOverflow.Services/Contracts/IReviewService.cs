@@ -16,7 +16,7 @@ namespace BeerOverflow.Services.Contracts
         Task<ReviewDTO> GetReviewAsync(int id);
         Task<ICollection<ReviewDTO>> GetAllReviewsAsync();
         Task<ReviewDTO> CreateReviewAsync(ReviewDTO reviewDTO);
-        Task<ReviewDTO> UpdateReviewAsync(ReviewDTO reviewDTO, string name);
-        Task<ReviewDTO> DeleteReviewAsync(ReviewDTO reviewDTO);
+        Task<ReviewDTO> UpdateReviewAsync(int id, string name);
+        Task<ReviewDTO> DeleteReviewAsync(int id);
     }
 }

@@ -19,28 +19,29 @@ namespace BeerOverflow.ApiController
             this._service = service;
         }
 
+        [HttpPost("")]
         public async Task<IActionResult> CreateReview([FromBody] ReviewDTO reviewDTO)
         {
             var review = await _service.CreateReviewAsync(reviewDTO);
             return new JsonResult(review);
         }
-        //DO NOT WORK
-        //[HttpPost("name={name}")]
-        //public async Task<IActionResult> DeleteReviewAsync([FromQuery] string content)
-        //{
-        //    var contents = await _service.DeleteReviewAsync(content);
-        //    return new JsonResult(contents);
-        //}
-        //Ok
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReview(int id)
+        {
+            var review = await _service.DeleteReviewAsync(id);
+            return new JsonResult(review);
+        }
+
         [HttpGet("")]
         public async Task<IActionResult> GetAllReviews()
         {
             var reviews = await _service.GetAllReviewsAsync();
             return Ok(reviews);
         }
-        //Ok
-        [HttpGet("id={id}")]
-        public async Task<IActionResult> GetReviewAsync(int id)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetReview(int id)
         {
             try
             {
@@ -52,12 +53,12 @@ namespace BeerOverflow.ApiController
                 return this.NotFound();
             }
         }
-        //Ok
-        //[HttpPut("")]
-        //public async Task<IActionResult> UpdateReview([FromQuery] string oldContent, [FromQuery] string newContent)
-        //{
-        //    var review = await _service.UpdateReviewAsync(oldContent, newContent);
-        //    return new JsonResult(review);
-        //}
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateReview([FromQuery] int id, [FromQuery] string newContent)
+        {
+            var review = await _service.UpdateReviewAsync(id, newContent);
+            return new JsonResult(review);
+        }
     }
 }

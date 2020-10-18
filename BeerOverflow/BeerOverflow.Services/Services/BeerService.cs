@@ -18,6 +18,7 @@ namespace BeerOverflow.Services.Services
         {
             this._context = context;
         }
+
         public void CreateBeer(BeerDTO beerDTO)
         {
             var beer = new Beer
@@ -173,18 +174,22 @@ namespace BeerOverflow.Services.Services
         //Async Methods
         public async Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO)
         {
-            var beer = await Task.Run(() => this._context.Beers
-            .Include(b => b.Brewery)
-            .Include(b => b.Style)
-            .Select(b => b.GetDTO()));
+            if (!_context.Beers.Any(b => b.Name == beerDTO.Name))
+            {
+                _context.Beers.Add(beerDTO.GetBeer());
+            }
+            else
+            {
+                var beer = _context.Beers.Where(b => b.Name == beerDTO.Name).FirstOrDefault();
+                beer.IsDeleted = false;
+            }
 
-            _context.Beers.Add((Beer)beer);
 
             await _context.SaveChangesAsync();
 
-            return (BeerDTO)beer;
+            return beerDTO;
         }
-
+        //ok
         public async Task<BeerDTO> DeleteBeerAsync(string name)
         {
             var beer = await Task.Run(() => this._context.Beers
@@ -192,13 +197,11 @@ namespace BeerOverflow.Services.Services
 
             beer.IsDeleted = true;
 
-            this._context.Update(beer);
-
             await _context.SaveChangesAsync();
 
             return beer.GetDTO();
         }
-        //Ok
+
         public async Task<ICollection<BeerDTO>> GetAllBeersAsync()
         {
             var beers = await Task.Run(() => this._context.Beers
@@ -241,11 +244,12 @@ namespace BeerOverflow.Services.Services
         public async Task<ICollection<BeerDTO>> FilterBeersByCountryAsync(string name)
         {
             var breweries = await Task.Run(() => _context.Breweries
-                 .Where(b => b.Country.Name == name)
+                 .Include(b => b.Country)
+                 .Where(c => c.Country.Name == name)
                  .ToList());
 
             var beers = breweries
-                .Select(b => b.Beers)
+                .Select(b => b.Beers.GetDTO())
                 .ToList();
 
             return (ICollection<BeerDTO>)beers;

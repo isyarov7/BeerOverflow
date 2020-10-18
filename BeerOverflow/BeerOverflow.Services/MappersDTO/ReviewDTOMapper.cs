@@ -17,10 +17,26 @@ namespace BeerOverflow.Services.MappersDTO
             }
             return new ReviewDTO
             {
-                Content = item.Content,
-                BeerId = item.BeerId
+                BeerId = item.BeerId,
+                IsDeleted = item.IsDeleted,
+                Content = item.Content
             };
         }
+
+        public static Review GetReview(this ReviewDTO item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return new Review
+            {
+                BeerId = item.BeerId,
+                IsDeleted = item.IsDeleted,
+                Content = item.Content
+            };
+        }
+
         public static ICollection<ReviewDTO> GetDTO(this ICollection<Review> items)
         {
             return items.Select(GetDTO).ToList();

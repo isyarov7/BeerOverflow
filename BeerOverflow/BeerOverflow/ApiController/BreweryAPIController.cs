@@ -19,28 +19,30 @@ namespace BeerOverflow.ApiController
             this._service = service;
         }
 
+        [HttpPost("")]
         public async Task<IActionResult> CreateBrewery([FromBody] BreweryDTO breweryDTO)
         {
             var brewery = await _service.CreateBreweryAsync(breweryDTO);
+            return new JsonResult(breweryDTO);
+        }
+
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> DeleteBrewery(string name)
+        {
+            var brewery = await _service.DeleteBreweryAsync(name);
             return new JsonResult(brewery);
         }
-        //DO NOT WORK
-       // [HttpPost("name={name}")]
-       // public async Task<IActionResult> DeleteBreweryAsync([FromQuery] string name)
-       // {
-       //     var brewery = await _service.DeleteBreweryAsync(name);
-       //     return new JsonResult(brewery);
-       // }
-        //Ok
+
         [HttpGet("")]
         public async Task<IActionResult> GetAllBreweries()
         {
             var breweries = await _service.GetAllBreweriesAsync();
             return Ok(breweries);
         }
-        //Ok
-        [HttpGet("id={id}")]
-        public async Task<IActionResult> GetBreweryAsync(int id)
+
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> GetBrewery(int id)
         {
             try
             {
@@ -52,12 +54,12 @@ namespace BeerOverflow.ApiController
                 return this.NotFound();
             }
         }
-        
-        //[HttpPut("")]
-        //public async Task<IActionResult> UpdateBrewery([FromQuery] string oldName, [FromQuery] string newName)
-        //{
-        //    var brewery = await _service.UpdateBreweryAsync(oldName, newName);
-        //    return new JsonResult(brewery);
-        //}
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateBrewery([FromQuery] string oldName, [FromQuery] string newName)
+        {
+            var brewery = await _service.UpdateBreweryAsync(oldName, newName);
+            return new JsonResult(brewery);
+        }
     }
 }

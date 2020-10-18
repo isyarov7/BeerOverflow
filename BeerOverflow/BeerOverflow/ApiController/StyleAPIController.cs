@@ -19,28 +19,29 @@ namespace BeerOverflow.ApiController
             this._service = service;
         }
 
+        [HttpPost("")]
         public async Task<IActionResult> CreateStyle([FromBody] StyleDTO styleDTO)
         {
             var style = await _service.CreateStyleAsync(styleDTO);
             return new JsonResult(style);
         }
-        //DO NOT WORK
-        //[HttpPost("name={name}")]
-        //public async Task<IActionResult> DeleteStyleAsync([FromQuery] string name)
-        //{
-        //    var style = await _service.DeleteStyleAsync(name);
-        //    return new JsonResult(style);
-        //}
-        //Ok
+
+        [HttpDelete("{name}")]
+        public async Task<IActionResult> DeleteStyle(string name)
+        {
+            var style = await _service.DeleteStyleAsync(name);
+            return new JsonResult(style);
+        }
+
         [HttpGet("")]
-        public async Task<IActionResult> GetAllStyles()
+        public async Task<IActionResult> GetAllCountries()
         {
             var styles = await _service.GetAllStylesAsync();
             return Ok(styles);
         }
-        //Ok
-        [HttpGet("id={id}")]
-        public async Task<IActionResult> GetStyleAsync(int id)
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetStyle(int id)
         {
             try
             {
@@ -52,12 +53,13 @@ namespace BeerOverflow.ApiController
                 return this.NotFound();
             }
         }
-        //Ok
-        //[HttpPut("")]
-        //public async Task<IActionResult> UpdateStyle([FromQuery] string oldName, [FromQuery] string newName)
-        //{
-        //    var style = await _service.UpdateStyleAsync(oldName, newName);
-        //    return new JsonResult(style);
-        //}
+
+        [HttpPut("")]
+        public async Task<IActionResult> UpdateStyle([FromQuery] string oldName, [FromQuery] string newName)
+        {
+            var country = await _service.UpdateStyleAsync(oldName, newName);
+            return new JsonResult(country);
+        }
     }
+}
 }

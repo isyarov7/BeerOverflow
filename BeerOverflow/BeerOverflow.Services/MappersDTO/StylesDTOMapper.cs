@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BeerOverflow.Services.DTOMappers
 {
-    public static class StylesDTOMapper
+    public static class StyleDTOMapper
     {
         public static StyleDTO GetDTO(this Style item)
         {
@@ -16,11 +16,26 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new StyleDTO
             {
-                Name = item.Name,
+                Beers = item.Beers,
                 Description = item.Description,
-                Beers = (ICollection<Beer>)(item.Beers?.GetDTO())
+                Name = item.Name
             };
         }
+
+        public static Style GetStyle(this StyleDTO item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return new Style
+            {
+                Beers = item.Beers,
+                Description = item.Description,
+                Name = item.Name
+            };
+        }
+
         public static ICollection<StyleDTO> GetDTO(this ICollection<Style> items)
         {
             return items.Select(GetDTO).ToList();

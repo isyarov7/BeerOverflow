@@ -20,9 +20,28 @@ namespace BeerOverflow.Services.DTOMappers
                 Description = item.Description,
                 ABV = item.ABV,
                 Rating = item.Rating,
-                StyleId = item.StyleId,
+                IsDeleted = item.IsDeleted,
+                Reviews = item.Reviews,
                 BreweryId = item.BreweryId,
-                Milliliters = item.Milliliters
+                StyleId = item.StyleId,
+            };
+        }
+        public static Beer GetBeer(this BeerDTO item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException();
+            }
+            return new Beer
+            {
+                Name = item.Name,
+                Description = item.Description,
+                ABV = item.ABV,
+                Rating = item.Rating,
+                IsDeleted = item.IsDeleted,
+                Reviews = item.Reviews,
+                BreweryId = item.BreweryId,
+                StyleId = item.StyleId,
             };
         }
         public static ICollection<BeerDTO> GetDTO(this ICollection<Beer> items)

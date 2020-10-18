@@ -14,6 +14,7 @@ namespace BeerOverflow.Services.Services
     public class ReviewService : IReviewService
     {
         private readonly BeerOverflowDbContext _context;
+
         public ReviewService(BeerOverflowDbContext context)
         {
             this._context = context;
@@ -112,24 +113,28 @@ namespace BeerOverflow.Services.Services
         }
         public async Task<ReviewDTO> CreateReviewAsync(ReviewDTO reviewDTO)
         {
-            var review = await Task.Run(() => this._context.Reviews
-           .Include(r => r.Content)
-           .Include(b => b.BeerId)
-           .Where(b => b.IsDeleted == false)
-           .Select(b => b.GetDTO()));
+            if (!_context.Reviews.Any(b => b.BeerId == reviewDTO.BeerId))
+            {
+                _context.Reviews.Add(reviewDTO.GetReview());
+            }
+            else
+            {
+                var review = _context.Reviews.Where(b => b.BeerId == reviewDTO.BeerId).FirstOrDefault();
+                review.IsDeleted = false;
+            }
 
-            _context.Reviews.Add((Review)review);
 
             await _context.SaveChangesAsync();
 
-            return (ReviewDTO)review;
+            return reviewDTO;
         }
 
-        public async Task<ReviewDTO> DeleteReviewAsync(ReviewDTO reviewDTO)
+        public async Task<ReviewDTO> DeleteReviewAsync(int id)
         {
 
             var review = await Task.Run(() => this._context.Reviews
-                .FirstOrDefaultAsync(x => x.Content == reviewDTO.Content && x.IsDeleted == false));
+                 .Include(r => r.Beer)
+                 .Where(x => x.BeerId == id).FirstOrDefault());
 
             review.IsDeleted = true;
 
@@ -140,10 +145,9 @@ namespace BeerOverflow.Services.Services
         public async Task<ICollection<ReviewDTO>> GetAllReviewsAsync()
         {
             var reviews = await Task.Run(() => this._context.Reviews
-           .Include(b => b.Content)
-           .Include(b => b.BeerId)
+           .Include(b => b.Beer)
            .Where(b => b.IsDeleted == false)
-           .Select(b => b.GetDTO()) 
+           .Select(b => b.GetDTO())
            .ToListAsync());
 
             return reviews;
@@ -156,10 +160,10 @@ namespace BeerOverflow.Services.Services
             return review.GetDTO();
         }
 
-        public async Task<ReviewDTO> UpdateReviewAsync(ReviewDTO reviewDTO, string newContent)
+        public async Task<ReviewDTO> UpdateReviewAsync(int id, string newContent)
         {
             var review = await Task.Run(() => this._context.Reviews
-                .FirstOrDefaultAsync(x => x.Content == reviewDTO.Content));
+                .Where(x => x.Id == id).FirstOrDefault());
 
             review.Content = newContent;
 

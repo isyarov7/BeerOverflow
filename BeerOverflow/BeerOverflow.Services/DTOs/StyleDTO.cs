@@ -9,6 +9,6 @@ namespace BeerOverflow.Services.DTOs
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Beer> Beers { get; set; } = new List<Beer>();
+        public ICollection<Beer> Beers { get; set; } = new List<Beer>();    
     }
 }

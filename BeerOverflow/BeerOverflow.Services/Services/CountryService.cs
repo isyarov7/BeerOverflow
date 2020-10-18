@@ -21,21 +21,26 @@ namespace BeerOverflow.Services.Services
 
         public async Task<CountryDTO> CreateCountryAsync(CountryDTO countryDTO)
         {
-            var country = await Task.Run(() => this._context.Countries
-                 .Include(b => b.Name).Select(b => b.GetDTO()));
+            if (!_context.Countries.Any(b => b.Name == countryDTO.Name))
+            {
+                _context.Countries.Add(countryDTO.GetCountry());
+            }
+            else
+            {
+                var country = _context.Countries.Where(b => b.Name == countryDTO.Name).FirstOrDefault();
+                country.IsDeleted = false;
+            }
 
-
-            _context.Countries.Add((Country)country);
 
             await _context.SaveChangesAsync();
 
-            return (CountryDTO)country;
+            return countryDTO;
         }
 
-        public async Task<CountryDTO> DeleteCountryAsync(CountryDTO countryDTO)
+        public async Task<CountryDTO> DeleteCountryAsync(string name)
         {
             var country = await Task.Run(() => this._context.Countries
-                    .FirstOrDefaultAsync(x => x.Name == countryDTO.Name && x.IsDeleted == false));
+                    .FirstOrDefaultAsync(x => x.Name == name && x.IsDeleted == false));
 
             country.IsDeleted = true;
 
@@ -43,6 +48,7 @@ namespace BeerOverflow.Services.Services
 
             return country.GetDTO();
         }
+
         public async Task<ICollection<CountryDTO>> GetAllCountriesAsync()
         {
             var countries = await Task.Run(() => this._context.Countries
@@ -52,6 +58,7 @@ namespace BeerOverflow.Services.Services
 
             return countries;
         }
+
         public async Task<CountryDTO> GetCountryAsync(int id)
         {
             var country = await Task.Run(() => this._context.Countries
@@ -60,10 +67,10 @@ namespace BeerOverflow.Services.Services
             return country.GetDTO();
         }
 
-        public async Task<CountryDTO> UpdateCountryAsync(CountryDTO countryDTO, string newName)
+        public async Task<CountryDTO> UpdateCountryAsync(string oldName, string newName)
         {
             var country = await Task.Run(() => this._context.Countries
-                     .FirstOrDefaultAsync(x => x.Name == countryDTO.Name));
+                     .FirstOrDefaultAsync(x => x.Name == oldName));
 
             country.Name = newName;
 
@@ -71,6 +78,7 @@ namespace BeerOverflow.Services.Services
 
             return country.GetDTO();
         }
+
         public void CreateCountry(CountryDTO countryDTO)
         {
             if (countryDTO == null)

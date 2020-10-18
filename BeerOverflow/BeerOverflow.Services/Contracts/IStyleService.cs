@@ -16,7 +16,7 @@ namespace BeerOverflow.Services.Contracts
         Task<StyleDTO> GetStyleAsync(int id);
         Task<ICollection<StyleDTO>> GetAllStylesAsync();
         Task<StyleDTO> CreateStyleAsync(StyleDTO StyleDTO);
-        Task<StyleDTO> UpdateStyleAsync(StyleDTO StyleDTO, string name);
-        Task<StyleDTO> DeleteStyleAsync(StyleDTO StyleDTO);
+        Task<StyleDTO> UpdateStyleAsync(string oldName, string newName);
+        Task<StyleDTO> DeleteStyleAsync(string name);
     }
 }
