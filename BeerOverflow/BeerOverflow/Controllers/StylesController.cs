@@ -22,8 +22,7 @@ namespace BeerOverflow.Controllers
         // GET: Styles
         public async Task<IActionResult> Index()
         {
-            var beerOverflowDbContext = _context.Styles
-               .Where(b => b.IsDeleted == false);
+            var beerOverflowDbContext = _context.Styles.Where(b => b.IsDeleted == false);
             return View(await _context.Styles.ToListAsync());
         }
 
