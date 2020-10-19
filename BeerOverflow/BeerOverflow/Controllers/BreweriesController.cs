@@ -10,23 +10,25 @@ using BeerOverflow.Models.Models;
 
 namespace BeerOverflow.Controllers
 {
-    public class BeersController : Controller
+    public class BreweriesController : Controller
     {
         private readonly BeerOverflowDbContext _context;
 
-        public BeersController(BeerOverflowDbContext context)
+        public BreweriesController(BeerOverflowDbContext context)
         {
             _context = context;
         }
 
-        // GET: Beers
+        // GET: Breweries
         public async Task<IActionResult> Index()
         {
-            var beerOverflowDbContext = _context.Beers.Where(b => b.IsDeleted == false);
+            var beerOverflowDbContext = _context.Breweries
+                .Include(b => b.Country)
+                .Where(b => b.IsDeleted == false);
             return View(await beerOverflowDbContext.ToListAsync());
         }
 
-        // GET: Beers/Details/5
+        // GET: Breweries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,54 +36,49 @@ namespace BeerOverflow.Controllers
                 return NotFound();
             }
 
-            var beer = await _context.Beers
-                .Include(b => b.Brewery)
-                .Include(b => b.Style)
-                .Where(b => b.IsDeleted == false)
+            var brewery = await _context.Breweries
+                .Include(b => b.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (beer == null)
+            if (brewery == null)
             {
                 return NotFound();
             }
 
-            return View(beer);
+            return View(brewery);
         }
 
-        // GET: Beers/Create
+        // GET: Breweries/Create
         public IActionResult Create()
         {
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name");
-            ViewData["StyleId"] = new SelectList(_context.Styles, "Id", "Description");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
             return View();
         }
 
-        // POST: Beers/Create
+        // POST: Breweries/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,ABV,Rating,BreweryId,ImageUrl,Milliliters,Description,StyleId")] Beer beer)
+        public async Task<IActionResult> Create([Bind("Id,Name,CountryId,IsDeleted")] Brewery brewery)
         {
             if (ModelState.IsValid)
             {
-                if (_context.Beers.Any(b => b.Name == beer.Name))
+                if (_context.Breweries.Any(b => b.Name == brewery.Name))
                 {
-                    var oldBeer = _context.Beers.FirstOrDefault(b=>b.Name == beer.Name);
-                    _context.Beers.Remove(oldBeer);
+                    var oldBrewery = _context.Breweries.FirstOrDefault(b => b.Name == brewery.Name);
+                    _context.Breweries.Remove(oldBrewery);
                     await _context.SaveChangesAsync();
                 }
 
-                _context.Add(beer);
-
+                _context.Add(brewery);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name", beer.BreweryId);
-            ViewData["StyleId"] = new SelectList(_context.Styles, "Id", "Description", beer.StyleId);
-            return View(beer);
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", brewery.CountryId);
+            return View(brewery);
         }
 
-        // GET: Beers/Edit/5
+        // GET: Breweries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,24 +86,23 @@ namespace BeerOverflow.Controllers
                 return NotFound();
             }
 
-            var beer = await _context.Beers.FindAsync(id);
-            if (beer == null)
+            var brewery = await _context.Breweries.FindAsync(id);
+            if (brewery == null)
             {
                 return NotFound();
             }
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name", beer.BreweryId);
-            ViewData["StyleId"] = new SelectList(_context.Styles, "Id", "Description", beer.StyleId);
-            return View(beer);
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", brewery.CountryId);
+            return View(brewery);
         }
 
-        // POST: Beers/Edit/5
+        // POST: Breweries/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ABV,Rating,BreweryId,ImageUrl,Milliliters,Description,StyleId")] Beer beer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CountryId,IsDeleted")] Brewery brewery)
         {
-            if (id != beer.Id)
+            if (id != brewery.Id)
             {
                 return NotFound();
             }
@@ -115,12 +111,12 @@ namespace BeerOverflow.Controllers
             {
                 try
                 {
-                    _context.Update(beer);
+                    _context.Update(brewery);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BeerExists(beer.Id))
+                    if (!BreweryExists(brewery.Id))
                     {
                         return NotFound();
                     }
@@ -131,12 +127,11 @@ namespace BeerOverflow.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name", beer.BreweryId);
-            ViewData["StyleId"] = new SelectList(_context.Styles, "Id", "Description", beer.StyleId);
-            return View(beer);
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", brewery.CountryId);
+            return View(brewery);
         }
 
-        // GET: Beers/Delete/5
+        // GET: Breweries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,32 +139,31 @@ namespace BeerOverflow.Controllers
                 return NotFound();
             }
 
-            var beer = await _context.Beers
-                .Include(b => b.Brewery)
-                .Include(b => b.Style)
+            var brewery = await _context.Breweries
+                .Include(b => b.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (beer == null)
+            if (brewery == null)
             {
                 return NotFound();
             }
 
-            return View(beer);
+            return View(brewery);
         }
 
-        // POST: Beers/Delete/5
+        // POST: Breweries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var beer = await _context.Beers.FindAsync(id);
-            beer.IsDeleted = true;
+            var brewery = await _context.Breweries.FindAsync(id);
+            brewery.IsDeleted = true;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BeerExists(int id)
+        private bool BreweryExists(int id)
         {
-            return _context.Beers.Any(e => e.Id == id);
+            return _context.Breweries.Any(e => e.Id == id);
         }
     }
 }

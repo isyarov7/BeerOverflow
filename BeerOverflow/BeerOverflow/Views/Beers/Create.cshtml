@@ -1,4 +1,4 @@
-﻿@model BeerOverflow.Services.DTOs.BeerDTO
+﻿@model BeerOverflow.Models.Models.Beer
 
 @{
     ViewData["Title"] = "Create";
@@ -29,10 +29,6 @@
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BreweryId" class="control-label"></label>
-                <select asp-for="BreweryId" class ="form-control" asp-items="ViewBag.BreweryId"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="ImageUrl" class="control-label"></label>
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
@@ -48,7 +44,11 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StyleId" class="control-label"></label>
+                <label asp-for="Brewery" class="control-label"></label>
+                <select asp-for="BreweryId" class ="form-control" asp-items="ViewBag.BreweryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Style" class="control-label"></label>
                 <select asp-for="StyleId" class ="form-control" asp-items="ViewBag.StyleId"></select>
             </div>
             <div class="form-group">

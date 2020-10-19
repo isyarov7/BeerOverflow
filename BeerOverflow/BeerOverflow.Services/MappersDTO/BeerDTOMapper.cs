@@ -24,7 +24,7 @@ namespace BeerOverflow.Services.DTOMappers
                 Milliliters = item.Milliliters,
                 Reviews = item.Reviews,
                 BreweryId = item.BreweryId,
-                StyleId = item.StyleId,
+                StyleId = item.StyleId
             };
         }
         public static Beer GetBeer(this BeerDTO item)
@@ -43,7 +43,7 @@ namespace BeerOverflow.Services.DTOMappers
                 Milliliters = item.Milliliters,
                 Reviews = item.Reviews,
                 BreweryId = item.BreweryId,
-                StyleId = item.StyleId,
+                StyleId = item.StyleId
             };
         }
         public static ICollection<BeerDTO> GetDTO(this ICollection<Beer> items)
