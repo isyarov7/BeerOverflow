@@ -12,10 +12,10 @@ namespace BeerOverflow.Models
         [MinLength(3), MaxLength(20)]
         public string Name { get; set; }
         public string ABV { get; set; }
-        public int BreweryId { get; set; }
+        public int Brewery { get; set; }
         public double Rating { get; set; }
         public string Milliliters { get; set; }
         public string Description { get; set; }
-        public int StyleId { get; set; }
+        public int Style { get; set; }
     }
 }
