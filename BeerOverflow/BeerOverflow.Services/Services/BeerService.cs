@@ -34,11 +34,11 @@ namespace BeerOverflow.Services.Services
 
             var alreadyCreatedBeer = _context.Beers.Where(b => b.Name == beer.Name).FirstOrDefault();
 
-            if (_context.Countries.Any(c => c.Name == beer.Name && c.IsDeleted == true))
+            if (_context.Beers.Any(c => c.Name == beer.Name && c.IsDeleted == true))
             {
                 alreadyCreatedBeer.IsDeleted = false;
             }
-            else if (_context.Countries.Any(c => c.Name == beer.Name && c.IsDeleted == false))
+            else if (_context.Beers.Any(c => c.Name == beer.Name && c.IsDeleted == false))
             {
                 alreadyCreatedBeer.IsDeleted = false;
             }

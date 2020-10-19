@@ -12,6 +12,7 @@ namespace BeerOverflow.Services.DTOs
         public string Milliliters { get; set; }
         public double Rating { get; set; }
         public string ABV { get; set; }
+        public string ImageUrl { get; set; }
         public int BreweryId { get; set; }
         public int StyleId { get; set; }
         public bool IsDeleted { get; set; }
