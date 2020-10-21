@@ -51,12 +51,12 @@ namespace BeerOverflow.Services.Services
 
         public async Task<ICollection<BeerDTO>> GetAllBeersAsync()
         {
-            var beers = await Task.Run(() => this._context.Beers
+            var beers = await this._context.Beers
             .Include(b => b.Brewery)
             .Include(b => b.Style)
             .Where(b => b.IsDeleted == false)
             .Select(b => b.GetDTO())
-            .ToListAsync());
+            .ToListAsync();
 
             return beers;
         }
@@ -71,15 +71,21 @@ namespace BeerOverflow.Services.Services
             return beer.GetDTO();
         }
         //OK
-        public async Task<BeerDTO> UpdateBeerAsync(string oldName, string newName)
+        public async Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO)
         {
             //Include-ват се само РЕЛАЦИИ
-            var beer = await Task.Run(() => this._context.Beers
+            var beer = await this._context.Beers
             .Include(b => b.Brewery)
             .Include(b => b.Style)
-            .FirstOrDefaultAsync(x => x.Name == oldName));
+            .Where(x => x.Id == id).FirstOrDefaultAsync();
 
-            beer.Name = newName;
+            beer.Name = beerDTO.Name;
+            beer.Description = beerDTO.Description;
+            beer.Milliliters = beerDTO.Milliliters;
+            beer.Rating = beerDTO.Rating;
+            beer.ABV = beerDTO.ABV;
+            beer.Brewery = beerDTO.Brewery;
+            beer.Style = beerDTO.Style;
 
             this._context.Update(beer);
 

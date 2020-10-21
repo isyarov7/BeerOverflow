@@ -16,15 +16,18 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new BeerDTO
             {
+                Id = item.Id,
                 Name = item.Name,
                 Description = item.Description,
                 ABV = item.ABV,
                 Rating = item.Rating,
                 IsDeleted = item.IsDeleted,
+                Brewery = item.Brewery,
                 Milliliters = item.Milliliters,
                 Reviews = item.Reviews,
                 BreweryId = item.BreweryId,
-                StyleId = item.StyleId
+                StyleId = item.StyleId,
+                Style = item.Style
             };
         }
         public static Beer GetBeer(this BeerDTO item)
@@ -35,7 +38,9 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new Beer
             {
+                Id = item.Id,
                 Name = item.Name,
+                Brewery = item.Brewery,
                 Description = item.Description,
                 ABV = item.ABV,
                 Rating = item.Rating,
@@ -43,7 +48,8 @@ namespace BeerOverflow.Services.DTOMappers
                 Milliliters = item.Milliliters,
                 Reviews = item.Reviews,
                 BreweryId = item.BreweryId,
-                StyleId = item.StyleId
+                StyleId = item.StyleId,
+                Style = item.Style
             };
         }
         public static ICollection<BeerDTO> GetDTO(this ICollection<Beer> items)

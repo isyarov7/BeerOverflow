@@ -51,10 +51,10 @@ namespace BeerOverflow.Services.Services
 
         public async Task<ICollection<BreweryDTO>> GetAllBreweriesAsync()
         {
-            var breweries = await Task.Run(() => this._context.Breweries
+            var breweries = await this._context.Breweries
            .Where(c => c.IsDeleted == false)
            .Select(b => b.GetDTO())
-           .ToListAsync());
+           .ToListAsync();
 
             return breweries;
         }

@@ -50,10 +50,10 @@ namespace BeerOverflow.Services.Services
         }
         public async Task<ICollection<StyleDTO>> GetAllStylesAsync()
         {
-            var styles = await Task.Run(() => this._context.Styles
+            var styles = await this._context.Styles
             .Where(b => b.IsDeleted == false)
             .Select(b => b.GetDTO())
-            .ToListAsync());
+            .ToListAsync();
 
             return styles;
         }

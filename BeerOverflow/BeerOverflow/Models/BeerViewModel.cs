@@ -1,13 +1,13 @@
 ﻿using BeerOverflow.Models.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BeerOverflow.Services.DTOs
+namespace BeerOverflow.Models
 {
-    public class BeerDTO
+    public class BeerViewModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Milliliters { get; set; }
@@ -15,10 +15,9 @@ namespace BeerOverflow.Services.DTOs
         public string ABV { get; set; }
         public string ImageUrl { get; set; }
         public int BreweryId { get; set; }
-        public Brewery Brewery { get; set; }
         public int StyleId { get; set; }
-        public Style Style { get; set; }
         public bool IsDeleted { get; set; }
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
+
     }
 }

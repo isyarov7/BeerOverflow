@@ -18,6 +18,7 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new BreweryDTO
             {
+                Id = item.Id,
                 Name = item.Name,
                 CountryId = item.CountryId,
                 IsDeleted = item.IsDeleted,
@@ -33,6 +34,7 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new Brewery
             {
+                Id = item.Id,
                 Name = item.Name,
                 CountryId = item.CountryId,
                 IsDeleted = item.IsDeleted,

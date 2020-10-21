@@ -54,9 +54,9 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpPut("")]
-        public async Task<IActionResult> UpdateBeer([FromQuery] string oldName, [FromQuery] string newName)
+        public async Task<IActionResult> UpdateBeer([FromQuery]int id, [FromQuery] BeerDTO beerDTO)
         {
-            var beer = await _service.UpdateBeerAsync(oldName, newName);
+            var beer = await _service.UpdateBeerAsync(id, beerDTO);
             return new JsonResult(beer);
         }
 

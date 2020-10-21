@@ -16,6 +16,7 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new CountryDTO
             {
+                Id = item.Id,
                 Name = item.Name,
                 Breweries = item.Breweries,
             };
@@ -29,6 +30,7 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new Country
             {
+                Id = item.Id,
                 Name = item.Name,
                 Breweries = item.Breweries,
             };

@@ -16,6 +16,7 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new StyleDTO
             {
+                Id = item.Id,
                 Beers = item.Beers,
                 Description = item.Description,
                 Name = item.Name
@@ -30,6 +31,7 @@ namespace BeerOverflow.Services.DTOMappers
             }
             return new Style
             {
+                Id = item.Id,
                 Beers = item.Beers,
                 Description = item.Description,
                 Name = item.Name

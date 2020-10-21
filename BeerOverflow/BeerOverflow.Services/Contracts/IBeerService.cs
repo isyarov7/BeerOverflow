@@ -11,7 +11,7 @@ namespace BeerOverflow.Services.Contracts
         Task<ICollection<BeerDTO>> GetAllBeersAsync();
         Task<BeerDTO> GetBeerAsync(int id);
         Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO);
-        Task<BeerDTO> UpdateBeerAsync(string beerDTO, string name);
+        Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO);
         Task<BeerDTO> DeleteBeerAsync(string name);
         Task<ICollection<BeerDTO>> FilterBeersByCountryAsync(string name);
         Task<ICollection<BeerDTO>> FilterBeersByStyleAsync(string name);
