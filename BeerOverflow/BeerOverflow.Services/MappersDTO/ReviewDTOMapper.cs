@@ -18,6 +18,7 @@ namespace BeerOverflow.Services.MappersDTO
             return new ReviewDTO
             {
                 Id = item.Id,
+                Beer = item.Beer,
                 BeerId = item.BeerId,
                 IsDeleted = item.IsDeleted,
                 Content = item.Content
@@ -33,6 +34,7 @@ namespace BeerOverflow.Services.MappersDTO
             return new Review
             {
                 Id = item.Id,
+                Beer = item.Beer,
                 BeerId = item.BeerId,
                 IsDeleted = item.IsDeleted,
                 Content = item.Content

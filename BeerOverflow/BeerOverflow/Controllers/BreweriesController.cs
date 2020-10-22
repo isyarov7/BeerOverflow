@@ -1,169 +1,103 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BeerOverflow.Database;
-using BeerOverflow.Models.Models;
+using BeerOverflow.Services.Contracts;
+using AutoMapper;
+using BeerOverflow.Models;
+using BeerOverflow.Services.DTOs;
 
 namespace BeerOverflow.Controllers
 {
     public class BreweriesController : Controller
     {
-        private readonly BeerOverflowDbContext _context;
+        private readonly ICountryService _countryService;
+        private readonly IBreweryService _service;
+        private readonly IMapper _mapper;
 
-        public BreweriesController(BeerOverflowDbContext context)
+        public BreweriesController(IBreweryService service, IMapper mapper, ICountryService countryService)
         {
-            _context = context;
+            _service = service;
+            _mapper = mapper;
+            _countryService = countryService;
         }
 
         // GET: Breweries
         public async Task<IActionResult> Index()
         {
-            var beerOverflowDbContext = _context.Breweries
-                .Include(b => b.Country)
-                .Where(b => b.IsDeleted == false);
-            return View(await beerOverflowDbContext.ToListAsync());
+            return View(await _service.GetAllBreweriesAsync());
         }
 
         // GET: Breweries/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var brewery = await _context.Breweries
-                .Include(b => b.Country)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brewery == null)
-            {
-                return NotFound();
-            }
+            var brewery = await _service.GetBreweryAsync(id);
 
             return View(brewery);
         }
 
-        // GET: Breweries/Create
-        public IActionResult Create()
+        // // GET: Breweries/Create
+        public async Task<IActionResult> Create()
         {
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(await _countryService.GetAllCountriesAsync(), "Id", "Name");
             return View();
         }
 
-        // POST: Breweries/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // // POST: Breweries/Create
+        // // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CountryId,IsDeleted")] Brewery brewery)
+        public async Task<IActionResult> Create(BreweryViewModel breweryViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                if (_context.Breweries.Any(b => b.Name == brewery.Name))
-                {
-                    var oldBrewery = _context.Breweries.FirstOrDefault(b => b.Name == brewery.Name);
-                    _context.Breweries.Remove(oldBrewery);
-                    await _context.SaveChangesAsync();
-                }
+            var breweryDTO = _mapper.Map<BreweryDTO>(breweryViewModel);
 
-                _context.Add(brewery);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", brewery.CountryId);
-            return View(brewery);
+            await _service.CreateBreweryAsync(breweryDTO);
+
+            return RedirectToAction(nameof(Index));
+
         }
 
-        // GET: Breweries/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // // GET: Breweries/Edit/5
+         public async Task<IActionResult> Edit(int id)
+         {
+            var brewery = await _service.GetBreweryAsync(id);
 
-            var brewery = await _context.Breweries.FindAsync(id);
-            if (brewery == null)
-            {
-                return NotFound();
-            }
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", brewery.CountryId);
-            return View(brewery);
-        }
-
-        // POST: Breweries/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CountryId,IsDeleted")] Brewery brewery)
-        {
-            if (id != brewery.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(brewery);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BreweryExists(brewery.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", brewery.CountryId);
-            return View(brewery);
-        }
-
-        // GET: Breweries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var brewery = await _context.Breweries
-                .Include(b => b.Country)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brewery == null)
-            {
-                return NotFound();
-            }
+            ViewData["CountryId"] = new SelectList(await _countryService.GetAllCountriesAsync(), "Id", "Name");
 
             return View(brewery);
         }
+        
+        // // POST: Breweries/Edit/5
+        // // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Edit(int id, BreweryViewModel breweryViewModel)
+         {
+            var breweryDTO = _mapper.Map<BreweryDTO>(breweryViewModel);
 
-        // POST: Breweries/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var brewery = await _context.Breweries.FindAsync(id);
-            brewery.IsDeleted = true;
-            await _context.SaveChangesAsync();
+            await _service.UpdateBreweryAsync(id, breweryDTO);
+
             return RedirectToAction(nameof(Index));
         }
+         
+        // // GET: Breweries/Delete/5
+         public async Task<IActionResult> Delete(int id)
+         {
+            var brewery = await _service.DeleteBreweryAsync(id);
 
-        private bool BreweryExists(int id)
-        {
-            return _context.Breweries.Any(e => e.Id == id);
+            return View(brewery);
+        }
+        
+        // // POST: Breweries/Delete/5
+         [HttpPost, ActionName("Delete")]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> DeleteConfirmed(int id)
+         {
+            var brewery = await _service.DeleteBreweryAsync(id);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

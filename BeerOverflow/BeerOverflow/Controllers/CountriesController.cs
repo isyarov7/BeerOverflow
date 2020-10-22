@@ -1,46 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BeerOverflow.Database;
-using BeerOverflow.Models.Models;
+using BeerOverflow.Services.Contracts;
+using AutoMapper;
+using BeerOverflow.Models;
+using BeerOverflow.Services.DTO;
 
 namespace BeerOverflow.Controllers
 {
     public class CountriesController : Controller
     {
-        private readonly BeerOverflowDbContext _context;
+        private readonly ICountryService _service;
+        private readonly IMapper _mapper;
 
-        public CountriesController(BeerOverflowDbContext context)
+        public CountriesController(ICountryService service, IMapper mapper)
         {
-            _context = context;
+            _service = service;
+            _mapper = mapper;
         }
 
         // GET: Countries
         public async Task<IActionResult> Index()
         {
-            var beerOverflowDbContext = _context.Countries
-                .Where(b => b.IsDeleted == false);
-            return View(await beerOverflowDbContext.ToListAsync());
+            return View(await _service.GetAllCountriesAsync());
         }
 
         // GET: Countries/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var country = await _context.Countries
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
-            {
-                return NotFound();
-            }
+            var country = await _service.GetCountryAsync(id);
 
             return View(country);
         }
@@ -56,37 +43,19 @@ namespace BeerOverflow.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,IsDeleted")] Country country)
+        public async Task<IActionResult> Create(CountryViewModel countryViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                if (_context.Countries.Any(b => b.Name == country.Name))
-                {
-                    var oldCountry = _context.Countries.FirstOrDefault(b => b.Name == country.Name);
-                    _context.Countries.Remove(oldCountry);
-                    await _context.SaveChangesAsync();
-                }
+            var countryDTO = _mapper.Map<CountryDTO>(countryViewModel);
 
-                _context.Add(country);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(country);
+            await _service.CreateCountryAsync(countryDTO);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Countries/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var country = await _context.Countries.FindAsync(id);
-            if (country == null)
-            {
-                return NotFound();
-            }
+            var country = await _service.GetCountryAsync(id);
             return View(country);
         }
 
@@ -95,50 +64,19 @@ namespace BeerOverflow.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IsDeleted")] Country country)
+        public async Task<IActionResult> Edit(int id, CountryViewModel countryViewModel)
         {
-            if (id != country.Id)
-            {
-                return NotFound();
-            }
+            var countryDTO = _mapper.Map<CountryDTO>(countryViewModel);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(country);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CountryExists(country.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(country);
+            await _service.UpdateCountryAsync(id, countryDTO);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Countries/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var country = await _context.Countries
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (country == null)
-            {
-                return NotFound();
-            }
+            var country = await _service.GetCountryAsync(id);
 
             return View(country);
         }
@@ -148,15 +86,9 @@ namespace BeerOverflow.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
-            country.IsDeleted = true;
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            var country = await _service.DeleteCountryAsync(id);
 
-        private bool CountryExists(int id)
-        {
-            return _context.Countries.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

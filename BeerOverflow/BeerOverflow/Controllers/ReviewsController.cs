@@ -7,51 +7,45 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
+using BeerOverflow.Services.Contracts;
+using AutoMapper;
+using BeerOverflow.Services.Services;
+using BeerOverflow.Models;
+using BeerOverflow.Services.DTOs;
 
 namespace BeerOverflow.Controllers
 {
     public class ReviewsController : Controller
     {
-        private readonly BeerOverflowDbContext _context;
+        private readonly IBeerService _beerService;
+        private readonly IReviewService _service;
+        private readonly IMapper _mapper;
 
-        public ReviewsController(BeerOverflowDbContext context)
+        public ReviewsController(IBeerService beerService, IReviewService service, IMapper mapper)
         {
-            _context = context;
+            _beerService = beerService;
+            _service = service;
+            _mapper = mapper;
         }
 
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            var beerOverflowDbContext = _context.Reviews
-                .Include(r => r.Beer)
-                .Where(b=>b.IsDeleted == false);
-            return View(await beerOverflowDbContext.ToListAsync());
+            return View(await _service.GetAllReviewsAsync());
         }
 
         // GET: Reviews/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var review = await _context.Reviews
-                .Include(r => r.Beer)
-                .Where(b => b.IsDeleted == false)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+            var review = await _service.GetReviewAsync(id);
 
             return View(review);
         }
 
         // GET: Reviews/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["BeerId"] = new SelectList(_context.Beers, "Id", "Name");
+            ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
             return View();
         }
 
@@ -60,38 +54,22 @@ namespace BeerOverflow.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Content,BeerId,IsDeleted")] Review review)
+        public async Task<IActionResult> Create(ReviewViewModel reviewViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                if (_context.Reviews.Any(b => b.Content == review.Content))
-                {
-                    var oldReview = _context.Reviews.FirstOrDefault(b => b.Content == review.Content);
-                    _context.Reviews.Remove(oldReview);
-                    await _context.SaveChangesAsync();
-                }
-                _context.Add(review);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BeerId"] = new SelectList(_context.Beers, "Id", "Name", review.BeerId);
-            return View(review);
+            var reviewDTO = _mapper.Map<ReviewDTO>(reviewViewModel);
+
+            await _service.CreateReviewAsync(reviewDTO);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Reviews/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var review = await _service.GetReviewAsync(id);
 
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
-            ViewData["BeerId"] = new SelectList(_context.Beers, "Id", "Name", review.BeerId);
+            ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
+
             return View(review);
         }
 
@@ -100,52 +78,19 @@ namespace BeerOverflow.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Content,BeerId,IsDeleted")] Review review)
+        public async Task<IActionResult> Edit(int id,ReviewViewModel reviewViewModel)
         {
-            if (id != review.Id)
-            {
-                return NotFound();
-            }
+            var reviewDTO = _mapper.Map<ReviewDTO>(reviewViewModel);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(review);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReviewExists(review.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BeerId"] = new SelectList(_context.Beers, "Id", "Name", review.BeerId);
-            return View(review);
+            await _service.UpdateReviewAsync(id, reviewDTO);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Reviews/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var review = await _context.Reviews
-                .Include(r => r.Beer)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+            var review = await _service.DeleteReviewAsync(id);
 
             return View(review);
         }
@@ -155,15 +100,9 @@ namespace BeerOverflow.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
-            review.IsDeleted = true;
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            var review = await _service.DeleteReviewAsync(id);
 
-        private bool ReviewExists(int id)
-        {
-            return _context.Reviews.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

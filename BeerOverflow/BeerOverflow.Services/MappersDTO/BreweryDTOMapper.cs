@@ -20,6 +20,7 @@ namespace BeerOverflow.Services.DTOMappers
             {
                 Id = item.Id,
                 Name = item.Name,
+                Country = item.Country,
                 CountryId = item.CountryId,
                 IsDeleted = item.IsDeleted,
                 Beers = item.Beers
@@ -36,6 +37,7 @@ namespace BeerOverflow.Services.DTOMappers
             {
                 Id = item.Id,
                 Name = item.Name,
+                Country = item.Country,
                 CountryId = item.CountryId,
                 IsDeleted = item.IsDeleted,
                 Beers = item.Beers

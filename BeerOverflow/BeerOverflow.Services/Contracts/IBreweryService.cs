@@ -12,7 +12,7 @@ namespace BeerOverflow.Services.Contracts
         Task<BreweryDTO> GetBreweryAsync(int id);
         Task<ICollection<BreweryDTO>> GetAllBreweriesAsync();
         Task<BreweryDTO> CreateBreweryAsync(BreweryDTO breweryDTO);
-        Task<BreweryDTO> UpdateBreweryAsync(string oldName, string newName);
-        Task<BreweryDTO> DeleteBreweryAsync(string name);
+        Task<BreweryDTO> UpdateBreweryAsync(int id, BreweryDTO breweryDTO);
+        Task<BreweryDTO> DeleteBreweryAsync(int id);
     }
 }

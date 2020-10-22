@@ -27,9 +27,9 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteBrewery(string name)
+        public async Task<IActionResult> DeleteBrewery(int id)
         {
-            var brewery = await _service.DeleteBreweryAsync(name);
+            var brewery = await _service.DeleteBreweryAsync(id);
             return new JsonResult(brewery);
         }
 
@@ -56,9 +56,9 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpPut("")]
-        public async Task<IActionResult> UpdateBrewery([FromQuery] string oldName, [FromQuery] string newName)
+        public async Task<IActionResult> UpdateBrewery([FromQuery] int id, [FromQuery] BreweryDTO breweryDTO)
         {
-            var brewery = await _service.UpdateBreweryAsync(oldName, newName);
+            var brewery = await _service.UpdateBreweryAsync(id, breweryDTO);
             return new JsonResult(brewery);
         }
     }

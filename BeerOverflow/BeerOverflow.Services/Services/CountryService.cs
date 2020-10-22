@@ -21,26 +21,22 @@ namespace BeerOverflow.Services.Services
 
         public async Task<CountryDTO> CreateCountryAsync(CountryDTO countryDTO)
         {
-            if (!_context.Countries.Any(b => b.Name == countryDTO.Name))
+            if (_context.Countries.Any(b => b.Name == countryDTO.Name))
             {
-                _context.Countries.Add(countryDTO.GetCountry());
+                var oldCountry = _context.Countries.Where(b => b.Name == countryDTO.Name).FirstOrDefault();
+                _context.Countries.Remove(oldCountry);
             }
-            else
-            {
-                var country = _context.Countries.Where(b => b.Name == countryDTO.Name).FirstOrDefault();
-                country.IsDeleted = false;
-            }
-
+            _context.Countries.Add(countryDTO.GetCountry());
 
             await _context.SaveChangesAsync();
 
             return countryDTO;
         }
 
-        public async Task<CountryDTO> DeleteCountryAsync(string name)
+        public async Task<CountryDTO> DeleteCountryAsync(int id)
         {
-            var country = await Task.Run(() => this._context.Countries
-                    .FirstOrDefaultAsync(x => x.Name == name && x.IsDeleted == false));
+            var country = await this._context.Countries
+                .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
 
             country.IsDeleted = true;
 
@@ -67,12 +63,12 @@ namespace BeerOverflow.Services.Services
             return country.GetDTO();
         }
 
-        public async Task<CountryDTO> UpdateCountryAsync(string oldName, string newName)
+        public async Task<CountryDTO> UpdateCountryAsync(int id, CountryDTO countryDTO)
         {
-            var country = await Task.Run(() => this._context.Countries
-                     .FirstOrDefaultAsync(x => x.Name == oldName));
+            var country = await this._context.Countries
+                     .FirstOrDefaultAsync(x => x.Id == id);
 
-            country.Name = newName;
+            country.Name = countryDTO.Name;
 
             await _context.SaveChangesAsync();
 

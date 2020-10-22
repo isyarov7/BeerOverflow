@@ -1,11 +1,12 @@
 ﻿using BeerOverflow.Models.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BeerOverflow.Services.DTOs
+namespace BeerOverflow.Models
 {
-    public class BreweryDTO
+    public class BreweryViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

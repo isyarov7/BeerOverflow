@@ -55,9 +55,9 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpPut("")]
-        public async Task<IActionResult> UpdateReview([FromQuery] int id, [FromQuery] string newContent)
+        public async Task<IActionResult> UpdateReview([FromQuery] int id, [FromQuery] ReviewDTO reviewDTO)
         {
-            var review = await _service.UpdateReviewAsync(id, newContent);
+            var review = await _service.UpdateReviewAsync(id, reviewDTO);
             return new JsonResult(review);
         }
     }

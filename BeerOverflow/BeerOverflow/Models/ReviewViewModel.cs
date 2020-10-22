@@ -1,16 +1,15 @@
-﻿using BeerOverflow.Models.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BeerOverflow.Services.DTOs
+namespace BeerOverflow.Models
 {
-    public class ReviewDTO
+    public class ReviewViewModel
     {
         public int Id { get; set; }
         public string Content { get; set; }
         public bool IsDeleted { get; set; }
         public int BeerId { get; set; }
-        public Beer Beer { get; set; }
     }
 }

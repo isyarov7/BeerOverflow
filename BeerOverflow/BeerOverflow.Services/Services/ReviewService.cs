@@ -22,16 +22,12 @@ namespace BeerOverflow.Services.Services
 
         public async Task<ReviewDTO> CreateReviewAsync(ReviewDTO reviewDTO)
         {
-            if (!_context.Reviews.Any(b => b.BeerId == reviewDTO.BeerId))
+            if (_context.Reviews.Any(b => b.BeerId == reviewDTO.BeerId))
             {
-                _context.Reviews.Add(reviewDTO.GetReview());
+                var oldReview = _context.Reviews.Where(b => b.BeerId == reviewDTO.BeerId).FirstOrDefault();
+                _context.Reviews.Remove(oldReview);
             }
-            else
-            {
-                var review = _context.Reviews.Where(b => b.BeerId == reviewDTO.BeerId).FirstOrDefault();
-                review.IsDeleted = false;
-            }
-
+            _context.Reviews.Add(reviewDTO.GetReview());
 
             await _context.SaveChangesAsync();
 
@@ -41,9 +37,9 @@ namespace BeerOverflow.Services.Services
         public async Task<ReviewDTO> DeleteReviewAsync(int id)
         {
 
-            var review = await Task.Run(() => this._context.Reviews
+            var review = await this._context.Reviews
                  .Include(r => r.Beer)
-                 .Where(x => x.Id == id).FirstOrDefault());
+                 .FirstOrDefaultAsync(x => x.Id == id);
 
             review.IsDeleted = true;
 
@@ -53,28 +49,28 @@ namespace BeerOverflow.Services.Services
         }
         public async Task<ICollection<ReviewDTO>> GetAllReviewsAsync()
         {
-            var reviews = await Task.Run(() => this._context.Reviews
+            var reviews = await this._context.Reviews
            .Include(b => b.Beer)
            .Where(b => b.IsDeleted == false)
            .Select(b => b.GetDTO())
-           .ToListAsync());
+           .ToListAsync();
 
             return reviews;
         }
         public async Task<ReviewDTO> GetReviewAsync(int id)
         {
-            var review = await Task.Run(() => this._context.Reviews
-                 .FirstOrDefaultAsync(r => r.Id == id));
+            var review = await this._context.Reviews
+                 .FirstOrDefaultAsync(r => r.Id == id);
 
             return review.GetDTO();
         }
 
-        public async Task<ReviewDTO> UpdateReviewAsync(int id, string newContent)
+        public async Task<ReviewDTO> UpdateReviewAsync(int id, ReviewDTO reviewDTO)
         {
-            var review = await Task.Run(() => this._context.Reviews
-                .Where(x => x.Id == id).FirstOrDefault());
+            var review = await this._context.Reviews
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            review.Content = newContent;
+            review.Content = reviewDTO.Content;
 
             await _context.SaveChangesAsync();
 
