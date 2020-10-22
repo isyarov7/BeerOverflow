@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BeerOverflow.Areas.Identity.Pages.Account;
 using BeerOverflow.Database;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,20 +32,20 @@ namespace BeerOverflow
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews()
+            services.AddControllersWithViews();
+
+            services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
 
             services.AddDbContext<BeerOverflowDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("BeerOverflow")));
-
-            services.AddControllersWithViews();
 
             services.AddIdentity<User, Role>(option => option.SignIn.RequireConfirmedAccount = false).
                 AddEntityFrameworkStores<BeerOverflowDbContext>().
                 AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IBeerService, BeerService>();
             services.AddScoped<IBreweryService, BreweryService>();
             services.AddScoped<ICountryService, CountryService>();
@@ -69,6 +71,8 @@ namespace BeerOverflow
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -76,6 +80,8 @@ namespace BeerOverflow
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
         }
     }

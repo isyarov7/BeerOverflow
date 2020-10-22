@@ -5,6 +5,7 @@ using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTOs;
 using AutoMapper;
 using BeerOverflow.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeerOverflow.Controllers
 {
@@ -87,7 +88,7 @@ namespace BeerOverflow.Controllers
 
             return View(beer);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Beers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
