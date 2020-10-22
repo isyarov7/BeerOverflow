@@ -21,15 +21,12 @@ namespace BeerOverflow.Services.Services
 
         public async Task<StyleDTO> CreateStyleAsync(StyleDTO styleDTO)
         {
-            if (!_context.Styles.Any(b => b.Name == styleDTO.Name))
+            if (_context.Styles.Any(b => b.Name == styleDTO.Name))
             {
+                var oldStyle = _context.Styles.Where(b => b.Name == styleDTO.Name).FirstOrDefault();
+                _context.Styles.Remove(oldStyle);
+            }
                 _context.Styles.Add(styleDTO.GetStyle());
-            }
-            else
-            {
-                var style = _context.Styles.Where(b => b.Name == styleDTO.Name).FirstOrDefault();
-                style.IsDeleted = false;
-            }
 
 
             await _context.SaveChangesAsync();
@@ -37,10 +34,10 @@ namespace BeerOverflow.Services.Services
             return styleDTO;
         }
 
-        public async Task<StyleDTO> DeleteStyleAsync(string name)
+        public async Task<StyleDTO> DeleteStyleAsync(int id)
         {
-            var style = await Task.Run(() => this._context.Styles
-               .FirstOrDefaultAsync(x => x.Name == name && x.IsDeleted == false));
+            var style = await this._context.Styles
+               .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
 
             style.IsDeleted = true;
 
@@ -66,12 +63,12 @@ namespace BeerOverflow.Services.Services
             return styles.GetDTO();
         }
 
-        public async Task<StyleDTO> UpdateStyleAsync(string oldName, string newName)
+        public async Task<StyleDTO> UpdateStyleAsync(int id, StyleDTO styleDTO)
         {
-            var styles = await Task.Run(() => this._context.Styles
-                   .FirstOrDefaultAsync(x => x.Name == oldName));
+            var styles = await this._context.Styles
+                   .FirstOrDefaultAsync(x => x.Id == id);
 
-            styles.Name = newName;
+            styles.Name = styleDTO.Name;
 
             await _context.SaveChangesAsync();
 

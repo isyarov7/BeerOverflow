@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Services.Contracts;
+using BeerOverflow.Services.DTO;
 using BeerOverflow.Services.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,9 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteStyle(string name)
+        public async Task<IActionResult> DeleteStyle(int id)
         {
-            var style = await _service.DeleteStyleAsync(name);
+            var style = await _service.DeleteStyleAsync(id);
             return new JsonResult(style);
         }
 
@@ -55,9 +56,9 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpPut("")]
-        public async Task<IActionResult> UpdateStyle([FromQuery] string oldName, [FromQuery] string newName)
+        public async Task<IActionResult> UpdateStyle([FromQuery] int id, [FromQuery] StyleDTO styleDTO)
         {
-            var country = await _service.UpdateStyleAsync(oldName, newName);
+            var country = await _service.UpdateStyleAsync(id, styleDTO);
             return new JsonResult(country);
         }
     }
