@@ -83,7 +83,7 @@ namespace BeerOverflow.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var beer = await _service.DeleteBeerAsync(id);
+            var beer = await _service.GetBeerAsync(id);
 
             return View(beer);
         }

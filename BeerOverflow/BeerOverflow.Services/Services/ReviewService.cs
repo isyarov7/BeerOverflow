@@ -60,7 +60,8 @@ namespace BeerOverflow.Services.Services
         public async Task<ReviewDTO> GetReviewAsync(int id)
         {
             var review = await this._context.Reviews
-                 .FirstOrDefaultAsync(r => r.Id == id);
+                .Include(r => r.Beer)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             return review.GetDTO();
         }
@@ -68,9 +69,14 @@ namespace BeerOverflow.Services.Services
         public async Task<ReviewDTO> UpdateReviewAsync(int id, ReviewDTO reviewDTO)
         {
             var review = await this._context.Reviews
+                .Include(r => r.Beer)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            review.Content = reviewDTO.Content;
+            _context.Reviews.Remove(review);
+
+            var newReview = reviewDTO.GetReview();
+
+            this._context.Reviews.Add(newReview);
 
             await _context.SaveChangesAsync();
 

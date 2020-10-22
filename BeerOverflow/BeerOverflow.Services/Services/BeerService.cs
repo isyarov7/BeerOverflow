@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Database;
-using BeerOverflow.Models.Models;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTOMappers;
 using BeerOverflow.Services.DTOs;
@@ -21,16 +19,13 @@ namespace BeerOverflow.Services.Services
         //Async Methods
         public async Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO)
         {
-            if (!_context.Beers.Any(b => b.Name == beerDTO.Name))
+            if (_context.Beers.Any(b => b.Name == beerDTO.Name))
             {
-                _context.Beers.Add(beerDTO.GetBeer());
-            }
-            else
-            {
-                var beer = _context.Beers.Where(b => b.Name == beerDTO.Name).FirstOrDefault();
-                beer.IsDeleted = false;
+                var oldBeer = _context.Beers.Where(b => b.Name == beerDTO.Name).FirstOrDefault();
+                _context.Beers.Remove(oldBeer);
             }
 
+            _context.Beers.Add(beerDTO.GetBeer());
 
             await _context.SaveChangesAsync();
 
@@ -39,8 +34,10 @@ namespace BeerOverflow.Services.Services
         //ok
         public async Task<BeerDTO> DeleteBeerAsync(int id)
         {
-            var beer = await Task.Run(() => this._context.Beers
-                .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false));
+            var beer = await this._context.Beers
+                .Include(x =>x.Brewery)
+                .Include(x=>x.Style)
+                .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
 
             beer.IsDeleted = true;
 
@@ -63,10 +60,10 @@ namespace BeerOverflow.Services.Services
         //Ok
         public async Task<BeerDTO> GetBeerAsync(int id)
         {
-            var beer = await Task.Run(() => this._context.Beers
+            var beer = await this._context.Beers
             .Include(b => b.Brewery)
             .Include(b => b.Style)
-            .FirstOrDefaultAsync(beer => beer.Id == id));
+            .FirstOrDefaultAsync(beer => beer.Id == id);
 
             return beer.GetDTO();
         }
@@ -80,9 +77,9 @@ namespace BeerOverflow.Services.Services
 
             _context.Beers.Remove(beer);
 
-            var newbeer = beerDTO.GetBeer();
+            var newBeer = beerDTO.GetBeer();
 
-            this._context.Beers.Add(newbeer);
+            this._context.Beers.Add(newBeer);
 
             await _context.SaveChangesAsync();
 

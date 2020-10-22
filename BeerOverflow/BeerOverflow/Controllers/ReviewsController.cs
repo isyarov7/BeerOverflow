@@ -90,7 +90,7 @@ namespace BeerOverflow.Controllers
         // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var review = await _service.DeleteReviewAsync(id);
+            var review = await _service.GetReviewAsync(id);
 
             return View(review);
         }
