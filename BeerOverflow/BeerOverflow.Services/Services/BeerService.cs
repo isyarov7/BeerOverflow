@@ -37,10 +37,10 @@ namespace BeerOverflow.Services.Services
             return beerDTO;
         }
         //ok
-        public async Task<BeerDTO> DeleteBeerAsync(string name)
+        public async Task<BeerDTO> DeleteBeerAsync(int id)
         {
             var beer = await Task.Run(() => this._context.Beers
-                .FirstOrDefaultAsync(x => x.Name == name && x.IsDeleted == false));
+                .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false));
 
             beer.IsDeleted = true;
 
@@ -71,23 +71,18 @@ namespace BeerOverflow.Services.Services
             return beer.GetDTO();
         }
         //OK
-        public async Task<BeerDTO> UpdateBeerAsync(BeerDTO beerDTO)
+        public async Task<BeerDTO> UpdateBeerAsync(int id, BeerDTO beerDTO)
         {
-            //Include-ват се само РЕЛАЦИИ
             var beer = await this._context.Beers
-            .Include(b => b.Brewery)
-            .Include(b => b.Style)
-            .Where(x => x.Id == id).FirstOrDefaultAsync();
+           .Include(b => b.Brewery)
+           .Include(b => b.Style)
+           .Where(x => x.Id == id).FirstOrDefaultAsync();
 
-            beer.Name = beerDTO.Name;
-            beer.Description = beerDTO.Description;
-            beer.Milliliters = beerDTO.Milliliters;
-            beer.Rating = beerDTO.Rating;
-            beer.ABV = beerDTO.ABV;
-            beer.Brewery = beerDTO.Brewery;
-            beer.Style = beerDTO.Style;
+            _context.Beers.Remove(beer);
 
-            this._context.Update(beer);
+            var newbeer = beerDTO.GetBeer();
+
+            this._context.Beers.Add(newbeer);
 
             await _context.SaveChangesAsync();
 

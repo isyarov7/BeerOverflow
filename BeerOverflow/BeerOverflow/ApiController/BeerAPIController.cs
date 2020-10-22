@@ -25,10 +25,10 @@ namespace BeerOverflow.ApiController
             return new JsonResult(beer);
         }
 
-        [HttpDelete("{name}")]
-        public async Task<IActionResult> DeleteBeer(string name)
+        [HttpDelete("id={id}")]
+        public async Task<IActionResult> DeleteBeer(int id)
         {
-            var beer = await _service.DeleteBeerAsync(name);
+            var beer = await _service.DeleteBeerAsync(id);
             return new JsonResult(beer);
         }
 

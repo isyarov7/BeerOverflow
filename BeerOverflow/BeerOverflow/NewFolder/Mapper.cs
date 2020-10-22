@@ -13,9 +13,7 @@ namespace BeerOverflow.NewFolder
     {
         public Mapper()
         {
-
             CreateMap<BeerDTO, BeerViewModel>().ReverseMap();
-
         }
     }
 }

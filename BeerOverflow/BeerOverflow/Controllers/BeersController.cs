@@ -33,26 +33,12 @@ namespace BeerOverflow.Controllers
             return View(await _service.GetAllBeersAsync());
         }
 
-        //// GET: Beers/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var beer = await _context.Beers
-        //        .Include(b => b.Brewery)
-        //        .Include(b => b.Style)
-        //        .Where(b => b.IsDeleted == false)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (beer == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(beer);
-        //}
+        // GET: Beers/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var beer = await _service.GetBeerAsync(id);
+            return View(beer);
+        }
 
         // GET: Beers/Create
         public async Task<IActionResult> Create()
@@ -83,54 +69,38 @@ namespace BeerOverflow.Controllers
         {
             var beer = await _service.GetBeerAsync(id);
 
-            if (beer == null)
-            {
-                return NotFound();
-            }
             ViewData["BreweryId"] = new SelectList(await _breweryService.GetAllBreweriesAsync(), "Id", "Name");
-            ViewData["StyleId"] = new SelectList(await _styleService.GetAllStylesAsync(), "Id", "Description");
+            ViewData["StyleId"] = new SelectList(await _styleService.GetAllStylesAsync(), "Id", "Name");
+
             return View(beer);
         }
-        //public async Task<IActionResult> Edit(int id, BeerViewModel beer)
-        //{
-        //    var beers = _service.GetAllBeersAsync();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, BeerViewModel beerViewModel)
+        {
+            var beerDTO = _mapper.Map<BeerDTO>(beerViewModel);
 
-        //    var beerToUp = beers.Where(x=>x.id)
-        //}
+            await _service.UpdateBeerAsync(id, beerDTO);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var beer = await _service.DeleteBeerAsync(id);
+
+            return View(beer);
+        }
+
+        // POST: Beers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var beer = await _service.DeleteBeerAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
-    //// GET: Beers/Delete/5
-    //public async Task<IActionResult> Delete(int? id)
-    //{
-    //    if (id == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    var beer = await _context.Beers
-    //        .Include(b => b.Brewery)
-    //        .Include(b => b.Style)
-    //        .FirstOrDefaultAsync(m => m.Id == id);
-    //    if (beer == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    return View(beer);
-    //}
-
-    //// POST: Beers/Delete/5
-    //[HttpPost, ActionName("Delete")]
-    //[ValidateAntiForgeryToken]
-    //public async Task<IActionResult> DeleteConfirmed(int id)
-    //{
-    //    var beer = await _context.Beers.FindAsync(id);
-    //    beer.IsDeleted = true;
-    //    await _context.SaveChangesAsync();
-    //    return RedirectToAction(nameof(Index));
-    //}
-
-    //private bool BeerExists(int id)
-    //{
-    //    return _context.Beers.Any(e => e.Id == id);
-    //}
