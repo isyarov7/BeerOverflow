@@ -88,50 +88,54 @@ namespace BeerOverflow.Services.Services
         //Ok
         public async Task<ICollection<BeerDTO>> FilterBeersByCountryAsync(string name)
         {
-            var breweries = await Task.Run(() => _context.Breweries
-                 .Include(b => b.Country)
-                 .Where(c => c.Country.Name == name)
-                 .ToList());
+            var beers = await _context.Beers
+                 .Include(b => b.Brewery)
+                 .Include(s => s.Style)
+                 .Where(b => b.Brewery.Country.Name == name).ToListAsync();
 
-            var beers = breweries
-                .Select(b => b.Beers.GetDTO())
-                .ToList();
-
-            return (ICollection<BeerDTO>)beers;
+            return beers.GetDTO();
         }
         //Ok
         public async Task<ICollection<BeerDTO>> FilterBeersByStyleAsync(string name)
         {
-            var beers = await Task.Run(() => _context.Beers
-              .Where(b => b.Style.Name == name)
-              .ToList());
+            var beers = await _context.Beers
+                .Include(b => b.Brewery)
+                .Include(s => s.Style)
+              .Where(b => b.Style.Name == name).ToListAsync();
+              
 
             return beers.GetDTO();
         }
         //Ok
         public async Task<ICollection<BeerDTO>> SortBeerByNameAsync()
         {
-            var beers = await Task.Run(() => _context.Beers
+            var beers = await _context.Beers
+                .Include(b => b.Brewery)
+                .Include(s => s.Style)
                      .Where(b => b.IsDeleted == false)
-                     .OrderBy(b => b.Name).ToList());
+                     .OrderBy(b => b.Name).ToListAsync();
 
             return beers.GetDTO();
         }
         //Ok
         public async Task<ICollection<BeerDTO>> SortBeerByABVAsync()
         {
-            var beers = await Task.Run(() => _context.Beers
+            var beers = await _context.Beers
+                .Include(b => b.Brewery)
+                .Include(s => s.Style)
                       .Where(b => b.IsDeleted == false)
-                      .OrderBy(b => b.ABV).ToList());
+                      .OrderBy(b => b.ABV).ToListAsync();
 
             return beers.GetDTO();
         }
         //Ok
         public async Task<ICollection<BeerDTO>> SortBeerByRatingAsync()
         {
-            var beers = await Task.Run(() => _context.Beers
+            var beers = await _context.Beers
+                .Include(b => b.Brewery)
+                .Include(s => s.Style)
                     .Where(b => b.IsDeleted == false)
-                    .OrderByDescending(b => b.Rating).ToList());
+                    .OrderByDescending(b => b.Rating).ToListAsync();
 
             return beers.GetDTO();
         }

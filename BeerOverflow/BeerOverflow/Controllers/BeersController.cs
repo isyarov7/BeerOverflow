@@ -6,6 +6,7 @@ using BeerOverflow.Services.DTOs;
 using AutoMapper;
 using BeerOverflow.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace BeerOverflow.Controllers
 {
@@ -98,6 +99,59 @@ namespace BeerOverflow.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public IActionResult FilterByCountry()
+        {
+            var vm = new FilterViewModel();
+            vm.SearchText = "";
+            vm.SearchResults = new List<BeerDTO>();
+            return View(vm);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> FilterByCountry(FilterViewModel model)
+        {
+            var result = await _service.FilterBeersByCountryAsync(model.SearchText);
+            model.SearchResults = result;
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult FilterByStyle()
+        {
+            var vm = new FilterViewModel();
+            vm.SearchText = "";
+            vm.SearchResults = new List<BeerDTO>();
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FilterByStyle(FilterViewModel model)
+        {
+            var result = await _service.FilterBeersByStyleAsync(model.SearchText);
+            model.SearchResults = result;
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SortByName()
+        {
+            var result = await _service.SortBeerByNameAsync();
+            return View(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SortByABV()
+        {
+            var result = await _service.SortBeerByABVAsync();
+            return View(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SortByRating()
+        {
+            var result = await _service.SortBeerByRatingAsync();
+            return View(result);
+        }
     }
 }

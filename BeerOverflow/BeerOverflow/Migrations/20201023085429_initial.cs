@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BeerOverflow.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -214,8 +214,8 @@ namespace BeerOverflow.Migrations
                     ABV = table.Column<string>(maxLength: 10, nullable: false),
                     Rating = table.Column<double>(nullable: false),
                     BreweryId = table.Column<int>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: false),
-                    Milliliters = table.Column<string>(maxLength: 10, nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    Milliliters = table.Column<string>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     StyleId = table.Column<int>(nullable: false)

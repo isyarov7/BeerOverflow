@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <style type="text/css">
         body {
-            background-image: url(./images/beerback.jpg);
+            background-image: url(./images/beer123.jpg);
             background-size: cover;
         }
     </style>
@@ -38,6 +38,11 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="Create">Create Beer</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="FilterByCountry">Filter By Country</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="FilterByStyle">Filter By Style</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="SortByName">Sort By Name</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="SortByABV">Sort By ABV</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="SortByRating">Sort By Rating</a>
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Beers" asp-action="Index">All Beers</a>
                                 </div>
                             </div>
