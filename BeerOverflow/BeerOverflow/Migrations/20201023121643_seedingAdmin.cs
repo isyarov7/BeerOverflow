@@ -214,7 +214,7 @@ namespace BeerOverflow.Migrations
                     ABV = table.Column<string>(maxLength: 10, nullable: false),
                     Rating = table.Column<double>(nullable: false),
                     BreweryId = table.Column<int>(nullable: false),
-                    Price = table.Column<double>(nullable: false),
+                    Price = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
                     Milliliters = table.Column<string>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: false),
@@ -289,17 +289,17 @@ namespace BeerOverflow.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "a9b68e0d-d2c6-4468-af72-57b0560528e3", "member", "MEMBER" });
+                values: new object[] { 1, "8c3ad018-69ed-4055-becc-c39f7ebad5ff", "member", "MEMBER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "d41a0bba-88fb-4591-8121-dfeddae7557d", "admin", "ADMIN" });
+                values: new object[] { 2, "3f3504f2-af82-42ff-bff0-08039ff4af9f", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "6eb82d67-8794-4925-a2ba-3c98f3e9d4c6", "admin@admin.admin", false, false, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAEHMLSgoM5Dn5B2CrGGP85S04eG8AaISTRSLkPAt3wEZDZr6fVh8M0w8UBNhrx4C+Ow==", null, false, "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN", false, "admin@admin.admin" });
+                values: new object[] { 1, 0, "8493fed0-0e86-490b-b3e4-a846882e0f4f", "admin@admin.admin", false, false, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAENI+P44wdXGoq6AtqMJBj+QMtQFd7PM5yn3w8l4IQJdygN1FAHvfKgX3sxliki2oWQ==", null, false, "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN", false, "admin@admin.admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -54,8 +54,8 @@ namespace BeerOverflow.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<string>("Price")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -172,14 +172,14 @@ namespace BeerOverflow.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "a9b68e0d-d2c6-4468-af72-57b0560528e3",
+                            ConcurrencyStamp = "8c3ad018-69ed-4055-becc-c39f7ebad5ff",
                             Name = "member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "d41a0bba-88fb-4591-8121-dfeddae7557d",
+                            ConcurrencyStamp = "3f3504f2-af82-42ff-bff0-08039ff4af9f",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -281,13 +281,13 @@ namespace BeerOverflow.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6eb82d67-8794-4925-a2ba-3c98f3e9d4c6",
+                            ConcurrencyStamp = "8493fed0-0e86-490b-b3e4-a846882e0f4f",
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHMLSgoM5Dn5B2CrGGP85S04eG8AaISTRSLkPAt3wEZDZr6fVh8M0w8UBNhrx4C+Ow==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENI+P44wdXGoq6AtqMJBj+QMtQFd7PM5yn3w8l4IQJdygN1FAHvfKgX3sxliki2oWQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN",
                             TwoFactorEnabled = false,

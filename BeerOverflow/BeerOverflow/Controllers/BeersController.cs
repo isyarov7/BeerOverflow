@@ -7,6 +7,7 @@ using AutoMapper;
 using BeerOverflow.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using BeerOverflow.Models.Models;
 
 namespace BeerOverflow.Controllers
 {
@@ -63,6 +64,7 @@ namespace BeerOverflow.Controllers
 
 
         //// GET: Beers/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var beer = await _service.GetBeerAsync(id);
@@ -73,6 +75,7 @@ namespace BeerOverflow.Controllers
             return View(beer);
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, BeerViewModel beerViewModel)
         {
@@ -89,7 +92,7 @@ namespace BeerOverflow.Controllers
 
             return View(beer);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         // POST: Beers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
