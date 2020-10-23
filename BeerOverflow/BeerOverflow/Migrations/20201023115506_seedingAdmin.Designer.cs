@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeerOverflow.Migrations
 {
     [DbContext(typeof(BeerOverflowDbContext))]
-    [Migration("20201023085429_initial")]
-    partial class initial
+    [Migration("20201023115506_seedingAdmin")]
+    partial class seedingAdmin
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace BeerOverflow.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -166,6 +169,22 @@ namespace BeerOverflow.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "a9b68e0d-d2c6-4468-af72-57b0560528e3",
+                            Name = "member",
+                            NormalizedName = "MEMBER"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "d41a0bba-88fb-4591-8121-dfeddae7557d",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("BeerOverflow.Models.Models.Style", b =>
@@ -258,6 +277,24 @@ namespace BeerOverflow.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6eb82d67-8794-4925-a2ba-3c98f3e9d4c6",
+                            Email = "admin@admin.admin",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.ADMIN",
+                            NormalizedUserName = "ADMIN@ADMIN.ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHMLSgoM5Dn5B2CrGGP85S04eG8AaISTRSLkPAt3wEZDZr6fVh8M0w8UBNhrx4C+Ow==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@admin.admin"
+                        });
                 });
 
             modelBuilder.Entity("BeerOverflow.Models.Models.WishList", b =>

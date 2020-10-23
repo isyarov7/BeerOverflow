@@ -46,6 +46,7 @@ namespace BeerOverflow.Services.DTOMappers
                 Rating = item.Rating,
                 IsDeleted = item.IsDeleted,
                 Milliliters = item.Milliliters,
+                Price = item.Price,
                 Reviews = item.Reviews,
                 BreweryId = item.BreweryId,
                 StyleId = item.StyleId,
