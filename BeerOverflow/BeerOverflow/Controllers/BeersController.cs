@@ -8,6 +8,7 @@ using BeerOverflow.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using BeerOverflow.Models.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BeerOverflow.Controllers
 {
@@ -17,9 +18,11 @@ namespace BeerOverflow.Controllers
         private readonly IMapper _mapper;
         private readonly IBreweryService _breweryService;
         private readonly IStyleService _styleService;
+        private readonly SignInManager<User> _signInManager;
 
-        public BeersController(IBeerService service, IMapper mapper, IBreweryService breweryService, IStyleService styleService)
+        public BeersController(SignInManager<User> signInManager, IBeerService service, IMapper mapper, IBreweryService breweryService, IStyleService styleService)
         {
+            this._signInManager = signInManager;
             this._service = service;
             this._mapper = mapper;
             this._breweryService = breweryService;
@@ -42,6 +45,10 @@ namespace BeerOverflow.Controllers
         // GET: Beers/Create
         public async Task<IActionResult> Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             ViewData["BreweryId"] = new SelectList(await _breweryService.GetAllBreweriesAsync(), "Id", "Name");
             ViewData["StyleId"] = new SelectList(await _styleService.GetAllStylesAsync(), "Id", "Name");
             return View();
@@ -50,6 +57,7 @@ namespace BeerOverflow.Controllers
         // POST: Beers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BeerViewModel beer)
@@ -64,9 +72,12 @@ namespace BeerOverflow.Controllers
 
 
         //// GET: Beers/Edit/5
-        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             var beer = await _service.GetBeerAsync(id);
 
             ViewData["BreweryId"] = new SelectList(await _breweryService.GetAllBreweriesAsync(), "Id", "Name");
@@ -74,6 +85,7 @@ namespace BeerOverflow.Controllers
 
             return View(beer);
         }
+        [Authorize]
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
@@ -88,12 +100,16 @@ namespace BeerOverflow.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             var beer = await _service.GetBeerAsync(id);
 
             return View(beer);
         }
-        [Authorize(Roles = "admin")]
         // POST: Beers/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

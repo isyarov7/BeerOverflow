@@ -5,6 +5,9 @@ using BeerOverflow.Services.Contracts;
 using AutoMapper;
 using BeerOverflow.Models;
 using BeerOverflow.Services.DTOs;
+using Microsoft.AspNetCore.Identity;
+using BeerOverflow.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeerOverflow.Controllers
 {
@@ -13,12 +16,14 @@ namespace BeerOverflow.Controllers
         private readonly IBeerService _beerService;
         private readonly IReviewService _service;
         private readonly IMapper _mapper;
+        private readonly SignInManager<User> _signInManager;
 
-        public ReviewsController(IBeerService beerService, IReviewService service, IMapper mapper)
+        public ReviewsController(SignInManager<User> signInManager, IBeerService beerService, IReviewService service, IMapper mapper)
         {
-            _beerService = beerService;
-            _service = service;
-            _mapper = mapper;
+            this._signInManager = signInManager;
+            this._beerService = beerService;
+            this._service = service;
+            this._mapper = mapper;
         }
 
         // GET: Reviews
@@ -38,6 +43,10 @@ namespace BeerOverflow.Controllers
         // GET: Reviews/Create
         public async Task<IActionResult> Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
             return View();
         }
@@ -45,6 +54,7 @@ namespace BeerOverflow.Controllers
         // POST: Reviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ReviewViewModel reviewViewModel)
@@ -59,6 +69,10 @@ namespace BeerOverflow.Controllers
         // GET: Reviews/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             var review = await _service.GetReviewAsync(id);
 
             ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
@@ -69,9 +83,10 @@ namespace BeerOverflow.Controllers
         // POST: Reviews/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,ReviewViewModel reviewViewModel)
+        public async Task<IActionResult> Edit(int id, ReviewViewModel reviewViewModel)
         {
             var reviewDTO = _mapper.Map<ReviewDTO>(reviewViewModel);
 
@@ -83,12 +98,17 @@ namespace BeerOverflow.Controllers
         // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             var review = await _service.GetReviewAsync(id);
 
             return View(review);
         }
 
         // POST: Reviews/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

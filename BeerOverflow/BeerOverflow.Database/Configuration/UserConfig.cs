@@ -3,17 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BeerOverflow.Database.Configuration
 {
-    public class WishListConfig : IEntityTypeConfiguration<WishList>
+    public class UserConfig : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<WishList> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasOne(w => w.Beer)
-                .WithMany(b => b.WishLists)
-                .HasForeignKey(w => w.BeerId);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BeerOverflow.Models.Models
 {
@@ -14,5 +13,6 @@ namespace BeerOverflow.Models.Models
         public int UserId { get; set; }
         public User User { get; set; }
         public bool IsDeleted { get; set; }
+        public ICollection<Beer> Beers { get; set; } = new List<Beer>();
     }
 }

@@ -11,6 +11,8 @@ using BeerOverflow.Services.Contracts;
 using AutoMapper;
 using BeerOverflow.Models;
 using BeerOverflow.Services.DTOs;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeerOverflow.Controllers
 {
@@ -18,11 +20,13 @@ namespace BeerOverflow.Controllers
     {
         private readonly IStyleService _service;
         private readonly IMapper _mapper;
+        private readonly SignInManager<User> _signInManager;
 
-        public StylesController(IStyleService service, IMapper mapper)
+        public StylesController(SignInManager<User> signInManager, IStyleService service, IMapper mapper)
         {
-            _service = service;
-            _mapper = mapper;
+            this._signInManager = signInManager;
+            this._service = service;
+            this._mapper = mapper;
         }
 
         // GET: Styles
@@ -42,12 +46,17 @@ namespace BeerOverflow.Controllers
         // GET: Styles/Create
         public IActionResult Create()
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             return View();
         }
 
         // POST: Styles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StyleViewModel styleViewModel)
@@ -62,6 +71,10 @@ namespace BeerOverflow.Controllers
         // GET: Styles/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             var style = await _service.GetStyleAsync(id);
             return View(style);
         }
@@ -69,6 +82,7 @@ namespace BeerOverflow.Controllers
         // POST: Styles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, StyleViewModel styleViewModel)
@@ -83,12 +97,17 @@ namespace BeerOverflow.Controllers
         // GET: Styles/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
+            if (!_signInManager.IsSignedIn(User))
+            {
+                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+            }
             var style = await _service.GetStyleAsync(id);
 
             return View(style);
         }
 
         // POST: Styles/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
