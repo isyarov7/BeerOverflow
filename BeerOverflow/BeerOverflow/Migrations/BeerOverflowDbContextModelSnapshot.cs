@@ -63,11 +63,16 @@ namespace BeerOverflow.Migrations
                     b.Property<int>("StyleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WishListId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BreweryId");
 
                     b.HasIndex("StyleId");
+
+                    b.HasIndex("WishListId");
 
                     b.ToTable("Beers");
                 });
@@ -172,14 +177,14 @@ namespace BeerOverflow.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "8c3ad018-69ed-4055-becc-c39f7ebad5ff",
+                            ConcurrencyStamp = "ad6231e0-e687-4566-9a87-d0acdedfe5ac",
                             Name = "member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "3f3504f2-af82-42ff-bff0-08039ff4af9f",
+                            ConcurrencyStamp = "a58f6a68-6c21-4fa1-9011-81a10747530c",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -224,6 +229,9 @@ namespace BeerOverflow.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -231,11 +239,23 @@ namespace BeerOverflow.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -281,13 +301,17 @@ namespace BeerOverflow.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8493fed0-0e86-490b-b3e4-a846882e0f4f",
+                            ConcurrencyStamp = "ea168101-7bda-4457-b9b7-7aa3eea623fb",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
+                            IsAdmin = false,
+                            IsBanned = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAENI+P44wdXGoq6AtqMJBj+QMtQFd7PM5yn3w8l4IQJdygN1FAHvfKgX3sxliki2oWQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGLCaLV3anu4we2FJ3oMIr+tKwoVnfdmrglBxok2hIDeivfPB6d/qVTZWZJqHoajGg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN",
                             TwoFactorEnabled = false,
@@ -434,6 +458,10 @@ namespace BeerOverflow.Migrations
                         .HasForeignKey("StyleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("BeerOverflow.Models.Models.WishList", null)
+                        .WithMany("Beers")
+                        .HasForeignKey("WishListId");
                 });
 
             modelBuilder.Entity("BeerOverflow.Models.Models.Brewery", b =>
@@ -457,13 +485,13 @@ namespace BeerOverflow.Migrations
             modelBuilder.Entity("BeerOverflow.Models.Models.WishList", b =>
                 {
                     b.HasOne("BeerOverflow.Models.Models.Beer", "Beer")
-                        .WithMany("WishLists")
+                        .WithMany("Wishlist")
                         .HasForeignKey("BeerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BeerOverflow.Models.Models.User", "User")
-                        .WithMany("WishLists")
+                        .WithMany("Wishlist")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -45,7 +45,7 @@ namespace BeerOverflow.Controllers
         {
             if (!_signInManager.IsSignedIn(User))
             {
-                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+                Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
             ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
             return View();
@@ -71,7 +71,7 @@ namespace BeerOverflow.Controllers
         {
             if (!_signInManager.IsSignedIn(User))
             {
-                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+                Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
             var review = await _service.GetReviewAsync(id);
 
@@ -100,7 +100,7 @@ namespace BeerOverflow.Controllers
         {
             if (!_signInManager.IsSignedIn(User))
             {
-                Response.Redirect("http://localhost:53299/Identity/Account/Login%22");
+                Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
             var review = await _service.GetReviewAsync(id);
 

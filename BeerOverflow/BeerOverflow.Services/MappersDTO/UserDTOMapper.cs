@@ -20,8 +20,7 @@ namespace BeerOverflow.Services.MappersDTO
                 IsDeleted = item.IsDeleted,
                 IsAdmin = item.IsAdmin,
                 IsBanned = item.IsBanned,
-                Wishlist = item.Wishlist,
-
+                Wishlist = item.Wishlist
             };
         }
         public static User GetUser(this UserDTO item)
@@ -36,12 +35,9 @@ namespace BeerOverflow.Services.MappersDTO
                 IsDeleted = item.IsDeleted,
                 IsAdmin = item.IsAdmin,
                 IsBanned = item.IsBanned,
-                Wishlist = item.Wishlist,
-
+                Wishlist = item.Wishlist
             };
         }
-
-
 
         public static ICollection<UserDTO> GetDTO(this ICollection<User> items)
         {

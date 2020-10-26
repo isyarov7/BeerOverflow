@@ -12,8 +12,12 @@ namespace BeerOverflow.Database.Configuration
         public void Configure(EntityTypeBuilder<WishList> builder)
         {
             builder.HasOne(w => w.Beer)
-                .WithMany(b => b.WishLists)
+                .WithMany(b => b.Wishlist)
                 .HasForeignKey(w => w.BeerId);
+
+            builder.HasOne(u => u.User)
+                .WithMany(w => w.Wishlist)
+                .HasForeignKey(u => u.UserId);
         }
     }
 }

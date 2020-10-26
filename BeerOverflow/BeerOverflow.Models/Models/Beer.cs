@@ -29,6 +29,6 @@ namespace BeerOverflow.Models.Models
         public int StyleId { get; set; }
         public Style Style { get; set; }
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
-        public ICollection<WishList> WishLists { get; set; } = new List<WishList>();
+        public ICollection<WishList> Wishlist { get; set; } = new List<WishList>();
     }
 }

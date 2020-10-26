@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BeerOverflow.Migrations
 {
-    public partial class seedingAdmin : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,12 @@ namespace BeerOverflow.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    IsBanned = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,6 +210,27 @@ namespace BeerOverflow.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WishLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BeerId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WishLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WishLists_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Beers",
                 columns: table => new
                 {
@@ -219,7 +245,8 @@ namespace BeerOverflow.Migrations
                     Milliliters = table.Column<string>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    StyleId = table.Column<int>(nullable: false)
+                    StyleId = table.Column<int>(nullable: false),
+                    WishListId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -236,6 +263,12 @@ namespace BeerOverflow.Migrations
                         principalTable: "Styles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Beers_WishLists_WishListId",
+                        column: x => x.WishListId,
+                        principalTable: "WishLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -259,47 +292,20 @@ namespace BeerOverflow.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "WishLists",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BeerId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WishLists", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WishLists_Beers_BeerId",
-                        column: x => x.BeerId,
-                        principalTable: "Beers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WishLists_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { 1, "ad6231e0-e687-4566-9a87-d0acdedfe5ac", "member", "MEMBER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "8c3ad018-69ed-4055-becc-c39f7ebad5ff", "member", "MEMBER" });
-
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "3f3504f2-af82-42ff-bff0-08039ff4af9f", "admin", "ADMIN" });
+                values: new object[] { 2, "a58f6a68-6c21-4fa1-9011-81a10747530c", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "8493fed0-0e86-490b-b3e4-a846882e0f4f", "admin@admin.admin", false, false, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAENI+P44wdXGoq6AtqMJBj+QMtQFd7PM5yn3w8l4IQJdygN1FAHvfKgX3sxliki2oWQ==", null, false, "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN", false, "admin@admin.admin" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedOn", "Email", "EmailConfirmed", "IsAdmin", "IsBanned", "IsDeleted", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, "ea168101-7bda-4457-b9b7-7aa3eea623fb", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@admin.admin", false, false, false, false, false, null, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAEGLCaLV3anu4we2FJ3oMIr+tKwoVnfdmrglBxok2hIDeivfPB6d/qVTZWZJqHoajGg==", null, false, "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN", false, "admin@admin.admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -351,6 +357,11 @@ namespace BeerOverflow.Migrations
                 column: "StyleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Beers_WishListId",
+                table: "Beers",
+                column: "WishListId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Breweries_CountryId",
                 table: "Breweries",
                 column: "CountryId");
@@ -369,10 +380,34 @@ namespace BeerOverflow.Migrations
                 name: "IX_WishLists_UserId",
                 table: "WishLists",
                 column: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_WishLists_Beers_BeerId",
+                table: "WishLists",
+                column: "BeerId",
+                principalTable: "Beers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_WishLists_AspNetUsers_UserId",
+                table: "WishLists");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Beers_Breweries_BreweryId",
+                table: "Beers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Beers_Styles_StyleId",
+                table: "Beers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Beers_WishLists_WishListId",
+                table: "Beers");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -392,13 +427,7 @@ namespace BeerOverflow.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "WishLists");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Beers");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
@@ -407,10 +436,16 @@ namespace BeerOverflow.Migrations
                 name: "Breweries");
 
             migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
                 name: "Styles");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "WishLists");
+
+            migrationBuilder.DropTable(
+                name: "Beers");
         }
     }
 }
