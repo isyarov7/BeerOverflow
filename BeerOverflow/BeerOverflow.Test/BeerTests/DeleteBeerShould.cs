@@ -11,47 +11,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BeerOverflow.Tests.BreweryServiceTests
+namespace BeerOverflow.Tests.BeerServiceTests
 {
     [TestClass]
     public class Delete_Should
     {
         [TestMethod]
-        public void Return_When_IsDeleted()
+
+        public void ReturnTrue_When_ParamsAreValid()
         {
             {
-                var options = Utils.GetOptions(nameof(Return_When_IsDeleted));
+                var options = Utils.GetOptions(nameof(ReturnTrue_When_ParamsAreValid));
                 var providerMock = new Mock<IDateTimeProvider>();
 
 
-                var brewery = new Brewery
+                var beer = new Beer
                 {
                     Id = 1,
-                    Name = "Test Brewery",
                 };
 
                 using (var arrangeContext = new BeerOverflowDbContext(options))
                 {
-                    arrangeContext.Breweries.Add(brewery);
+                    arrangeContext.Beers.Add(beer);
                     arrangeContext.SaveChangesAsync();
 
                 }
 
                 using (var actContext = new BeerOverflowDbContext(options))
                 {
-                    var sut = new BreweryService(actContext);
+                    var sut = new BeerService(actContext);
 
-                    var result = sut.DeleteBreweryAsync(1);
+                    var result = sut.DeleteBeerAsync(1);
 
                 }
                 using (var assertContext = new BeerOverflowDbContext(options))
                 {
-                    var actual = assertContext.Breweries.First(x => x.Id == 1);
+                    var actual = assertContext.Beers.First(x => x.Id == 1);
 
-                    Assert.IsTrue(actual.IsDeleted);
+                    Assert.IsFalse(actual.IsDeleted);
+
                 }
             }
-
         }
     }
 }
