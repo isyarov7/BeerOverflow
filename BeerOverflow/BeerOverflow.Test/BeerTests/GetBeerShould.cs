@@ -10,12 +10,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BeerOverflow.Tests.NewFolder
 {
     [TestClass]
-    public class GetBeer_Should
+    public class GetBeerShould
     {
         [TestMethod]
         public async Task Return_When_Beer_IsCreated()
@@ -55,11 +56,7 @@ namespace BeerOverflow.Tests.NewFolder
             using (var arrangeContext = new BeerOverflowDbContext(options))
             {
                 arrangeContext.Beers.Add(beer);
-            }
-
-            using (var actContext = new BeerOverflowDbContext(options))
-            {
-                var sut = new BeerService(actContext);
+                var sut = new BeerService(arrangeContext);
                 var result = sut.GetBeerAsync(1);
                 Assert.IsTrue(result.Id == 1);
             }
@@ -103,9 +100,9 @@ namespace BeerOverflow.Tests.NewFolder
             using (var actContext = new BeerOverflowDbContext(options))
             {
                 var sut = new BeerService(actContext);
-                var beers = actContext.Beers.CountAsync();
+                var beers = actContext.Beers.Count();
                 var result = sut.GetAllBeersAsync();
-                Assert.AreEqual(beers, result);
+                Assert.AreEqual(beers, result.Result.Count);
             }
         }
        

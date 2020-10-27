@@ -13,7 +13,7 @@ using System.Text;
 namespace BeerOverflow.Tests.UserServiceTests
 {
     [TestClass]
-    public class Delete_Should
+    public class DeleteUserShould
     {
         [TestMethod]
         public void ReturnTrue_When_ParamsAreValid()
@@ -31,15 +31,7 @@ namespace BeerOverflow.Tests.UserServiceTests
                         actContext.Users.Add(user);
 
                         var result = actContext.Users.Remove(user);
-
-                        Assert.IsTrue(result.IsDeleted);
-
-                    }
-                    using (var assertContext = new BeerOverflowDbContext(options))
-                    {
-                        var actual = assertContext.Users.First(x => x.Id == 1);
-
-                        Assert.IsTrue(actual.IsDeleted);
+                        Assert.IsTrue(actContext.Users.Count<User>() == 0);
 
                     }
                 }

@@ -14,7 +14,7 @@ using System.Text;
 namespace BeerOverflow.Tests.BeerServiceTests
 {
     [TestClass]
-    public class Delete_Should
+    public class DeleteBeerShould
     {
         [TestMethod]
 

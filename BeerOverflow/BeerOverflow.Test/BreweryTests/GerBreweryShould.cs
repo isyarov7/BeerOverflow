@@ -2,6 +2,7 @@
 using BeerOverflow.Models;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.DTO;
+using BeerOverflow.Services.DTOMappers;
 using BeerOverflow.Services.DTOs;
 using BeerOverflow.Services.Services;
 using BeerOverflow.Test;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 namespace BeerOverflow.Tests.BreweryServiceTests
 {
     [TestClass]
-    public class GetBrewery_Should
+    public class GetBreweryShould
     {
         [TestMethod]
         public void Return_Brewery_ById()
@@ -54,9 +55,9 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             using (var actContext = new BeerOverflowDbContext(options))
             {
                 var sut = new BreweryService(actContext);
-                var beers = actContext.Breweries.CountAsync();
+                var beers = actContext.Breweries.Count();
                 var result = sut.GetAllBreweriesAsync();
-                Assert.AreEqual(beers, result);
+                Assert.AreEqual(beers, result.Result.Count);
             }
         }
         [TestMethod]
@@ -80,7 +81,7 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             var brewery = new BreweryDTO
             {
                 Id = 1,
-                Name = "TopBrewery"
+                Name = "Brewery"
             };
 
             using (var arrangeContext = new BeerOverflowDbContext(options))

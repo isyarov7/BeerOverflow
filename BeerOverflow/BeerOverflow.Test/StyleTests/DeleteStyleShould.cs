@@ -12,7 +12,7 @@ using System.Text;
 namespace BeerOverflow.Tests.StyleServiceTests
 {
     [TestClass]
-    public class Delete_Should
+    public class DeleteStyleShould
     {
         [TestMethod]
         public void ReturnTrue_When_ParamsAreValid()

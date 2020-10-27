@@ -14,7 +14,7 @@ using System.Text;
 namespace BeerOverflow.Tests.BreweryServiceTests
 {
     [TestClass]
-    public class Delete_Should
+    public class DeleteBreweryShould
     {
         [TestMethod]
         public void Return_When_IsDeleted()
@@ -42,7 +42,6 @@ namespace BeerOverflow.Tests.BreweryServiceTests
                     var sut = new BreweryService(actContext);
 
                     var result = sut.DeleteBreweryAsync(1);
-
                 }
                 using (var assertContext = new BeerOverflowDbContext(options))
                 {

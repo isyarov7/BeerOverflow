@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BeerOverflow.Tests.StyleServiceTests
 {
     [TestClass]
-    public class CreatedStyle_Should
+    public class CreateStyleShould
     {
         [TestMethod]
         public void GetCorrectStyle()
@@ -28,14 +28,10 @@ namespace BeerOverflow.Tests.StyleServiceTests
             {
                 arrangeContext.Styles.Add(style);
                 arrangeContext.SaveChanges();
-
-            }
-
-            using (var actContext = new BeerOverflowDbContext(options))
-            {
-                var sut = new StyleService(actContext);
+                var sut = new StyleService(arrangeContext);
                 var result = sut.GetStyleAsync(1);
                 Assert.AreEqual(style.Id, result.Id);
+
             }
         }
         [TestMethod]
