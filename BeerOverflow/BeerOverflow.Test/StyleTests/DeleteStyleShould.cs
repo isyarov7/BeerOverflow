@@ -38,14 +38,12 @@ namespace BeerOverflow.Tests.StyleServiceTests
                     var sut = new StyleService(actContext);
 
                     var result = sut.DeleteStyleAsync(1);
-
                 }
                 using (var assertContext = new BeerOverflowDbContext(options))
                 {
                     var actual = assertContext.Styles.First(x => x.Id == 1);
 
                     Assert.IsTrue(actual.IsDeleted);
-
                 }
             }
         }

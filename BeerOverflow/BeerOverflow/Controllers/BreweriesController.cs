@@ -27,16 +27,16 @@ namespace BeerOverflow.Controllers
         }
 
         // GET: Breweries
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _service.GetAllBreweriesAsync());
+            return View( _service.GetAllBreweries());
         }
 
         // GET: Breweries/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
 
-            var brewery = await _service.GetBreweryAsync(id);
+            var brewery = _service.GetBrewery(id);
 
             return View(brewery);
         }
@@ -75,7 +75,7 @@ namespace BeerOverflow.Controllers
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            var brewery = await _service.GetBreweryAsync(id);
+            var brewery = _service.GetBrewery(id);
 
             ViewData["CountryId"] = new SelectList(await _countryService.GetAllCountriesAsync(), "Id", "Name");
 
@@ -98,13 +98,13 @@ namespace BeerOverflow.Controllers
         }
 
         // // GET: Breweries/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            var brewery = await _service.GetBreweryAsync(id);
+            var brewery =_service.GetBrewery(id);
 
             return View(brewery);
         }

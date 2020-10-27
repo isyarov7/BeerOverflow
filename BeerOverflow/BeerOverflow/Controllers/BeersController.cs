@@ -30,27 +30,27 @@ namespace BeerOverflow.Controllers
         }
 
         // GET: Beers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _service.GetAllBeersAsync());
+            return View( _service.GetAllBeers());
         }
 
         // GET: Beers/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var beer = await _service.GetBeerAsync(id);
+            var beer =_service.GetBeer(id);
             return View(beer);
         }
 
         // GET: Beers/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            ViewData["BreweryId"] = new SelectList(await _breweryService.GetAllBreweriesAsync(), "Id", "Name");
-            ViewData["StyleId"] = new SelectList(await _styleService.GetAllStylesAsync(), "Id", "Name");
+            ViewData["BreweryId"] = new SelectList( _breweryService.GetAllBreweries(), "Id", "Name");
+            ViewData["StyleId"] = new SelectList( _styleService.GetAllStyles(), "Id", "Name");
             return View();
         }
 
@@ -72,16 +72,16 @@ namespace BeerOverflow.Controllers
 
 
         //// GET: Beers/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            var beer = await _service.GetBeerAsync(id);
+            var beer = _service.GetBeer(id);
 
-            ViewData["BreweryId"] = new SelectList(await _breweryService.GetAllBreweriesAsync(), "Id", "Name");
-            ViewData["StyleId"] = new SelectList(await _styleService.GetAllStylesAsync(), "Id", "Name");
+            ViewData["BreweryId"] = new SelectList(_breweryService.GetAllBreweries(), "Id", "Name");
+            ViewData["StyleId"] = new SelectList(_styleService.GetAllStyles(), "Id", "Name");
 
             return View(beer);
         }
@@ -98,13 +98,13 @@ namespace BeerOverflow.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            var beer = await _service.GetBeerAsync(id);
+            var beer = _service.GetBeer(id);
 
             return View(beer);
         }

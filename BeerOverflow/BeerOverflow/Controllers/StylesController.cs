@@ -30,15 +30,15 @@ namespace BeerOverflow.Controllers
         }
 
         // GET: Styles
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _service.GetAllStylesAsync());
+            return View( _service.GetAllStyles());
         }
 
         // GET: Styles/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var style = await _service.GetStyleAsync(id);
+            var style = _service.GetStyle(id);
 
             return View(style);
         }
@@ -69,13 +69,13 @@ namespace BeerOverflow.Controllers
         }
 
         // GET: Styles/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            var style = await _service.GetStyleAsync(id);
+            var style =  _service.GetStyle(id);
             return View(style);
         }
 
@@ -95,13 +95,13 @@ namespace BeerOverflow.Controllers
         }
 
         // GET: Styles/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            var style = await _service.GetStyleAsync(id);
+            var style = _service.GetStyle(id);
 
             return View(style);
         }

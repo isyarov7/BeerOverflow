@@ -8,8 +8,8 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface IBeerService
     {
-        Task<ICollection<BeerDTO>> GetAllBeersAsync();
-        Task<BeerDTO> GetBeerAsync(int id);
+        ICollection<BeerDTO> GetAllBeers();
+        BeerDTO GetBeer(int id);
         Task<BeerDTO> CreateBeerAsync(BeerDTO beerDTO);
         Task<BeerDTO> UpdateBeerAsync(int id, BeerDTO beerDTO);
         Task<BeerDTO> DeleteBeerAsync(int id);

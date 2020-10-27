@@ -29,7 +29,7 @@ namespace BeerOverflow.Tests.StyleServiceTests
                 arrangeContext.Styles.Add(style);
                 arrangeContext.SaveChanges();
                 var sut = new StyleService(arrangeContext);
-                var result = sut.GetStyleAsync(1);
+                var result = sut.GetStyle(1);
                 Assert.AreEqual(style.Id, result.Id);
 
             }
@@ -53,8 +53,8 @@ namespace BeerOverflow.Tests.StyleServiceTests
             using (var actContext = new BeerOverflowDbContext(options))
             {
                 var sut = new StyleService(actContext);
-                var result = sut.GetStyleAsync(1);
-                Assert.AreEqual(style.Name, result.Result.Name);
+                var result = sut.GetStyle(1);
+                Assert.AreEqual(style.Name, result.Name);
 
             }
         }

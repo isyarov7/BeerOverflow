@@ -51,7 +51,7 @@ namespace BeerOverflow.Tests.NewFolder
                 var sut = new BeerService(arrangeContext);
                 await sut.CreateBeerAsync(beer);
                 await arrangeContext.SaveChangesAsync();
-                var result = sut.GetBeerAsync(2);
+                var result = sut.GetBeer(2);
                 Assert.AreEqual(result.Id == 2, beer.Id == 2);
             }
         }
@@ -69,9 +69,9 @@ namespace BeerOverflow.Tests.NewFolder
             {
                 actContext.Beers.Add(beer);
                 var sut = new BeerService(actContext);
-                var result = sut.GetBeerAsync(2);
+                var result = sut.GetBeer(2);
 
-                Assert.ThrowsExceptionAsync<ArgumentNullException>(() => result);
+                Assert.ThrowsException<ArgumentNullException>(() => result);
             }
         }
         [TestMethod]
@@ -83,11 +83,11 @@ namespace BeerOverflow.Tests.NewFolder
             {
                 var sut = new BeerService(actContext);
                 var beers = actContext.Beers.Count();
-                actContext.SaveChangesAsync();
+                actContext.SaveChanges();
 
-                var result = sut.GetAllBeersAsync();
+                var result = sut.GetAllBeers();
 
-                Assert.AreEqual(beers, result.Result.Count);
+                Assert.AreEqual(beers, result.Count);
 
             }
         }
@@ -101,8 +101,8 @@ namespace BeerOverflow.Tests.NewFolder
             {
                 var sut = new BeerService(actContext);
                 var beers = actContext.Beers.Count();
-                var result = sut.GetAllBeersAsync();
-                Assert.AreEqual(beers, result.Result.Count);
+                var result = sut.GetAllBeers();
+                Assert.AreEqual(beers, result.Count);
             }
         }
        

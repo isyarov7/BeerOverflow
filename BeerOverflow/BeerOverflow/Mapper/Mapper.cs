@@ -14,10 +14,13 @@ namespace BeerOverflow.NewFolder
         public Mapper()
         {
             CreateMap<BeerDTO, BeerViewModel>().ReverseMap();
-            CreateMap<BreweryDTO, BreweryViewModel>().ReverseMap();
             CreateMap<CountryDTO, CountryViewModel>().ReverseMap();
+            CreateMap<BreweryDTO, BreweryViewModel>().ReverseMap();
             CreateMap<ReviewDTO, ReviewViewModel>().ReverseMap();
             CreateMap<StyleDTO, StyleViewModel>().ReverseMap();
+            CreateMap<BeerDTO, HomeIndexViewModel>().ReverseMap();
+            CreateMap<BeerViewModel, HomeIndexViewModel>().ReverseMap();
+            CreateMap<BreweryViewModel, HomeIndexViewModel>().ReverseMap();
         }
     }
 }

@@ -295,17 +295,17 @@ namespace BeerOverflow.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "ad6231e0-e687-4566-9a87-d0acdedfe5ac", "member", "MEMBER" });
+                values: new object[] { 1, "a0f3326b-5a38-459b-8595-41adc6e6cd27", "member", "MEMBER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "a58f6a68-6c21-4fa1-9011-81a10747530c", "admin", "ADMIN" });
+                values: new object[] { 2, "1c300a84-3f36-492b-ae62-da4f0fd00167", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedOn", "Email", "EmailConfirmed", "IsAdmin", "IsBanned", "IsDeleted", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "ea168101-7bda-4457-b9b7-7aa3eea623fb", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@admin.admin", false, false, false, false, false, null, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAEGLCaLV3anu4we2FJ3oMIr+tKwoVnfdmrglBxok2hIDeivfPB6d/qVTZWZJqHoajGg==", null, false, "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN", false, "admin@admin.admin" });
+                values: new object[] { 1, 0, "40a078f9-2bc1-49f6-8a75-c050c8e81eea", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@admin.admin", false, false, false, false, false, null, null, "ADMIN@ADMIN.ADMIN", "ADMIN@ADMIN.ADMIN", "AQAAAAEAACcQAAAAEM7dFOH9UFfDs10Cs4YtVEEShlTvAuEMx+pKygKLKQ9shXVgBxLOTQb1hb/g7zP1xw==", null, false, "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN", false, "admin@admin.admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

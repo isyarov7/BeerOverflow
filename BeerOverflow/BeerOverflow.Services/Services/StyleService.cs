@@ -45,20 +45,20 @@ namespace BeerOverflow.Services.Services
 
             return style.GetDTO();
         }
-        public async Task<ICollection<StyleDTO>> GetAllStylesAsync()
+        public ICollection<StyleDTO> GetAllStyles()
         {
-            var styles = await this._context.Styles
+            var styles =  this._context.Styles
             .Where(b => b.IsDeleted == false)
             .Select(b => b.GetDTO())
-            .ToListAsync();
+            .ToList();
 
             return styles;
         }
-        public async Task<StyleDTO> GetStyleAsync(int id)
+        public StyleDTO GetStyle(int id)
         {
 
-            var styles = await Task.Run(() => this._context.Styles
-                 .FirstOrDefaultAsync(r => r.Id == id));
+            var styles = this._context.Styles
+                 .FirstOrDefault(r => r.Id == id);
 
             return styles.GetDTO();
         }

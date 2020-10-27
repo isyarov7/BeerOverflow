@@ -18,12 +18,10 @@ namespace BeerOverflow.Tests.BreweryServiceTests
     public class DeleteBreweryShould
     {
         [TestMethod]
-        public async Task<Brewery> Return_When_IsDeleted()
+        public void Return_When_IsDeleted()
         {
             {
                 var options = Utils.GetOptions(nameof(Return_When_IsDeleted));
-                var providerMock = new Mock<IDateTimeProvider>();
-
 
                 var brewery = new Brewery
                 {
@@ -31,33 +29,16 @@ namespace BeerOverflow.Tests.BreweryServiceTests
                     Name = "Test Brewery",
                 };
 
-                using (var arrangeContext = new BeerOverflowDbContext(options))
-                {
-                    arrangeContext.Breweries.Add(brewery);
-                    arrangeContext.SaveChangesAsync();
-                    var sut = new BreweryService(arrangeContext);
+                using var arrangeContext = new BeerOverflowDbContext(options);
+                arrangeContext.Breweries.Add(brewery);
+                arrangeContext.SaveChanges();
+                var sut = new BreweryService(arrangeContext);
 
-                    var result = await sut.DeleteBreweryAsync(1);
-                    var actual = arrangeContext.Breweries.First(x => x.Id == 1);
+                var result = sut.DeleteBreweryAsync(1);
+                var actual = arrangeContext.Breweries.First(x => x.Id == 1);
 
-                    Assert.IsTrue(actual.IsDeleted);
-
-                }
-
-                using (var actContext = new BeerOverflowDbContext(options))
-                {
-                    var sut = new BreweryService(actContext);
-
-                    var result = sut.DeleteBreweryAsync(1);
-                }
-                using (var assertContext = new BeerOverflowDbContext(options))
-                {
-                    var actual = assertContext.Breweries.First(x => x.Id == 1);
-
-                    Assert.IsTrue(actual.IsDeleted);
-                }
+                Assert.IsTrue(actual.IsDeleted);
             }
-
         }
     }
 }

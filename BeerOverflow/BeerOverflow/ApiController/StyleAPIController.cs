@@ -35,18 +35,18 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetAllCountries()
+        public IActionResult GetAllCountries()
         {
-            var styles = await _service.GetAllStylesAsync();
+            var styles = _service.GetAllStyles();
             return Ok(styles);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetStyle(int id)
+        public IActionResult GetStyle(int id)
         {
             try
             {
-                var style = await _service.GetStyleAsync(id);
+                var style = _service.GetStyle(id);
                 return Ok(style);
             }
             catch (Exception)

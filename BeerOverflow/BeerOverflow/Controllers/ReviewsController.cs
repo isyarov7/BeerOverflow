@@ -41,13 +41,13 @@ namespace BeerOverflow.Controllers
         }
 
         // GET: Reviews/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             if (!_signInManager.IsSignedIn(User))
             {
                 Response.Redirect("https://localhost:5001/Identity/Account/Login");
             }
-            ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
+            ViewData["BeerId"] = new SelectList(_beerService.GetAllBeers(), "Id", "Name");
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace BeerOverflow.Controllers
             }
             var review = await _service.GetReviewAsync(id);
 
-            ViewData["BeerId"] = new SelectList(await _beerService.GetAllBeersAsync(), "Id", "Name");
+            ViewData["BeerId"] = new SelectList(_beerService.GetAllBeers(), "Id", "Name");
 
             return View(review);
         }

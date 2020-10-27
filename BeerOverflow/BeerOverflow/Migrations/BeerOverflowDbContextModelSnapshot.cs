@@ -177,14 +177,14 @@ namespace BeerOverflow.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "ad6231e0-e687-4566-9a87-d0acdedfe5ac",
+                            ConcurrencyStamp = "a0f3326b-5a38-459b-8595-41adc6e6cd27",
                             Name = "member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "a58f6a68-6c21-4fa1-9011-81a10747530c",
+                            ConcurrencyStamp = "1c300a84-3f36-492b-ae62-da4f0fd00167",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -301,7 +301,7 @@ namespace BeerOverflow.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ea168101-7bda-4457-b9b7-7aa3eea623fb",
+                            ConcurrencyStamp = "40a078f9-2bc1-49f6-8a75-c050c8e81eea",
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.admin",
                             EmailConfirmed = false,
@@ -311,7 +311,7 @@ namespace BeerOverflow.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN.ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGLCaLV3anu4we2FJ3oMIr+tKwoVnfdmrglBxok2hIDeivfPB6d/qVTZWZJqHoajGg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM7dFOH9UFfDs10Cs4YtVEEShlTvAuEMx+pKygKLKQ9shXVgBxLOTQb1hb/g7zP1xw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7I5VHIJTSZNOT3KDWKNFUV5PVYBHGXN",
                             TwoFactorEnabled = false,

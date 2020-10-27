@@ -36,7 +36,7 @@ namespace BeerOverflow.Tests.BreweryServiceTests
                 arrangeContext.Breweries.Add(brewery);
                 arrangeContext.SaveChanges();
                 var sut = new BreweryService(arrangeContext);
-                var result = sut.GetBreweryAsync(1);
+                var result = sut.GetBrewery(1);
                 Assert.AreEqual(brewery.Id == 1, result.Id == 1);
             }
         }
@@ -50,12 +50,12 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             {
                 var sut = new BreweryService(actContext);
                 var beers = actContext.Breweries.Count();
-                var result = sut.GetAllBreweriesAsync();
-                Assert.AreEqual(beers, result.Result.Count);
+                var result = sut.GetAllBreweries();
+                Assert.AreEqual(beers, result.Count);
             }
         }
         [TestMethod]
-        public async Task Return_Beers_From_Brewery()
+        public void Return_Beers_From_Brewery()
         {
             var options = Utils.GetOptions(nameof(Return_Beers_From_Brewery));
 
@@ -77,9 +77,9 @@ namespace BeerOverflow.Tests.BreweryServiceTests
                 actContext.Countries.Add(coutry);
                 actContext.Breweries.Add(brewery);
                 actContext.Beers.Add(beer);
-                await actContext.SaveChangesAsync();
+                actContext.SaveChanges();
                 var sut = new BreweryService(actContext);
-                var result = await sut.GetBreweryAsync(1);
+                var result = sut.GetBrewery(1);
                 Assert.AreEqual(beer.Id, result.Id);
             }
         }
@@ -98,7 +98,7 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             {
                 var sut = new BreweryService(arrangeContext);
                 await sut.CreateBreweryAsync(brewery);
-                var result = await sut.GetBreweryAsync(1);
+                var result = sut.GetBrewery(1);
                 Assert.AreEqual(brewery.Id, result.Id);
             }
         }

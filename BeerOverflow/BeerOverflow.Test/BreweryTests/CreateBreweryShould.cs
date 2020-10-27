@@ -54,7 +54,7 @@ namespace BeerOverflow.Test.BreweryTests
             using (var actContext = new BeerOverflowDbContext(options))
             {
                 var sut = new BreweryService(actContext);
-                var result = sut.GetBreweryAsync(1);
+                var result = sut.GetBrewery(1);
 
                 Assert.IsTrue(result.Id == brewery.Id);
             }
@@ -107,7 +107,7 @@ namespace BeerOverflow.Test.BreweryTests
             using (var actContext = new BeerOverflowDbContext(options))
             {
                 var sut = new BreweryService(actContext);
-                var result = sut.GetBreweryAsync(1);
+                var result = sut.GetBrewery(1);
 
                 Assert.IsFalse(result.Id == falseBrewery.Id);
             }

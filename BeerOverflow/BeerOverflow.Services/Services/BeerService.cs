@@ -46,24 +46,24 @@ namespace BeerOverflow.Services.Services
             return beer.GetDTO();
         }
 
-        public async Task<ICollection<BeerDTO>> GetAllBeersAsync()
+        public ICollection<BeerDTO> GetAllBeers()
         {
-            var beers = await this._context.Beers
+            var beers = this._context.Beers
             .Include(b => b.Brewery)
             .Include(b => b.Style)
             .Where(b => b.IsDeleted == false)
             .Select(b => b.GetDTO())
-            .ToListAsync();
+            .ToList();
 
             return beers;
         }
         //Ok
-        public async Task<BeerDTO> GetBeerAsync(int id)
+        public BeerDTO GetBeer(int id)
         {
-            var beer = await this._context.Beers
+            var beer = this._context.Beers
             .Include(b => b.Brewery)
             .Include(b => b.Style)
-            .FirstOrDefaultAsync(beer => beer.Id == id);
+            .FirstOrDefault(beer => beer.Id == id);
 
             return beer.GetDTO();
         }

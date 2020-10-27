@@ -1,0 +1,13 @@
+﻿@model BeerViewModel
+
+<div class="col-md-4">
+    <h5 class="card-title">@Model.Name</h5>
+    <img class="align-content-between d-block w-50"
+         img src="~/images/beerback.jpg" alt="">
+    <div class="card-body">
+        <p class="card-text">@Model.ABV</p>
+        <p class="card-text">@Model.Style.Name</p>
+        <p class="card-text">@Model.Description</p>
+        <a asp-area="" asp-controller="Beers" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Find out more</a>
+    </div>
+</div>

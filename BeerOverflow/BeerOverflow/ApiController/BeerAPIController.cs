@@ -33,18 +33,18 @@ namespace BeerOverflow.ApiController
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetAllBeers()
+        public IActionResult GetAllBeers()
         {
-            var beers = await _service.GetAllBeersAsync();
+            var beers = _service.GetAllBeers();
             return Ok(beers);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBeer(int id)
+        public  IActionResult GetBeer(int id)
         {
             try
             {
-                var beer = await _service.GetBeerAsync(id);
+                var beer = _service.GetBeer(id);
                 return Ok(beer);
             }
             catch (Exception)
