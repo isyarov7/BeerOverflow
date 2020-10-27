@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Tests.BreweryServiceTests
 {
@@ -17,7 +18,7 @@ namespace BeerOverflow.Tests.BreweryServiceTests
     public class DeleteBreweryShould
     {
         [TestMethod]
-        public void Return_When_IsDeleted()
+        public async Task<Brewery> Return_When_IsDeleted()
         {
             {
                 var options = Utils.GetOptions(nameof(Return_When_IsDeleted));
@@ -34,6 +35,12 @@ namespace BeerOverflow.Tests.BreweryServiceTests
                 {
                     arrangeContext.Breweries.Add(brewery);
                     arrangeContext.SaveChangesAsync();
+                    var sut = new BreweryService(arrangeContext);
+
+                    var result = await sut.DeleteBreweryAsync(1);
+                    var actual = arrangeContext.Breweries.First(x => x.Id == 1);
+
+                    Assert.IsTrue(actual.IsDeleted);
 
                 }
 

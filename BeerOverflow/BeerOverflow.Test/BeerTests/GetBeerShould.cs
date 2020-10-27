@@ -2,6 +2,7 @@
 using BeerOverflow.Models;
 using BeerOverflow.Models.Models;
 using BeerOverflow.Services.DTO;
+using BeerOverflow.Services.DTOMappers;
 using BeerOverflow.Services.DTOs;
 using BeerOverflow.Services.Services;
 using BeerOverflow.Test;
@@ -32,46 +33,45 @@ namespace BeerOverflow.Tests.NewFolder
             {
                 var sut = new BeerService(arrangeContext);
                 await sut.CreateBeerAsync(beer);
-            }
-
-            using (var actContext = new BeerOverflowDbContext(options))
-            {
-                var sut = new BeerService(actContext);
-                var result = sut.GetBeerAsync(1);
                 Assert.IsTrue(beer.Name == "Kamenitza");
-
             }
         }
         [TestMethod]
-        public void ReturnCorrectBeerDTO_When_Id_IsCorrect()
+        public async Task ReturnCorrectBeerDTO_When_Id_IsCorrect()
         {
             var options = Utils.GetOptions(nameof(ReturnCorrectBeerDTO_When_Id_IsCorrect));
 
-            var beer = new Beer
+            var beer = new BeerDTO
             {
-                Id = 1,
+                Id = 2,
             };
-
 
             using (var arrangeContext = new BeerOverflowDbContext(options))
             {
-                arrangeContext.Beers.Add(beer);
                 var sut = new BeerService(arrangeContext);
-                var result = sut.GetBeerAsync(1);
-                Assert.IsTrue(result.Id == 1);
+                await sut.CreateBeerAsync(beer);
+                await arrangeContext.SaveChangesAsync();
+                var result = sut.GetBeerAsync(2);
+                Assert.AreEqual(result.Id == 2, beer.Id == 2);
             }
         }
 
         [TestMethod]
         public void Throw_When_BeerNotFound()
-        {
+        { 
             var options = Utils.GetOptions(nameof(Throw_When_BeerNotFound));
 
+            var beer = new Beer
+            {
+                Id = 1,
+            };
             using (var actContext = new BeerOverflowDbContext(options))
             {
+                actContext.Beers.Add(beer);
                 var sut = new BeerService(actContext);
+                var result = sut.GetBeerAsync(2);
 
-                Assert.ThrowsException<ArgumentNullException>(() => sut.GetBeerAsync(0));
+                Assert.ThrowsExceptionAsync<ArgumentNullException>(() => result);
             }
         }
         [TestMethod]
@@ -82,7 +82,7 @@ namespace BeerOverflow.Tests.NewFolder
             using (var actContext = new BeerOverflowDbContext(options))
             {
                 var sut = new BeerService(actContext);
-                var beers = actContext.Beers.ToListAsync();
+                var beers = actContext.Beers.Count();
                 actContext.SaveChangesAsync();
 
                 var result = sut.GetAllBeersAsync();

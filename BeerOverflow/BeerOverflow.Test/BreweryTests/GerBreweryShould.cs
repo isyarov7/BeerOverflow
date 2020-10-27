@@ -25,7 +25,6 @@ namespace BeerOverflow.Tests.BreweryServiceTests
         public void Return_Brewery_ById()
         {
             var options = Utils.GetOptions(nameof(Return_Brewery_ById));
-            var providerMock = new Mock<IDateTimeProvider>();
 
             var brewery = new Brewery
             {
@@ -36,14 +35,9 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             {
                 arrangeContext.Breweries.Add(brewery);
                 arrangeContext.SaveChanges();
-
-            }
-
-            using (var actContext = new BeerOverflowDbContext(options))
-            {
-                var sut = new BreweryService(actContext);
+                var sut = new BreweryService(arrangeContext);
                 var result = sut.GetBreweryAsync(1);
-                Assert.AreEqual(brewery.Id, result.Id);
+                Assert.AreEqual(brewery.Id == 1, result.Id == 1);
             }
         }
         [TestMethod]
@@ -61,16 +55,32 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             }
         }
         [TestMethod]
-        public void Return_Beers_From_Brewery()
+        public async Task Return_Beers_From_Brewery()
         {
             var options = Utils.GetOptions(nameof(Return_Beers_From_Brewery));
 
+            var beer = new Beer
+            {
+                Id = 1
+            };
+            var coutry = new Country
+            {
+                Id = 1
+            };
+            var brewery = new Brewery
+            {
+                Id = 1
+            };
+
             using (var actContext = new BeerOverflowDbContext(options))
             {
+                actContext.Countries.Add(coutry);
+                actContext.Breweries.Add(brewery);
+                actContext.Beers.Add(beer);
+                await actContext.SaveChangesAsync();
                 var sut = new BreweryService(actContext);
-                var beers = actContext.Breweries.First(x => x.Id == 1);
-                var result = sut.GetBreweryAsync(1);
-                Assert.AreEqual(beers, result);
+                var result = await sut.GetBreweryAsync(1);
+                Assert.AreEqual(beer.Id, result.Id);
             }
         }
         [TestMethod]
@@ -88,13 +98,8 @@ namespace BeerOverflow.Tests.BreweryServiceTests
             {
                 var sut = new BreweryService(arrangeContext);
                 await sut.CreateBreweryAsync(brewery);
-            }
-
-            using (var actContext = new BeerOverflowDbContext(options))
-            {
-                var sut = new BreweryService(actContext);
-                var result = sut.GetBreweryAsync(1);
-                Assert.AreEqual(brewery.Id, result.Result.Id);
+                var result = await sut.GetBreweryAsync(1);
+                Assert.AreEqual(brewery.Id, result.Id);
             }
         }
     }
