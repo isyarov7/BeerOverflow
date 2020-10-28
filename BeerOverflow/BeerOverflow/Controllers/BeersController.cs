@@ -87,7 +87,7 @@ namespace BeerOverflow.Controllers
         }
         [Authorize]
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, BeerViewModel beerViewModel)
         {
